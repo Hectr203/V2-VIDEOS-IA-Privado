@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "shared-art": ["shared-art/index.ts"],
+      "shared-art/*": ["shared-art/*"],
+      "shared-art-3d": ["shared-art-3d/index.ts"],
+      "shared-art-3d/*": ["shared-art-3d/*"],
+      "react": ["remotion/node_modules/@types/react"],
+      "react/jsx-runtime": ["remotion/node_modules/@types/react/jsx-runtime"],
+      "remotion": ["remotion/node_modules/remotion"],
+      "three": ["remotion/node_modules/@types/three"],
+      "three/examples/jsm/*": ["remotion/node_modules/@types/three/examples/jsm/*"],
+      "*": ["remotion/node_modules/*"]
+    },
+    "typeRoots": [
+      "remotion/node_modules/@types"
+    ]
+  },
+  "include": [
+    "shared-art/**/*",
+    "shared-art-3d/**/*",
+    "remotion/src/**/*",
+    "proyectos-test/demo-estudio-pbr-3d/src/**/*"
+  ]
+}

@@ -13,8 +13,7 @@ import sys
 from pathlib import Path
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
-PROYECTOS_TEST_DIR = WORKSPACE_ROOT / "video-studio" / "proyectos-test"
-PROJECTS_DIR = WORKSPACE_ROOT / "video-studio" / "projects"
+STUDIO_NAMES = ("video-studio-2d", "video-studio-3d", "video-studio")
 
 # Patrones que denotan proyectos de prueba o experimentales
 TEST_PATTERNS = [
@@ -40,18 +39,20 @@ def validar_ruta_test(target_path_str: str) -> tuple[bool, str]:
 
     rel_norm = rel_str.lower().replace("\\", "/")
 
-    # Si está dentro de video-studio/proyectos-test, es válido y permitido
-    if "video-studio/proyectos-test" in rel_norm:
+    # Si está dentro de video-studio-2d/proyectos-test o video-studio-3d/proyectos-test (o transicionalmente video-studio/proyectos-test), es válido
+    if any(f"{s}/proyectos-test" in rel_norm for s in STUDIO_NAMES):
         return True, ""
 
-    # Si se intenta crear un archivo o carpeta de test directamente en video-studio/projects/ o video-studio/
-    # (por ejemplo video-studio/test-*, video-studio/projects/test-*, etc.)
+    # No bloquear tests unitarios legítimos de backend Python (ej. backend/tests/test_*.py)
+    if "/backend/tests/" in f"/{rel_norm}" or rel_norm.endswith("/backend/test_speed.py"):
+        return True, ""
+
     for pattern in TEST_PATTERNS:
         if re.search(pattern, rel_norm):
             return (
                 False,
                 f"Bloqueado por Hook: Los proyectos de prueba, experimentos y personajes de test "
-                f"deben crearse obligatoriamente dentro de 'video-studio/proyectos-test/<nombre-test>/' "
+                f"deben crearse obligatoriamente dentro de 'video-studio-2d/proyectos-test/<slug>/' o 'video-studio-3d/proyectos-test/<slug>/' "
                 f"y nunca en '{rel_norm}'.",
             )
 
@@ -62,7 +63,7 @@ def handle_pre_tool_use(payload: dict) -> dict:
     tool_call = payload.get("toolCall", {})
     args = tool_call.get("args", {})
 
-    target_file = args.get("TargetFile") or args.get("target_file")
+    target_file = args.get("TargetFile") or args.get("target_file") or args.get("Path")
     if target_file:
         valido, motivo = validar_ruta_test(str(target_file))
         if not valido:
@@ -70,7 +71,6 @@ def handle_pre_tool_use(payload: dict) -> dict:
 
     cmd = args.get("CommandLine") or args.get("command") or ""
     if cmd:
-        # Si el comando crea directorios o archivos de test fuera de proyectos-test
         if "mkdir " in cmd or "touch " in cmd or "cp " in cmd:
             for token in cmd.split():
                 clean_tok = token.strip("\"'")
@@ -83,9 +83,13 @@ def handle_pre_tool_use(payload: dict) -> dict:
 
 
 def handle_post_tool_use(payload: dict) -> dict:
-    # Asegurar que video-studio/proyectos-test siempre exista
-    if not PROYECTOS_TEST_DIR.exists():
-        PROYECTOS_TEST_DIR.mkdir(parents=True, exist_ok=True)
+    # Asegurar que proyectos-test exista únicamente en los estudios activos presentes en disco
+    for s in ("video-studio-2d", "video-studio-3d", "video-studio"):
+        studio_root = WORKSPACE_ROOT / s
+        if studio_root.is_dir():
+            test_dir = studio_root / "proyectos-test"
+            if not test_dir.exists():
+                test_dir.mkdir(parents=True, exist_ok=True)
     return {}
 
 

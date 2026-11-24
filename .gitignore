@@ -74,25 +74,60 @@ dist-ssr/
 coverage/
 
 # ==============================================================================
-# MEDIA GENERADA, RENDERS Y PROYECTOS TEMPORALES (VIDEO STUDIO)
+# MEDIA GENERADA, RENDERS Y PROYECTOS TEMPORALES (ESTUDIOS 2D / 3D / SHARED)
 # ==============================================================================
-video-studio/output/*
-!video-studio/output/.gitkeep
-video-studio/projects/*/renders/
-video-studio/projects/*/audio_cache/
-video-studio/projects/*/__pycache__/
-video-studio/projects/*/*.partial.mp3
-video-studio/remotion/public/voice_*
-video-studio/remotion/out.mp4
-video-studio/test_laptop_alpha*.webm
-video-studio/test_overlay.png
-video-studio/productions/
-video-studio/remotion/src/projects/
-video-studio/media/
-video-studio/public/original_assets/
-video-studio/render_checkpoints/
-video-studio/assets/brand-private/*
-!video-studio/assets/brand-private/README.md
+studio-shared/assets/brand-private/*
+!studio-shared/assets/brand-private/README.md
+studio-shared/node_modules
+studio-shared/mis-temas/*
+!studio-shared/mis-temas/README.md
+!studio-shared/mis-temas/.gitkeep
+studio-shared/mis-ideas/*
+!studio-shared/mis-ideas/README.md
+!studio-shared/mis-ideas/.gitkeep
+Agencia_Principal/contexts/projects/*/evidencias/*.mp4
+
+video-studio-2d/output/*
+!video-studio-2d/output/.gitkeep
+video-studio-2d/projects/*/renders/
+video-studio-2d/projects/*/audio_cache/
+video-studio-2d/projects/*/__pycache__/
+video-studio-2d/projects/*/*.partial.mp3
+video-studio-2d/remotion/public/voice_*
+video-studio-2d/remotion/out.mp4
+video-studio-2d/productions/
+video-studio-2d/remotion/src/projects/
+video-studio-2d/media/
+video-studio-2d/public/original_assets/
+video-studio-2d/remotion/public/original_assets/
+video-studio-2d/render_checkpoints/
+video-studio-2d/backend/projects/*
+video-studio-2d/projects/*/
+video-studio-2d/projects/*/*/
+video-studio-2d/proyectos-test/
+video-studio-2d/proyectos-test/*
+video-studio-2d/remotion/package.json
+
+video-studio-3d/output/*
+!video-studio-3d/output/.gitkeep
+video-studio-3d/projects/*/renders/
+video-studio-3d/projects/*/audio_cache/
+video-studio-3d/projects/*/__pycache__/
+video-studio-3d/projects/*/*.partial.mp3
+video-studio-3d/remotion/public/voice_*
+video-studio-3d/remotion/out.mp4
+video-studio-3d/productions/
+video-studio-3d/remotion/src/projects/
+video-studio-3d/media/
+video-studio-3d/public/original_assets/
+video-studio-3d/remotion/public/original_assets/
+video-studio-3d/render_checkpoints/
+video-studio-3d/backend/projects/*
+video-studio-3d/projects/*/
+video-studio-3d/projects/*/*/
+video-studio-3d/proyectos-test/
+video-studio-3d/proyectos-test/*
+video-studio-3d/remotion/package.json
 
 
 # ==============================================================================
@@ -142,28 +177,4 @@ agent/
 *.sqlite3
 graphify-out/
 video_frames_detailed/
-video-studio/backend/projects/*
-video-studio/public/original_assets/
-video-studio/remotion/public/original_assets/
 resultaaquee_*.mp4
-
-# proyectos de cada persona organizados por fecha
-video-studio/projects/*/
-video-studio/projects/*/*/
-
-# Proyectos de prueba, experimentos y rigs (nunca se suben al repositorio)
-video-studio/proyectos-test/
-video-studio/proyectos-test/*
-
-# Temas y cuestionarios de creadores (privados y confidenciales)
-video-studio/mis-temas/*
-!video-studio/mis-temas/README.md
-!video-studio/mis-temas/.gitkeep
-
-# Ideas e historias generadas personalmente (privadas y excluidas del repositorio)
-video-studio/mis-ideas/*
-!video-studio/mis-ideas/README.md
-!video-studio/mis-ideas/.gitkeep
-
-# Package.json de Remotion (modificado dinámicamente con scripts de cada proyecto)
-video-studio/remotion/package.json

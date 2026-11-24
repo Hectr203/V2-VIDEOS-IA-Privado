@@ -1,0 +1,405 @@
+import os
+import asyncio
+import subprocess
+import urllib.request
+from typing import Dict, Any, List, Optional
+from pathlib import Path
+import edge_tts
+
+import json
+from services.elevenlabs_gateway import get_elevenlabs_gateway, load_backend_env
+
+# Cargar .env si existe
+load_backend_env()
+
+# Lista unificada de voces disponibles por proveedor
+AVAILABLE_VOICE_PROVIDERS = [
+    {
+        "provider": "edge-tts",
+        "name": "Microsoft Edge-TTS (Local/Gratis - Sin Cuota)",
+        "voices": [
+            {"id": "es-ES-AlvaroNeural", "name": "Álvaro (España - Narrador Expresivo)", "gender": "Male"},
+            {"id": "es-MX-DaliaNeural", "name": "Dalia (México - Conversacional)", "gender": "Female"},
+            {"id": "es-MX-JorgeNeural", "name": "Jorge (México - Dinámico)", "gender": "Male"},
+            {"id": "es-ES-ElviraNeural", "name": "Elvira (España - Clara)", "gender": "Female"},
+            {"id": "es-AR-TomasNeural", "name": "Tomás (Argentina)", "gender": "Male"},
+            {"id": "es-CO-GonzaloNeural", "name": "Gonzalo (Colombia)", "gender": "Male"},
+        ]
+    },
+    {
+        "provider": "elevenlabs",
+        "name": "ElevenLabs (Gateway Multi-Cuenta)",
+        "voices": [
+            {"id": "SOYHLrjzK2X1ezoPC6cr", "name": "★ Voz Oficial Por Defecto (SOYHLrjzK2X1ezoPC6cr)", "gender": "Male"},
+            {"id": "pNInz6obpgDQGcFmaJgB", "name": "Adam (Narrador Profundo)", "gender": "Male"},
+            {"id": "TX3LPaxmHKxFdv7VOQHJ", "name": "Liam (Varón Dinámico - Creador)", "gender": "Male"},
+            {"id": "nPczCjzI2devNBz1zQrb", "name": "Brian (Varón Sabio y Cálido)", "gender": "Male"},
+            {"id": "21m00Tcm4TlvDq8ikWAM", "name": "Rachel (Storytelling)", "gender": "Female"}
+        ]
+    },
+    {
+        "provider": "azure",
+        "name": "Azure Speech Services (Azure AI)",
+        "voices": [
+            {"id": "es-ES-AlvaroNeural", "name": "Azure Álvaro Neural", "gender": "Male"},
+            {"id": "es-MX-DaliaNeural", "name": "Azure Dalia Neural", "gender": "Female"}
+        ]
+    },
+    {
+        "provider": "google",
+        "name": "Google Text-to-Speech (Voz Oficial de Google)",
+        "voices": [
+            {"id": "google-latam", "name": "Voz de Google (Latinoamérica)", "gender": "Female"},
+            {"id": "google-es", "name": "Voz de Google (España)", "gender": "Female"}
+        ]
+    },
+    {
+        "provider": "applio",
+        "name": "Applio RVC v2 (Modelos de la Comunidad / Clonación)",
+        "voices": [
+            {"id": "Morgan_Freeman", "name": "Morgan Freeman (RVC v2)", "gender": "Male"}
+        ]
+    }
+]
+
+def get_audio_duration(file_path: str) -> float:
+    """Calcula la duración real exacta de un archivo de audio mediante ffprobe."""
+    try:
+        cmd = [
+            "ffprobe", "-v", "error", "-show_entries", "format=duration",
+            "-of", "default=noprint_wrappers=1:nokey=1", file_path
+        ]
+        res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+        return float(res.stdout.strip())
+    except Exception:
+        return 0.0
+
+class VoiceHub:
+    """
+    Centro unificado de síntesis de voz con soporte para múltiples proveedores,
+    fallback automático y sincronización por palabra (karaoke).
+    """
+
+    @classmethod
+    def get_catalog(cls) -> List[Dict[str, Any]]:
+        catalog = [{**provider, "voices": list(provider["voices"])} for provider in AVAILABLE_VOICE_PROVIDERS]
+        elevenlabs = next(provider for provider in catalog if provider["provider"] == "elevenlabs")
+        gateway = get_elevenlabs_gateway()
+        if not gateway.has_keys():
+            gateway.reload_from_env()
+        if not gateway.has_keys():
+            elevenlabs["voices"] = []
+            elevenlabs["name"] = "ElevenLabs (configura ELEVENLABS_API_KEY_1..6 o ELEVENLABS_API_KEY)"
+            return catalog
+        try:
+            voice_res = gateway.list_voices()
+            elevenlabs["voices"] = voice_res["voices"]
+            n_keys = gateway.configured_count
+            elevenlabs["name"] = (
+                f"ElevenLabs Gateway ({n_keys} cuenta{'s' if n_keys != 1 else ''} · {voice_res['total']} voces)"
+            )
+        except Exception as error:
+            elevenlabs["voices"] = []
+            elevenlabs["name"] = f"ElevenLabs (no disponible: {error})"
+        return catalog
+
+    @classmethod
+    async def synthesize(
+        cls,
+        text: str,
+        output_audio_path: str,
+        provider: str = "edge-tts",
+        voice_id: str = "es-ES-AlvaroNeural",
+        rate: str = "+4%",
+        pitch: str = "+0Hz",
+        model_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Sintetiza audio con el proveedor elegido. En ElevenLabs utiliza automáticamente el Gateway
+        con verificación de saldo y rotación multi-cuenta.
+        """
+        os.makedirs(os.path.dirname(output_audio_path), exist_ok=True)
+
+        if provider == "elevenlabs":
+            gateway = get_elevenlabs_gateway()
+            if not gateway.has_keys():
+                gateway.reload_from_env()
+            if not gateway.has_keys():
+                raise RuntimeError("No hay API keys de ElevenLabs configuradas en video-studio/backend/.env")
+            return await cls._synthesize_elevenlabs(text, output_audio_path, voice_id, model_id=model_id)
+
+        if provider in ["applio", "rvc"]:
+            return await cls._synthesize_applio(text, output_audio_path, voice_id)
+
+        if provider == "vibevoice":
+            return await cls._synthesize_vibevoice(text, output_audio_path, voice_id)
+
+        if provider in ["google", "google-tts", "gtts"]:
+            return await cls._synthesize_google_tts(text, output_audio_path, voice_id)
+
+        if provider != "edge-tts":
+            raise ValueError(f"Proveedor de voz no soportado: {provider}")
+
+        # Por defecto o fallback: Edge-TTS (alta calidad y sin cuotas)
+        return await cls._synthesize_edge_tts(text, output_audio_path, voice_id, rate, pitch)
+
+    @classmethod
+    async def _synthesize_edge_tts(
+        cls,
+        text: str,
+        output_audio_path: str,
+        voice_id: str,
+        rate: str,
+        pitch: str
+    ) -> Dict[str, Any]:
+        # Si la voz no es compatible con Edge-TTS, mapear a es-ES-AlvaroNeural
+        if not voice_id.startswith("es-"):
+            voice_id = "es-ES-AlvaroNeural"
+
+        communicate = edge_tts.Communicate(text=text, voice=voice_id, rate=rate, pitch=pitch)
+        sentence_cues = []
+
+        with open(output_audio_path, "wb") as audio_file:
+            async for chunk in communicate.stream():
+                if chunk.get("type") == "audio":
+                    cdata = chunk.get("data")
+                    if cdata:
+                        audio_file.write(cdata)
+                elif chunk.get("type") == "SentenceBoundary":
+                    start_sec = float(chunk.get("offset") or 0) / 10_000_000.0
+                    dur_sec = float(chunk.get("duration") or 0) / 10_000_000.0
+                    sentence_cues.append({
+                        "text": chunk.get("text", "").strip(),
+                        "start": round(start_sec, 3),
+                        "end": round(start_sec + dur_sec, 3),
+                        "duration": round(dur_sec, 3)
+                    })
+
+        total_duration = get_audio_duration(output_audio_path)
+        if not sentence_cues and total_duration > 0:
+            sentence_cues.append({
+                "text": text,
+                "start": 0.0,
+                "end": total_duration,
+                "duration": total_duration
+            })
+
+        # Mapeo de marcas de tiempo por palabra
+        word_timestamps: List[Dict[str, Any]] = []
+        for sentence in sentence_cues:
+            words = sentence["text"].split()
+            if not words:
+                continue
+            weights = [max(len(w), 2) for w in words]
+            total_weight = sum(weights)
+            sent_duration = sentence["duration"]
+            cursor = sentence["start"]
+
+            for w, weight in zip(words, weights):
+                w_dur = (weight / total_weight) * sent_duration
+                word_timestamps.append({
+                    "word": w,
+                    "start": round(cursor, 3),
+                    "end": round(cursor + w_dur, 3)
+                })
+                cursor += w_dur
+
+        return {
+            "provider": "edge-tts",
+            "voice_id": voice_id,
+            "audio_path": output_audio_path,
+            "duration": total_duration,
+            "words": word_timestamps
+        }
+
+    @classmethod
+    async def _synthesize_vibevoice(cls, text: str, output_path: str, voice_id: str) -> Dict[str, Any]:
+        """Fail explicitly: VibeVoice ha sido reemplazado por Applio."""
+        raise NotImplementedError(
+            "VibeVoice ha sido reemplazado por Applio (RVC v2); usa provider='applio'."
+        )
+
+    @classmethod
+    async def _synthesize_applio(cls, text: str, output_path: str, voice_id: str = "Morgan_Freeman") -> Dict[str, Any]:
+        """Sintetiza base con Edge-TTS y convierte con Applio (RVC v2)."""
+        applio_dir = Path(__file__).resolve().parents[3] / "Applio"
+        if not applio_dir.exists():
+            raise FileNotFoundError(f"Applio no encontrado en {applio_dir}")
+
+        temp_base = output_path + ".base.mp3"
+        base_res = await cls._synthesize_edge_tts(text, temp_base, "es-CL-LorenzoNeural", rate="+18%")
+
+        model_name = voice_id or "Morgan_Freeman"
+        model_dir = applio_dir / "logs" / model_name
+        if not model_dir.exists():
+            candidates = list((applio_dir / "logs").glob(f"*{model_name}*"))
+            model_dir = candidates[0] if candidates else applio_dir / "logs" / "Morgan_Freeman"
+
+        pth_files = list(model_dir.glob("*.pth")) if model_dir.exists() else []
+        if not pth_files:
+            pth_files = list((applio_dir / "logs").glob("**/*.pth"))
+        if not pth_files:
+            raise FileNotFoundError(f"No se encontraron pesos .pth para el modelo {model_name} en Applio/logs")
+
+        pth_path = str(pth_files[0])
+        index_files = list(model_dir.glob("*.index")) if model_dir.exists() else []
+        if not index_files:
+            index_files = list((applio_dir / "logs").glob("**/*.index"))
+        index_path = str(index_files[0]) if index_files else ""
+
+        py_bin = str(applio_dir / ".venv" / "bin" / "python")
+        cmd = [
+            py_bin, "core.py", "infer",
+            "--input-path", temp_base,
+            "--output-path", output_path,
+            "--pth-path", pth_path,
+            "--pitch", "0",
+            "--index-rate", "1.0",
+        ]
+        if index_path:
+            cmd.extend(["--index-path", index_path])
+
+        env = os.environ.copy()
+        lib_path = str(applio_dir / "libs" / "usr" / "lib" / "x86_64-linux-gnu")
+        env["LD_LIBRARY_PATH"] = f"{lib_path}:{env.get('LD_LIBRARY_PATH', '')}"
+
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            cwd=str(applio_dir),
+            env=env,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        stdout, stderr = await proc.communicate()
+        if proc.returncode != 0:
+            raise RuntimeError(f"Error en inferencia de Applio: {stderr.decode()}")
+
+        if os.path.exists(temp_base):
+            try:
+                os.remove(temp_base)
+            except OSError:
+                pass
+
+        base_res["provider"] = "applio"
+        base_res["voice_id"] = model_name
+        base_res["audio_path"] = output_path
+        return base_res
+
+    @classmethod
+    async def _synthesize_elevenlabs(
+        cls,
+        text: str,
+        output_path: str,
+        voice_id: str,
+        model_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Integración resiliente con ElevenLabs vía Gateway multi-cuenta (verificación de saldo y rotación automática)."""
+        gateway = get_elevenlabs_gateway()
+        if not gateway.has_keys():
+            gateway.reload_from_env()
+        resolved_voice = (voice_id or "").strip()
+        if not resolved_voice or resolved_voice == "default" or resolved_voice.startswith("es-"):
+            resolved_voice = gateway.default_voice_id
+
+        result = await asyncio.to_thread(
+            gateway.synthesize_with_failover,
+            text,
+            resolved_voice,
+            model_id,
+        )
+
+        with open(output_path, "wb") as f:
+            f.write(result["audio_bytes"])
+
+        duration = get_audio_duration(output_path)
+
+        align = result.get("alignment", {})
+        chars = align.get("characters", [])
+        starts = align.get("character_start_times_seconds", [])
+        ends = align.get("character_end_times_seconds", [])
+
+        word_timestamps = []
+        if chars and starts and ends:
+            current_word = []
+            word_start = None
+            prev_end = 0.0
+            for char, s, e in zip(chars, starts, ends):
+                if char.isspace():
+                    if current_word:
+                        word_timestamps.append({
+                            "word": "".join(current_word),
+                            "start": round(word_start, 3) if word_start is not None else 0.0,
+                            "end": round(prev_end, 3)
+                        })
+                        current_word = []
+                        word_start = None
+                else:
+                    if word_start is None:
+                        word_start = s
+                    current_word.append(char)
+                    prev_end = e
+            if current_word:
+                word_timestamps.append({
+                    "word": "".join(current_word),
+                    "start": round(word_start, 3) if word_start is not None else 0.0,
+                    "end": round(prev_end, 3)
+                })
+
+        if not word_timestamps:
+            words = text.split()
+            avg_w = duration / max(len(words), 1)
+            word_timestamps = [
+                {"word": w, "start": round(i * avg_w, 3), "end": round((i + 1) * avg_w, 3)}
+                for i, w in enumerate(words)
+            ]
+
+        return {
+            "provider": "elevenlabs",
+            "voice_id": resolved_voice,
+            "model_id": result["model_id"],
+            "account_used": result["account_used"],
+            "remaining_characters_estimate": result["remaining_characters_estimate"],
+            "rotations": result["rotations"],
+            "audio_path": output_path,
+            "duration": duration,
+            "words": word_timestamps
+        }
+
+    @classmethod
+    async def _synthesize_google_tts(cls, text: str, output_path: str, voice_id: str) -> Dict[str, Any]:
+        """Sintetiza texto a voz usando el motor oficial de Google (gTTS)."""
+        from gtts import gTTS
+        tld = "com.mx"
+        if "es" in voice_id.lower() and "latam" not in voice_id.lower():
+            tld = "es"
+
+        def _call_gtts():
+            tts = gTTS(text=text, lang="es", tld=tld, slow=False)
+            tts.save(output_path)
+
+        await asyncio.to_thread(_call_gtts)
+
+        total_duration = get_audio_duration(output_path)
+        words = text.split()
+        word_timestamps: List[Dict[str, Any]] = []
+        if words and total_duration > 0:
+            weights = [max(len(w), 2) for w in words]
+            total_weight = sum(weights)
+            cursor = 0.0
+            for w, weight in zip(words, weights):
+                w_dur = (weight / total_weight) * total_duration
+                word_timestamps.append({
+                    "word": w,
+                    "start": round(cursor, 3),
+                    "end": round(cursor + w_dur, 3)
+                })
+                cursor += w_dur
+
+        return {
+            "provider": "google",
+            "voice_id": voice_id,
+            "audio_path": output_path,
+            "duration": total_duration,
+            "words": word_timestamps
+        }
+

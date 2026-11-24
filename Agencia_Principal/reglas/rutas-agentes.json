@@ -88,6 +88,8 @@
     "agente-animador-2d": {
       "archivo": "agentes/agente-animador-2d.md",
       "skills": [
+        "estilo-cartoon-editorial-3d",
+        "dinamismo-visual-2d",
         "animacion-2d-remotion",
         "pipeline-produccion-video",
         "remotion-best-practices",
@@ -95,6 +97,16 @@
         "remotion-captions",
         "character-animation-engine",
         "motion-design"
+      ]
+    },
+    "agente-animador-3d": {
+      "archivo": "agentes/agente-animador-3d.md",
+      "skills": [
+        "estilo-estudio-3d-pbr",
+        "remotion-best-practices",
+        "remotion-render",
+        "earshot",
+        "real-sfx"
       ]
     },
     "agente-replicador-video": {

@@ -2,7 +2,7 @@
   "libraries": [
     {
       "name": "video_studio_sfx",
-      "path": "/mnt/nvme/V2-VIDEOS-IA/video-studio/assets/sfx",
+      "path": "/mnt/nvme/V2-VIDEOS-IA/studio-shared/assets/sfx",
       "tier": "main"
     }
   ],

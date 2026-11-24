@@ -21,7 +21,7 @@ Este es un **estilo gráfico alternativo seleccionable** en el cuestionario inic
 5. `Z = +155px`: `ForegroundParticles3D` en primer plano.
 
 ## 3. Físicas, IK y Biblioteca Reutilizable
-Importar directamente desde `video-studio/shared-art/` (`kiwiMotion.ts` y `KiwiPrimitives.tsx`, re-exportados en `video-studio/shared-art/index.ts`):
+Importar directamente desde `video-studio-2d/shared-art/` (`kiwiMotion.ts` y `KiwiPrimitives.tsx`, re-exportados en `video-studio-2d/shared-art/index.ts`):
 - `solveIK`, `arcPoint`, `squashStretch`, `uiSpring`, `bounceSpring`, `beatProgress`, `eyeBlinkScale`, `mouthOpenness`.
 - `KiwiCharacterIK`, `KiwiAvatarPro`, `FlipCounter3D`, `YellowCallout3D`, `DataPill3D`, `KiwiCaptionsPro`, `KiwiProgressBar`, `SharedCosmicBackdrop`, `ForegroundParticles3D`.
 

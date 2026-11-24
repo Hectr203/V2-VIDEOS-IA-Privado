@@ -2,10 +2,11 @@
 
 Aplicar la [precedencia](precedencia.md) y el [contrato común](../agentes/contrato-agente.md).
 
-## 1. Principio Fundamental de Calidad Visual y Nuevo Estándar Predominante
-Cualquier agente o inteligencia artificial que trabaje en la generación de videos animados en `video-studio` debe aplicar como **estilo visual y de personajes predominante por defecto** la skill **`estilo-cartoon-editorial-3d`** (`Agencia_Principal/skills/estilo-cartoon-editorial-3d/SKILL.md`, biblioteca modular en `video-studio/shared-art/cartoon/`), manteniendo `estilo-kiwi-kurzgesagt-3d` y los demás estilos disponibles cuando el usuario los seleccione explícitamente:
+## 1. Principio Fundamental de Calidad Visual, Dinamismo Cinético y Estándar Predominante
+Cualquier agente o inteligencia artificial que trabaje en la generación de videos animados 2D debe operar exclusivamente en **`video-studio-2d/`** (los videos 3D PBR viven separados en `video-studio-3d/` bajo [estandar-animacion-3d.md](estandar-animacion-3d.md)) aplicando como **estilo visual y de personajes predominante por defecto** la skill **`estilo-cartoon-editorial-3d`** (`Agencia_Principal/skills/estilo-cartoon-editorial-3d/SKILL.md`, biblioteca modular en `video-studio-2d/shared-art/cartoon/`) potenciada obligatoriamente con **`dinamismo-visual-2d`** (`video-studio-2d/shared-art/dynamism/`):
 - **Coherencia estilística absoluta en personajes nuevos:** Todo personaje nuevo requerido por el tema (granjero, profesor, fisiculturista, científico, niño nuevo, médico, etc.) debe diseñarse desde `sharedCartoonStyle.tsx` con el mismo contorno negro tinta uniforme (`#0b0d10`, `4.4px`), rellenos planos *flat cel*, ojos sólidos expresivos, orejas integradas, anatomía completa con pies aterrizados, extremidades IK de 2 segmentos (`solveIK2D`), 8 poses naturales, 7 expresiones con *lip-sync* y adaptaciones preventivas *IP-Safe*.
-- **Cero estética de presentación / Cero pestañas superiores (MANDATORIO):** Queda estrictamente prohibido renderizar encabezados de capítulo, títulos de proyecto en la esquina superior izquierda o contadores de página (`1 / 11`, `03 / 14`) en la esquina superior derecha. Solo se permite la **línea de progreso limpia en la parte inferior** (`KiwiProgressBar`).
+- **Dinamismo visual de alta retención (`dinamismo-visual-2d`):** Encadenar micro-cambios de encuadre cada 1.5–2.5s con `DynamicCameraRig2D`, alternar fondos emocionales (`RadialSunburstBackdrop`, `SpeedLinesBackdrop`, `SpotlightStageBackdrop`, `VersusSplitBackdrop`), conectar con `SpiralRingPortal` / `DiagonalSplitCompare`, sostener tensión con HUD diegético (`StoryStateHUD`, `LiquidDangerMeter`, `GameHealthBarHUD`, `TearOffCalendar`) y demostrar estadísticas con `IconPopulationGrid` y `StampedDossierCard`.
+- **Cero estética de presentación / Cero pestañas superiores (MANDATORIO):** Queda estrictamente prohibido renderizar encabezados de capítulo, títulos de proyecto en la esquina superior izquierda o contadores de página (`1 / 11`, `03 / 14`) en la esquina superior derecha. Solo se permite la **línea de progreso limpia en la parte inferior** (`KiwiProgressBar`) y HUD diegético propio de la narrativa.
 - **Profundidad 3D multipiano y transiciones continuas:** Escenario `perspective: 1200px` + `preserve-3d` con puentes de cámara motivados (*zoom-dive*, *whip-glide*), contadores `FlipCounter3D`, recuadros `YellowCallout3D`, píldoras `DataPill3D` y cero cortes secos a negro.
 - **Evaluación narrativa obligatoria previa a producción (`estrategia-narrativa-ganchos-retencion`):** Antes de sintetizar voces, auditar historia, gancho de 0–3s y ritmo con `scripts/evaluar_guion.py` (umbral `>= 80/100`).
 - **Integración Estratégica y Meditada de Recortes Web e Imágenes IA con Gemini (OPCIONAL SEGÚN LA HISTORIA):**
@@ -19,10 +20,10 @@ Para cualquier temática (ciencia, inteligencia artificial, tecnología, econom�
 
 ## 3. Arquitectura y Organización por Fecha de Creación
 Para evitar la dispersión de archivos y mantener el orden histórico cuando se acumulan decenas o cientos de producciones, **los proyectos se organizan cronológicamente dentro de carpetas por fecha de creación**:
-`video-studio/projects/<DD de mes de YYYY>/<slug>/`
-*(Ejemplo: `video-studio/projects/25 de octubre de 2026/efectos-drogas-jovenes-2d/`)*
+`video-studio-2d/projects/<DD de mes de YYYY>/<slug>/`
+*(Ejemplo: `video-studio-2d/projects/25 de octubre de 2026/efectos-drogas-jovenes-2d/`)*
 
-**Queda estrictamente prohibido guardar proyectos, archivos o enlaces simbólicos en la raíz de `video-studio/projects/`. Todo proyecto debe residir forzosamente dentro de su carpeta de fecha de creación (`video-studio/projects/<DD de mes de YYYY>/<slug>/`) para evitar cualquier duplicidad.** Esta regla es validada automáticamente mediante un hook de ciclo de vida.
+**Queda estrictamente prohibido guardar proyectos, archivos o enlaces simbólicos en la raíz de `video-studio-2d/projects/`. Todo proyecto debe residir forzosamente dentro de su carpeta de fecha de creación (`video-studio-2d/projects/<DD de mes de YYYY>/<slug>/`) para evitar cualquier duplicidad.** Esta regla es validada automáticamente mediante un hook de ciclo de vida.
 
 Estructura canónica de cada proyecto:
 1. `project.json`: Metadatos del proyecto (título, descripción, resolución, versión, autor).
@@ -73,8 +74,8 @@ Todo proyecto canónico debe admitir composiciones verticales (9:16) y horizonta
 1. **Claridad de la Narración:** La voz en off debe dominar la mezcla de forma limpia e inteligible en todo momento.
 2. **Auto-Ducking Obligatorio:** En `Film.tsx`, la música de fondo debe descender automáticamente al **35% (-9 dB)** durante cada intervalo donde el narrador pronuncie palabras (`voiceRanges`).
 3. **Control de Headroom:** El pico máximo de la mezcla en el archivo final MP4 debe situarse estrictamente por debajo de **-1.0 dBFS** (verificable con `ffmpeg -af volumedetect`).
-4. **Catálogo Centralizado de Audios (414 pistas) e Historial Anti-Repetición:** Consulta [`video-studio/assets/GUIA_CATALOGO_AUDIOS.md`](../../video-studio/assets/GUIA_CATALOGO_AUDIOS.md), [`video-studio/assets/catalogo_audios.json`](../../video-studio/assets/catalogo_audios.json) y el registro anti-repetición `video-studio/assets/audio_usage_history.json`.
-5. **CLI de Curación por Historia y Anti-Repetición (OBLIGATORIO):** Utiliza `python3 video-studio/scripts/buscar_audio.py --historia "<sinopsis y emoción>" --evitar-recientes` para obtener música fresca no repetida y un paquete rico de SFX acordes a la narrativa. Registra cada pista usada con `--registrar-uso <ruta> --proyecto <slug>`.
+4. **Catálogo Centralizado de Audios (414 pistas) e Historial Anti-Repetición:** Consulta [`studio-shared/assets/GUIA_CATALOGO_AUDIOS.md`](../../studio-shared/assets/GUIA_CATALOGO_AUDIOS.md), [`studio-shared/assets/catalogo_audios.json`](../../studio-shared/assets/catalogo_audios.json) y el registro anti-repetición `studio-shared/assets/audio_usage_history.json`.
+5. **CLI de Curación por Historia y Anti-Repetición (OBLIGATORIO):** Utiliza `python3 video-studio-2d/scripts/buscar_audio.py --historia "<sinopsis y emoción>" --evitar-recientes` para obtener música fresca no repetida y un paquete rico de SFX acordes a la narrativa. Registra cada pista usada con `--registrar-uso <ruta> --proyecto <slug>`.
 6. **Curaduría por Historia y Abundancia de SFX Calibrados (MANDATORIO):**
    - Prohibido reciclar repetitivamente las mismas pistas de música; rotar entre los 160+ temas musicales y combinar 2–3 pistas con *crossfade* cuando la historia cambie de acto emocional.
    - **Densidad rica de SFX (12 a 20 micro-SFX por minuto):** Integrar efectos frecuentes y variados (transiciones, pops, dings, chimes, boings, ricochets, lluvia, pasos de página, golpes dramáticos, clicks) normalizados (`loudnorm=I=-22:TP=-6, alimiter=limit=0.45`) y mezclados a `0.16–0.30` para entretener y enganchar **sin sobrepasar jamás la voz de la locución**.
@@ -93,7 +94,7 @@ Todo proyecto canónico debe admitir composiciones verticales (9:16) y horizonta
 ## 8. Documentación Técnica de Referencia
 Para consultar el manual operativo completo de agentes, convenciones de paths y anti-alucinación, leer:
 - Documento maestro: [`docs/GUIA_COMPLETA_PRODUCCION_2D.md`](../../docs/GUIA_COMPLETA_PRODUCCION_2D.md)
-- Catálogo de Audios: [`video-studio/assets/GUIA_CATALOGO_AUDIOS.md`](../../video-studio/assets/GUIA_CATALOGO_AUDIOS.md)
+- Catálogo de Audios: [`studio-shared/assets/GUIA_CATALOGO_AUDIOS.md`](../../studio-shared/assets/GUIA_CATALOGO_AUDIOS.md)
 - Manual de agentes en la raíz: [`README.md`](../../README.md)
 - Suite oficial de habilidades Remotion: [`GUIA-REMOTION-DEV-SKILLS.md`](../skills/remotion-dev-skills/GUIA-REMOTION-DEV-SKILLS.md)
 - Suite de habilidades de Motion y Dirección: [`GUIA-MOTION-VIDEO-SKILLS.md`](../skills/motion-video-skills/GUIA-MOTION-VIDEO-SKILLS.md)

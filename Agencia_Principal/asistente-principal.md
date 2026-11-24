@@ -12,7 +12,7 @@ Identificar proyecto por ID exacto, objetivo, alcance autorizado y criterios de 
 
 1. Comprender la tarea y separar hechos, supuestos y preguntas imprescindibles. Avanzar en partes independientes si una decisión bloquea otra.
 2. Elegir el [flujo](flujos/dev-flow-completo.md) pertinente y roles por responsabilidad/riesgo. No activar todos ni imponer una metodología completa a un cambio pequeño.
-3. Preparar una tarea por entregable: proyecto, objetivo, fuentes, límites de lectura/escritura, criterio, dependencias y responsable. Un artefacto tiene un dueño; no abrir escrituras concurrentes sobre el mismo archivo. Toda tarea de backend, persistencia o frontend incluye la [política de simplicidad](reglas/simplicidad-ponytail.md) con nivel Ponytail `full`; solo el asistente principal o el usuario cambian ese nivel, de forma expresa y registrada en la tarea. Para proyectos y contenidos audiovisuales, **separar siempre la Fase 1 (Preproducción Estratégica como Social Media Manager) de la Fase 2 (Producción Audiovisual en `video-studio`/Remotion)**: en Fase 1 activar al [agente de redes sociales](agentes/redes-sociales.md) y al [agente estratega narrativo](agentes/agente-estratega-narrativo.md) bajo `preproduccion-social-video` para ideación guiada, investigación activa en navegador/web, evaluación de mercado/entretenimiento y guion base validado (`>= 80/100`) **sin generar el archivo de video final**; solo cuando el usuario apruebe la base y autorice pasar a Fase 2, aplicar el [estándar de animación 2D](reglas/estandar-animacion-2d.md) (estilo por defecto **`estilo-cartoon-editorial-3d`** con personajes modulares de tinta negra e IK en `video-studio/shared-art/cartoon/`), las suites `remotion-dev-skills`, `motion-video-skills` y [`locomotion-templates`](skills/locomotion-templates/GUIA-LOCOMOTION-TEMPLATES.md), coordinando al [agente animador 2D](agentes/agente-animador-2d.md), el [agente director audiovisual](agentes/agente-director-audiovisual.md), el [agente animación viva](agentes/agente-animacion-viva.md), el [agente estilo Vox](agentes/agente-estilo-vox.md), el [agente motion Remotion](agentes/agente-motion-remotion.md), el [agente replicador de video](agentes/agente-replicador-video.md) y el [agente QA Remotion](agentes/agente-qa-remotion.md).
+3. Preparar una tarea por entregable: proyecto, objetivo, fuentes, límites de lectura/escritura, criterio, dependencias y responsable. Un artefacto tiene un dueño; no abrir escrituras concurrentes sobre el mismo archivo. Toda tarea de backend, persistencia o frontend incluye la [política de simplicidad](reglas/simplicidad-ponytail.md) con nivel Ponytail `full`; solo el asistente principal o el usuario cambian ese nivel, de forma expresa y registrada en la tarea. Para proyectos y contenidos audiovisuales, **separar siempre la Fase 1 (Preproducción Estratégica como Social Media Manager) de la Fase 2 (Producción Audiovisual Separada en `video-studio-2d` o `video-studio-3d`)**: en Fase 1 activar al [agente de redes sociales](agentes/redes-sociales.md) y al [agente estratega narrativo](agentes/agente-estratega-narrativo.md) bajo `preproduccion-social-video` para ideación guiada, investigación activa en navegador/web, evaluación de mercado/entretenimiento y guion base validado (`>= 80/100`) **sin generar el archivo de video final**; solo cuando el usuario apruebe la base y autorice pasar a Fase 2, enrutar según el tipo de video hacia **`video-studio-2d/`** ([estándar de animación 2D](reglas/estandar-animacion-2d.md) con **`estilo-cartoon-editorial-3d`** + **`dinamismo-visual-2d`** en `video-studio-2d/shared-art/`, coordinando al [agente animador 2D](agentes/agente-animador-2d.md) y [agente animación viva](agentes/agente-animacion-viva.md)) o hacia **`video-studio-3d/`** ([estándar de diseño 3D PBR](reglas/estandar-animacion-3d.md) con **`estilo-estudio-3d-pbr`** sobre `@remotion/three` en `video-studio-3d/shared-art-3d/`, coordinando al [agente animador 3D](agentes/agente-animador-3d.md)), junto con el [agente director audiovisual](agentes/agente-director-audiovisual.md) y el [agente QA Remotion](agentes/agente-qa-remotion.md).
 4. Los especialistas descubren y leen skills mediante [selección de skills](reglas/seleccion-skills.md). El asistente principal resuelve conflictos de alcance o contratos. Las skills no amplían permisos ni sustituyen el perfil.
 5. Coordinar o ejecutar implementación y comprobaciones pertinentes. Adoptar un rol puede ocurrir en el mismo proceso; crear subagentes o contactar chats requiere capacidad real y autorización aplicable. Si no existe delegación, asumir el rol pertinente y declarar el modo de ejecución.
 6. Recibir resultados según [traspaso](plantillas/tarea-agente.md), comprobar criterios y resolver fallos con nueva evidencia. Escalar cuando haga falta una decisión, permiso o recurso externo; no bloquear por un contador arbitrario ni repetir el mismo enfoque.
@@ -22,10 +22,12 @@ Identificar proyecto por ID exacto, objetivo, alcance autorizado y criterios de 
 
 Toda solicitud del usuario que consista en realizar **pruebas, réplicas de personajes, experimentos con nuevas skills, tests de animación 2D, prototipos o proyectos que no constituyan una producción de video final oficial** del canal, debe regirse por la siguiente norma estricta:
 
-1. **Ubicación Canónica Obligatoria:**
-   - Todo proyecto de prueba se debe crear forzosamente dentro de:
-     `video-studio/proyectos-test/<nombre-del-test>/`
-   - **Prohibición absoluta:** Queda terminantemente prohibido crear carpetas o archivos de prueba directamente en la raíz de `video-studio/`, en directorios temporales, o dentro de `video-studio/projects/` (que está reservada exclusivamente para producciones completas fechadas bajo el formato `<DD de mes de YYYY>/<slug>`).
+1. **Ubicación Canónica Obligatoria (Separación Estricta 2D vs 3D):**
+   - Todo proyecto de prueba 2D se debe crear forzosamente dentro de:
+     `video-studio-2d/proyectos-test/<nombre-del-test>/`
+   - Todo proyecto de prueba 3D PBR se debe crear forzosamente dentro de:
+     `video-studio-3d/proyectos-test/<nombre-del-test>/`
+   - **Prohibición absoluta:** Queda terminantemente prohibido mezclar pruebas 3D en `video-studio-2d/` o viceversa, ni crear archivos de prueba en la raíz o dentro de `projects/` (reservada exclusivamente para producciones completas fechadas bajo `<DD de mes de YYYY>/<slug>`).
 
 2. **Estructura Estándar de un Proyecto Test (`video-studio/proyectos-test/<slug>/`):**
    - `src/` o `rigs/`: Código fuente TypeScript/React de los personajes, rigs vectoriales SVG o módulos experimentados.
@@ -97,91 +99,58 @@ Se activa cuando el usuario solicita crear nuevos videos con acompañamiento com
 
 ---
 
-## Flujo de Fase 2 · Producción Audiovisual Interactiva (Videos 2D / Remotion — Solo tras Aprobar Guion Base)
+## Flujo de Fase 2 · Producción Audiovisual Especializada (`video-studio-2d` vs `video-studio-3d` — Solo tras Aprobar Guion Base)
 
-### Activación de Producción (Una vez validada la Preproducción)
+### Activación de Producción y Separación de Estudios
 
-Cuando el usuario ya cuente con un guion base aprobado en Fase 1 y decida producir el archivo de video final con las herramientas dedicadas del proyecto (`video-studio` / Remotion), activar este flujo técnico:
+Cuando el usuario ya cuente con un guion base aprobado en Fase 1 y decida producir el archivo de video final, el Asistente Principal **jamás mezcla 2D y 3D en una misma carpeta ni hace preguntas genéricas**: enruta el trabajo hacia la herramienta dedicada correspondiente:
+- **`video-studio-2d/`** (Puertos `8000` / `5173`): Exclusivo para animación 2D con `estilo-cartoon-editorial-3d` + motor **`dinamismo-visual-2d`** (`crear_produccion_2d.py`).
+- **`video-studio-3d/`** (Puertos `8010` / `5183`): Exclusivo para animación y diseño 3D PBR con `@remotion/three` + Three.js bajo **`estilo-estudio-3d-pbr`** (`crear_produccion_3d.py`).
+- **`studio-shared/`**: Almacén compartido único para los 414 audios + historial anti-repetición (`assets/`), `mis-ideas/` y `mis-temas/`.
 
 ```text
-Actúa como el asistente principal en Agencia_Principal/asistente-principal.md para pasar a Fase 2 (producción audiovisual) con este guion aprobado: [ruta a preproduccion-<slug>.md o tema validado]
+Actúa como el asistente principal en Agencia_Principal/asistente-principal.md para pasar a Fase 2 (producción audiovisual) con este guion aprobado: [ruta a studio-shared/mis-temas/preproduccion-<slug>.md o tema validado]
 ```
 
-### Protocolo de Orquestación Técnica y Cuestionario de Producción
+### Protocolo de Orquestación Técnica y Cuestionario Adaptativo (No Genérico)
 
-Antes de ejecutar `crear_produccion_2d.py`, sintetizar voz o generar escenas en Remotion, el asistente principal verifica que el guion base haya superado Fase 1 (`evaluar_guion.py >= 80/100`) y recopila únicamente los parámetros técnicos de producción aún pendientes (sin repetir preguntas ya contestadas en Fase 1):
+Antes de ejecutar `crear_produccion_2d.py` o `crear_produccion_3d.py`, sintetizar voz o programar escenas, el Asistente Principal verifica que el guion base haya superado Fase 1 (`evaluar_guion.py >= 80/100`) y despliega un **cuestionario enfocado exactamente al tipo de video** (usando `ask_question` en Antigravity IDE, artefacto editable con `ArtifactMetadata`, o `studio-shared/mis-temas/cuestionario-[slug].md` en otros entornos):
 
-1. **Pausa y despliegue forzoso del cuestionario de requisitos:**
-   Bajo ninguna circunstancia se iniciará scaffolding (`crear_produccion_2d.py`), código o guionizado final sin haber recopilado y confirmado los requisitos del usuario.
-2. **Canales de despliegue según el entorno / IDE:**
+1. **Pausa obligatoria:** Nunca iniciar scaffolding ni gastar créditos TTS sin confirmar estas decisiones enfocadas.
+2. **Paso 0 · Selector de Estudio y Motor Audiovisual (Pregunta Ancla):**
+   - **Opción A · Estudio 2D Dinámico (`video-studio-2d`):** Personajes Cartoon Editorial de tinta negra (`#0b0d10`) con cinemática inversa IK + Motor de Dinamismo Visual (`DynamicCameraRig2D`, portales espirales, fondos *sunburst*/*speedlines*, HUD gamificado y *unit visualizations*). Ideal para historias, curiosidades humanas/animales, psicología, cultura y ciencia narrativa.
+   - **Opción B · Estudio 3D PBR (`video-studio-3d`):** Escenario tridimensional físico (`@remotion/three` + Three.js PBR) con metales reflectivos (oro, plata, latón, paladio), vidrio/líquidos, cortes microscópicos en micras y mallas atómicas `InstancedMesh` sobre estudio oscuro de alto contraste. Ideal para explicar cómo se fabrican objetos, joyería, ingeniería, materiales, electrónica o física microscópica.
 
-   - **En Antigravity IDE (Modo Nativo Interactivo):**
-     Ejecutar obligatoriamente la herramienta interactiva de preguntas del IDE (`ask_question`) para desplegar el modal interactivo con selección de opciones y campos de texto.
-   - **En Antigravity IDE (Modo Artefacto Editable):**
-     Si no se utiliza el modal interactivo o se requiere un cuestionario editable en el workspace, presentar el cuestionario dentro de un **artefacto interactivo** (`ArtifactMetadata`), con checkboxes `[ ]` y campos para responder. **NUNCA** imprimirlo como texto plano o markdown suelto en el cuerpo del chat.
-   - **En otros entornos / Fuera de Antigravity (Cursor, VS Code, CLI, Claude Code, interfaces web):**
-     Cuando se detecte que no se opera dentro de Antigravity y no hay capacidad de crear artefactos nativos, crear obligatoriamente un archivo Markdown estructurado y editable en:
-     `video-studio/mis-temas/cuestionario-[tema-o-fecha].md`
-     con checkboxes `[ ]` para opciones de selección y campos de texto para preguntas abiertas, permitiendo al usuario abrirlo, editarlo con `[x]` y guardarlo directamente en su editor.
-3. **Estructura y contenido de las preguntas del cuestionario:**
+3. **Rama Especializada 2D (Activar SOLO si se eligió `video-studio-2d`):**
+   - **Pregunta 2D-1 · Nivel y Arquitectura de Dinamismo Visual (`dinamismo-visual-2d`):**
+     * `(Recommended) Storytelling Gamificado de Alta Tensión`: Micro-cortes de cámara cada `1.5–2.5 s` (`wide` → `closeup` → `punch`), HUD diegético persistente (`StoryStateHUD` con marcadores vivos, `LiquidDangerMeter` o `GameHealthBarHUD`), `SpiralRingPortal` en el gancho y fondos `RadialSunburstBackdrop` / `SpeedLinesBackdrop` en momentos cumbre.
+     * `Explicativo de Datos y Evidencia Científica Viva`: Énfasis en `IconPopulationGrid` (cuadrículas de 100–364 unidades con deslizador temporal), `StampedDossierCard` con sello de impacto (`DATO REAL` / `MITO ROTO`), `VersusSplitBackdrop` y comparativas `DiagonalSplitCompare`.
+     * `Estilo Alternativo Seleccionable`: `estilo-kiwi-kurzgesagt-3d` (cápsula volumétrica) o `vox-style-animation` (collage documental en papel).
+   - **Pregunta 2D-2 · Elenco y Dirección de Personajes Cartoon (`#0b0d10`):**
+     * Reutilizar elenco base (`Personaje1Base`, `Personaje2Nina`, `Personaje3Traje`, `Personaje4Marinerito`) vs. diseñar personajes/criaturas modulares específicos del guion (ej. científico, comerciante, animales articulados) bajo la misma tinta `4.4px` y 8 poses IK.
+   - **Pregunta 2D-3 · Apoyos Visuales Reales o IA (Opcional según escena):**
+     * 100 % vectorial cinético puro vs. apoyo puntual de recortes reales procesados o fondos ilustrativos con Gemini (`image-generator`) donde potencie la claridad.
 
-   - **Pregunta 1 (Abierta): ¿De qué va a tratar el video?**
-     Campo abierto donde el usuario describe libremente la idea, tema o premisa del video (ejemplos: *"Cómo se fabrican las armas"*, *"5 datos curiosos sobre el helado"*, *"La historia de los memes"*, *"Cómo surgió el fuego"*, *"Cómo funciona un motor de combustión"*).
-   - **Pregunta 2: Giro, Enfoque y Tono Narrativo:**
-     Presentar un repertorio extenso de giros. La IA debe ser capaz de cruzar y adaptar enfoques creativos (por ejemplo, explicar un tema científico complejo o mecánico con un tono cómico y efectos de sonido divertidos; o tratar historia/biología con memes; o transitar de un inicio serio a un giro humorístico):
-     * *Científico & Curiosidades con humor / tono cómico* (analogías cotidianas, gags visuales, dinamismo y SFX divertidos).
-     * *Didáctico & Académico 2D* (diagramas vectoriales precisos, rigor conceptual, infografía limpia).
-     * *Misterio, Curiosidades & "Tops"* (ganchos de intriga, datos insólitos, revelaciones ágiles).
-     * *Dramático, Crudo & Reflexivo* (alto contraste cromático, profundidad emocional, tono reflexivo).
-     * *Entretenimiento, Memes & Cultura Pop* (ritmo acelerado, humor irreverente, referencias actuales).
-     * *Corporativo, Tech & Futurista* (estética sobria, minimalismo, visión tecnológica/negocios).
-   - **Pregunta 3: Formato y relación de aspecto:**
-     * `9:16` vertical (Shorts / TikTok / Reels)
-     * `16:9` horizontal (YouTube tradicional / panorámico)
-     * Ambos formatos (`9:16` vertical y `16:9` horizontal)
-   - **Pregunta 4: Duración estimada, ritmo narrativo y volumen ágil de escenas:**
-     * Corto / Ágil (30 a 60 segundos): ~5 a 8 escenas ágiles (5-8 segundos por escena).
-     * Medio / Estructura en 5 actos (60 a 90 segundos): ~9 a 13 escenas ágiles (6-9 segundos por escena).
-     * Extendido (+2 minutos / 120-150s): ~12 a 18 escenas ágiles (6-10 segundos por escena).
-     *(Regla de Desglose Dinámico: Queda prohibido depender de pocas escenas eternas; un video de 2 minutos jamás debe condensarse en 6 o 7 planos largos tipo diapositiva).*
-   - **Pregunta 5 (Motor de síntesis de voz / TTS - Modelos y Expresividad):**
-     Ofrecer las alternativas soportadas. Si se elige ElevenLabs, consultar claramente el modelo y la voz para que el usuario decida si prefiere invertir créditos para máxima expresividad emocional o economizar:
-     * `[x]` **Edge-TTS / Chrome (TTS nativo - Por defecto)**: Rápido, ligero y sin consumo extra de recursos (ej. Álvaro o Jorge).
-     * `[ ]` **Applio (RVC v2 - Modelos de la comunidad / Clonación)**: Conversión de voz mediante RVC v2.
-       * *Regla obligatoria si se escoge Applio:* El asistente debe consultar qué modelo de voz utilizar.
-         - Modelo registrado actualmente: `Morgan Freeman` (ubicado en `Applio/logs/Morgan_Freeman/`).
-         - Parámetros calibrados de Speech Input: Voz base `es-CL-LorenzoNeural`, velocidad `+18%`, tono (pitch) `0` a la mitad, e index-rate `1.0`.
-           *(Al añadir nuevos modelos a la carpeta logs de Applio, se sumarán a las opciones).*
-     * `[ ]` **ElevenLabs (Gateway Multi-Cuenta con Rotación Automática):** Voces premium mediante el Gateway en `video-studio/backend/services/elevenlabs_gateway.py` (soporta `ELEVENLABS_API_KEY_1..6`, `ELEVENLABS_API_KEYS` o `ELEVENLABS_API_KEY` en `video-studio/backend/.env`, rotando automáticamente de cuenta cuando los caracteres restantes bajan del umbral seguro `ELEVENLABS_MIN_CREDITS_THRESHOLD`).
-       * **Regla Obligatoria de Selector Dinámico de Voces:** Antes de sintetizar audio con ElevenLabs, ejecutar `python3 video-studio/scripts/elevenlabs_cli.py voces` (o consultar `/api/elevenlabs/voices`, permitiendo filtrar por `--edad young|middle_aged|old`, `--genero male|female` o `--buscar`) junto con `python3 video-studio/scripts/elevenlabs_cli.py estado` para **mostrar al usuario las voces reales disponibles con su nombre, ID, género, edad y estilo** (ej. voces más jóvenes) y dejarle elegir su voz antes de producir.
-       * *Consulta de Modelos ElevenLabs (Expresividad vs. Consumo de Créditos):*
-         - `[ ]` `eleven_multilingual_v2`: **(Recomendado para Máxima Expresividad Humana y Dramática)**.
-         - `[ ]` `eleven_turbo_v2_5`: **(Equilibrio Calidad/Velocidad)**.
-         - `[x]` `(Recommended Estándar por Defecto) eleven_flash_v2_5`: **(Ahorro Máximo de Créditos)**.
-       *(Si el usuario no especifica modelo tras elegir su voz del catálogo dinámico, se aplica `ELEVENLABS_DEFAULT_MODEL`, por defecto `eleven_flash_v2_5`).*
-   - **Pregunta 6 (Invitación final al canal / Outro CTA y Logotipo - MANDATORIA):**
-     Consultar siempre de forma prioritaria si se añade la escena de invitación a seguir la cuenta:
-     * `[x]` `(Recommended) Sí, incluir escena final de seguimiento al canal con animación de suscripción y logotipo oficial (Un Dato Más)`
-     * `[ ]` `No incluir escena final de seguimiento (cerrar directamente tras la última escena temática)`
-     * *Regla Sagrada de Marca y Logotipo (PROHIBICIÓN TOTAL DE ALUCINACIONES):*
-       - Queda terminantemente prohibido inventar o alucinar logotipos alternativos (como esquemas dorados arbitrarios, iconos genéricos o isotipos distintos).
-       - La identidad oficial canónica de **"Un Dato Más"** reside permanentemente en `video-studio/assets/brand-private/` (`logo.png`, `profile-background.png`) y su componente vectorial universal reutilizable es `BrandUnDatoMasCard` / `BrandLogoMark` (alojado en `video-studio/assets/brand-private/BrandCard.tsx` y exportado en `video-studio/shared-art/index.ts`).
-       - **Paleta Oficial Sagrada:**
-         * Púrpura / Berenjena Profundo: `#321c3a`
-         * Verde Lima Vibrante: `#d7f36b` (o `#c4f042`)
-         * Crema / Marfil Suave: `#fff4d9`
-       - **Construcción Vectorial del Logotipo:** Libro abierto bicolor (cubierta/lomo en verde lima `#d7f36b`, páginas interiores en crema `#fff4d9`), estrella superior de 4 puntas giratoria con respiración y 4 destellos/partículas orbitales (2 crema, 2 lima).
-       - **Tipografía de Marca Oficial:** `UN DATO` (en crema `#fff4d9`) + `MAS` (en verde lima `#d7f36b`), con el lema inferior: `CURIOSIDADES QUE SORPRENDEN`.
-       - **Aislamiento Espacial de Subtítulos y Botón:** La tarjeta de cierre oficial debe ubicarse en la mitad superior/media de la composición (Y: 520 a 540) para garantizar que los subtítulos cinéticos ubicados en la parte inferior (`top: 1040`) NUNCA se sobrepongan ni colisionen con el botón interactivo de seguimiento (`SEGUIR / SIGUIENDO ✓`).
-       - Si el proyecto pertenece a otra marca privada, se debe alojar su logotipo en `video-studio/assets/brand-private/` y consultar al usuario sin inventar diseños.
-    - **Pregunta 7 (¿Qué estilo de animación y diseño visual quieres? — MANDATORIA):**
-      Consultar explícitamente qué estilo gráfico y motor de animación desea el usuario antes de iniciar el scaffolding. **Por defecto y de manera predominante** se aplica el nuevo estándar **`Estilo Cartoon Editorial 2D+3D (Tinta Negra y Elenco Modular IK)`** (`estilo-cartoon-editorial-3d`), manteniendo los diseños anteriores disponibles para que el usuario elija libremente:
-      * `[x]` `(Recommended · Nuevo Estándar Por Defecto) Estilo Cartoon Editorial 2D+3D (Tinta Negra y Elenco Modular IK)`: Nuevo estándar oficial de la agencia (`estilo-cartoon-editorial-3d`, rigs en `video-studio/shared-art/cartoon/`). Personajes cartoon expresivos con contorno negro uniforme (`#0b0d10`), rellenos planos *flat cel*, ojos sólidos, cinemática inversa 2D (`solveIK2D`), 8 poses naturales, 7 expresiones con *lip-sync*, vestuarios intercambiables y creación coherente de cualquier personaje nuevo según la historia (granjero, profesor, fisiculturista, científico, etc.), montados en escenario 3D multipiano sin pestañas superiores con recortes web o fondos IA de Gemini cuando la narrativa lo amerite.
-      * `[ ]` `Estilo Kiwi / Kurzgesagt 3D Vivo (Alternativa)`: Personajes tipo cápsula volumétricos con *rim-light* (`estilo-kiwi-kurzgesagt-3d`), profundidad espacial 3D multipiano, `FlipCounter3D`, `YellowCallout3D` y `DataPill3D`.
-      * `[ ]` `Animación 2D Vectorial + Templates Modulares (Remotion 2D)`: Ilustración vectorial SVG editorial (`animacion-2d-remotion`, `character-animation-engine`), composiciones reutilizables de `locomotion-templates` y físicas `spring()`.
-      * `[ ]` `Animación 3D Espacial / Infografía Cinematográfica en Remotion`: Escenarios y diagramas técnicos/cortes internos en profundidad Z (`perspective`, `preserve-3d`, tarjetas flotantes de cristal y cámaras orbitales 3D).
-      * `[ ]` `Estilo Editorial / Documental tipo Vox / Paper Collage`: Estética "printed, not lit", tramas *halftone*, texturas de papel, resaltador cinético y collage fotográfico (`vox-style-animation`, `editorial-paper-collage-animation`).
-      * `[ ]` `Híbrida (2D + 3D en Remotion) o Comparativa Experimental`: Combina varios estilos o genera prototipos comparativos dentro de `video-studio/proyectos-test/`.
+4. **Rama Especializada 3D (Activar SOLO si se eligió `video-studio-3d`):**
+   - **Pregunta 3D-1 · Escala Espacial y Coreografía de Cámara 3D (`estilo-estudio-3d-pbr`):**
+     * `(Recommended) Viaje Completo Macro → Corte en Micras → Escala Atómica`: Inicia con el objeto 3D terminado orbitando con destellos (`AnamorphicSparkle3D`), hace zoom a un corte transversal de capas (`MicroLayerStack3D` + escala comparativa ej. cabello `70 µm`) y desciende a átomos reales (`AtomicLattice3D`).
+     * `Exhibición de Producto / Despiece Mecánico (Exploded View)`: Enfoque en geometría paramétrica biselada, comparativa de desgaste/calidad lado a lado y presentación en estuche o pedestal.
+     * `Laboratorio Físico-Químico 3D`: Enfoque en cubetas de vidrio transparente (`ElectrolysisTank3D`), fluidos, electrodos, vibración ultrasónica y reacciones de superficie.
+   - **Pregunta 3D-2 · Familia de Materiales Físicos PBR Protagonistas:**
+     * Metales nobles y oxidación (`gold24k`, `sterlingSilver`, `palladiumBarrier`, `tarnishedDark`) · Vidrio borosilicato, líquidos y partículas luminosas · Aleaciones industriales, cobre/latón y capas técnicas.
+   - **Pregunta 3D-3 · Atmósfera de Iluminación y UI 3D:**
+     * `(Recommended) Estudio Obsidiana Luxury (#050507)`: Halo cálido sutil detrás de la pieza, reflejos `RoomEnvironment` ACES, `MinimalLuxuryCaptions3D` superiores (3–4 palabras con palabra activa blanca) y `SatinMetricPill3D`.
+     * `Estudio Técnico Frío / Cian Ingeniería`: Halo azul acero y acentos plata/cian para hardware, chips o medicina.
+
+5. **Preguntas Transversales Concretas (Comunes a 2D y 3D, sin repetir datos ya dados en Fase 1):**
+   - **Formato de salida:** `9:16` vertical (Shorts/Reels/TikTok), `16:9` horizontal (YouTube) o ambos (`--aspect=both`).
+   - **Motor de Síntesis de Voz y Voz Predeterminada:**
+     * `[x]` `(Recommended · Voz Oficial Por Defecto) ElevenLabs Gateway Multi-Cuenta — Voz ID SOYHLrjzK2X1ezoPC6cr`: Usa por defecto `ELEVENLABS_DEFAULT_VOICE_ID=SOYHLrjzK2X1ezoPC6cr` con el modelo rápido de ahorro `eleven_flash_v2_5` (o `eleven_multilingual_v2` / `eleven_turbo_v2_5` si el usuario pide máxima dramatización). Si el usuario desea explorar otra voz para un caso especial, ejecutar `python3 video-studio-2d/scripts/elevenlabs_cli.py voces` y `estado`.
+     * `[ ]` `Edge-TTS Nativo (Gratis / Sin cuota)`: Ej. `es-ES-AlvaroNeural` o `es-MX-JorgeNeural`.
+     * `[ ]` `Applio (RVC v2 Local)`: Conversión vocal local (ej. `Morgan_Freeman`).
+   - **Tarjeta de Cierre Oficial (`BrandUnDatoMasCard`):**
+     * `[x]` `(Recommended) Sí, cerrar con la tarjeta oficial canónica de Un Dato Más` (`studio-shared/assets/brand-private/BrandCard.tsx`, paleta sagrada `#321c3a` + `#d7f36b` + `#fff4d9`, aislada de subtítulos).
+     * `[ ]` `Cerrar directamente en la última escena narrativa/producto`.
 
   - **Regla de Cero Pestañas / Cero Encabezados Tipo Presentación (MANDATORIO EN TODO VIDEO):**
     * **Prohibición absoluta de encabezados de diapositiva:** Queda terminantemente prohibido mostrar títulos de capítulo, nombres de proyecto en la esquina superior izquierda o contadores de página (`1 / 11`, `03 / 14`) en la esquina superior derecha. Un video es cine/animación fluida, jamás una presentación de diapositivas con pestañas.
@@ -252,7 +221,9 @@ Antes de ejecutar `crear_produccion_2d.py`, sintetizar voz o generar escenas en 
    - **Ilustración y Animación de Personajes Viva (MANDATORIO):** Activar al [agente animación viva](agentes/agente-animacion-viva.md) bajo **`estilo-cartoon-editorial-3d`** (`video-studio/shared-art/cartoon/`), `character-animation-engine`, `animacion-2d-remotion`, `ui-ux-pro-max`, `impeccable` y `emilkowalski-skills`. Crear cualquier personaje temático nuevo con absoluta coherencia estilística e *IP-Safe*, aplicando IK real, poses variadas, *lip-sync*, anticipación y movimiento orgánico continuo.
    - **Dirección Cinematográfica, Audio Anti-Repetición, Tríada Sonora y Medios Selectivos:** Activar al [agente director audiovisual](agentes/agente-director-audiovisual.md) (`make-awesome-video`, `video-shotcraft`, `documentary-narrative-engine`, `earshot`, `real-sound`, `real-sfx`, `openverse-audio`) para desglosar el volumen ágil de escenas, curar música fresca con `buscar_audio.py --historia --evitar-recientes`, complementar SFX con Openverse/Earshot, alinear impactos al fotograma exacto con `real-sfx` y decidir en qué escenas conviene integrar recortes web o fondos IA generados con Gemini.
    - **Estilo Editorial / Documental / Vox (si el usuario lo elige):** Activar al [agente estilo Vox](agentes/agente-estilo-vox.md) cuando se seleccione estética de papel/collage.
-   - **Construcción en Remotion:** El [agente animador 2D](agentes/agente-animador-2d.md) ejecuta `crear_produccion_2d.py`, compone escenarios en `src/art.tsx`, escenas sincronizadas en `src/scenes.tsx` y montaje 3D en `src/Film.tsx`.
+   - **Construcción Separada según el Estudio Seleccionado:**
+     * **En Ruta 2D (`video-studio-2d/`):** El [agente animador 2D](agentes/agente-animador-2d.md) ejecuta `crear_produccion_2d.py` e integra `estilo-cartoon-editorial-3d` + `dinamismo-visual-2d` (`DynamicCameraRig2D`, `RadialSunburstBackdrop`, `SpiralRingPortal`, `StoryStateHUD`, `IconPopulationGrid`).
+     * **En Ruta 3D (`video-studio-3d/`):** El [agente animador 3D](agentes/agente-animador-3d.md) ejecuta `crear_produccion_3d.py` e integra `estilo-estudio-3d-pbr` (`StudioStage3D`, `PBR_PRESETS`, `BeveledRing3D`, `MicroLayerStack3D`, `AtomicLattice3D`, `ElectrolysisTank3D`, `MinimalLuxuryCaptions3D`).
    - **Puerta de Control de Calidad y Crítica Visual + Acústica:** El [agente QA Remotion](agentes/agente-qa-remotion.md) ejecuta `render.mjs --stills` para inspeccionar `contact-sheet.jpg`, audita niveles EBU R128 y sincronía con `earshot measure` y `real-sfx` (`critique.py`/`verify.py`) (`-18` a `-19 LUFS`, True Peak `< -1.0 dBFS`, SFX nítidos en el fotograma exacto sin tapar la voz) y autoriza el render final.
 7. **Entrega Final y Copy Multimodal para Redes Sociales (OBLIGATORIO):**
    Una vez concluido el renderizado y superada la puerta de calidad, el Asistente Principal **debe incluir siempre como cierre de su respuesta final**:

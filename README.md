@@ -119,18 +119,21 @@ Actúa como el asistente principal en Agencia_Principal/asistente-principal.md p
 
 ---
 
-### Método 2: Plataforma Web (Dashboard & Editor Multipista — Fase 2 Producción)
+### Método 2: API Local Separada (`video-studio-2d` y `video-studio-3d` — Fase 2 Producción)
 
-Para gestionar proyectos de producción, previsualizar hojas de contacto y explorar la API:
+Los entornos 2D y 3D operan completamente separados sin interfaz web frontend (enfoque 100 % agente + CLI + Remotion Studio + API FastAPI):
 
 ```bash
-cd video-studio
-./start.sh
+# Estudio 2D (Cartoon Editorial IK + Motor de Dinamismo Visual) -> API :8000
+cd video-studio-2d && ./start.sh
+
+# Estudio 3D (Three.js + @remotion/three PBR Studio Engine)     -> API :8010
+cd video-studio-3d && ./start.sh
 ```
 
-* 🖥️ **Frontend Dashboard**: [http://localhost:5173](http://localhost:5173) (Pestaña "Proyectos 2D", explorador visual de escenas y visor de hojas de contacto).
-* ⚙️ **Backend API (FastAPI)**: [http://localhost:8000/docs](http://localhost:8000/docs) (Endpoints REST `/api/v2/projects`).
-* 🎞️ **Editor Multipista videoAssembler**: [http://localhost:5174](http://localhost:5174) (Edición manual multipista y exportación con FFmpeg).
+* 🎨 **Video Studio 2D API**: [http://localhost:8000/docs](http://localhost:8000/docs)
+* 💎 **Video Studio 3D (PBR) API**: [http://localhost:8010/docs](http://localhost:8010/docs)
+* 🎙️ **Voz Oficial por Defecto en ElevenLabs**: `SOYHLrjzK2X1ezoPC6cr` (`ELEVENLABS_DEFAULT_VOICE_ID` en el Gateway Multi-Cuenta).
 
 ---
 
@@ -138,14 +141,21 @@ cd video-studio
 
 Si prefieres operar desde la terminal o integrar el motor en pipelines automatizados tras validar el guion en Fase 1:
 
-#### Paso 1: Generar el scaffolding del proyecto
+#### Paso 1: Generar el scaffolding según el estudio elegido (2D o 3D)
 ```bash
-python3 video-studio/scripts/crear_produccion_2d.py \
-  --id "mi-nuevo-video" \
-  --titulo "Título del Video" \
-  --tema "Descripción conceptual y estilo visual"
+# Opción A: Producción 2D Dinámica (Cartoon Editorial IK + Dinamismo Visual)
+python3 video-studio-2d/scripts/crear_produccion_2d.py \
+  --id "mi-nuevo-video-2d" \
+  --titulo "Título del Video 2D" \
+  --tema "Descripción conceptual y dinamismo visual"
+
+# Opción B: Producción 3D PBR (Metales, Cristal, Capas en Micras y Átomos)
+python3 video-studio-3d/scripts/crear_produccion_3d.py \
+  --id "mi-nuevo-video-3d" \
+  --titulo "Título del Video 3D" \
+  --tema "Objeto o proceso físico 3D PBR"
 ```
-*(Los proyectos se archivan cronológicamente en `video-studio/projects/<DD de mes de YYYY>/<slug>/`).*
+*(Cada estudio archiva sus producciones cronológicamente en `<estudio>/projects/<DD de mes de YYYY>/<slug>/` y sus pruebas en `<estudio>/proyectos-test/<slug>/`).*
 
 #### Paso 2: Auditar el guion antes de sintetizar voz (Preproducción CLI)
 ```bash
@@ -259,17 +269,24 @@ python3 Agencia_Principal/skills/estrategia-narrativa-ganchos-retencion/scripts/
 │   ├── reglas/                         # Estándar de animación 2D, precedencia y rutas-agentes.json
 │   ├── skills/                         # Fuentes canónicas (preproduccion, viral-content, youtube-strategy, marketing-strategy, remotion, motion)
 │   └── scripts/                        # Scripts de verificación y catálogo (`agencia.py`)
-├── video-studio/                       # Motor central de producción audiovisual (Fase 2)
-│   ├── mis-ideas/                      # Banco automático privado de ideas e historias (`[fecha] - [Categoría] - Tema.md`, ignorado por Git)
-│   ├── mis-temas/                      # Briefs validados y cuestionarios privados (ignorado por Git)
-│   ├── projects/                       # Producciones finales organizadas por fecha
-│   ├── shared-art/                     # Rigs compartidos (`cartoon/`, cinemática IK, partículas)
-│   ├── assets/                         # Catálogo de 414 audios e historial anti-repetición
-│   ├── scripts/                        # Scaffolding (`crear_produccion_2d.py`), `buscar_audio.py` y `elevenlabs_cli.py`
-│   ├── backend/                        # API FastAPI, SQLite, persistencia y Gateway Multi-Cuenta ElevenLabs (`.env.example`)
-│   ├── frontend/                       # Dashboard React + Tailwind
-│   └── remotion/                       # Motor Remotion 4.x con Chromium Headless
-└── videoAssembler/                     # Editor web multipista complementario
+├── studio-shared/                      # Activos pesados compartidos sin duplicidad
+│   ├── assets/                         # Catálogo de 414 audios, historial anti-repetición y brand-private/
+│   ├── mis-ideas/                      # Banco automático privado de ideas e historias (ignorado por Git)
+│   └── mis-temas/                      # Briefs validados y cuestionarios privados (ignorado por Git)
+├── video-studio-2d/                    # Motor dedicado exclusivamente a Animación 2D Dinámica (API :8000)
+│   ├── projects/                       # Producciones finales 2D organizadas por fecha
+│   ├── proyectos-test/                 # Prototipos y experimentos 2D
+│   ├── shared-art/                     # Elenco `cartoon/` IK + motor `dynamism/` (multicámara, HUD, grids)
+│   ├── scripts/                        # `crear_produccion_2d.py`, `buscar_audio.py` y `elevenlabs_cli.py`
+│   ├── backend/                        # API FastAPI + Gateway ElevenLabs (`SOYHLrjzK2X1ezoPC6cr`)
+│   └── remotion/                       # Motor Remotion 4.x 2D
+└── video-studio-3d/                    # Motor dedicado exclusivamente a Diseño 3D PBR (API :8010)
+    ├── projects/                       # Producciones finales 3D organizadas por fecha
+    ├── proyectos-test/                 # Prototipos y experimentos 3D PBR
+    ├── shared-art-3d/                  # `StudioStage3D`, `PBR_PRESETS`, anillos, capas, átomos y UI luxury
+    ├── scripts/                        # `crear_produccion_3d.py`, `buscar_audio.py` y `elevenlabs_cli.py`
+    ├── backend/                        # API FastAPI independiente + Gateway ElevenLabs
+    └── remotion/                       # Motor Remotion 4.x + Three.js + @remotion/three WebGL (`--gl=angle`)
 ```
 
 ---
