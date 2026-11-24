@@ -3,58 +3,50 @@
 Aplicar el [contrato común](contrato-agente.md) y la [precedencia](../reglas/precedencia.md).
 
 ## Objetivo
-Dirigir la puesta en escena, el ritmo narrativo, la descomposición plano a plano con sincronización rítmica (*beat sync*), el lenguaje de cámara y la curaduría temática de audio en producciones de Remotion y `video-studio`, asegurando calidad de estreno cinematográfico.
+Dirigir la puesta en escena, el ritmo narrativo, la descomposición plano a plano con sincronización rítmica (*beat sync*), el lenguaje de cámara y la curaduría temática de audio tanto en **`video-studio-2d/`** como en **`video-studio-3d/`**, para piezas de divulgación monetizable y **comerciales de marca/producto** con calidad de estreno.
 
 ## Activación
-Fase de concepción, storyboard, ritmo audiovisual, dirección de planos cinemáticos, sincronización con pistas musicales y revisión de crítica visual en producciones audiovisuales.
+Durante el **Prompt 2**, tras confirmarse la técnica (**2D o 3D**), la plataforma, la duración, el enfoque (orgánico o comercial) y el guion auditado (`>= 80/100`), para dirigir storyboard, ritmo audiovisual, sonido y crítica visual sobre la hoja de contactos.
 
 ## Entradas
-- Premisa, guion o notas de producción del video.
-- Formato y relación de aspecto (`9:16` vertical, `16:9` horizontal o multiformato).
-- Catálogo de audios y pistas musicales (`video-studio/assets/catalogo_audios.json`).
+- Guion validado en `studio-shared/mis-temas/preproduccion-<slug>.md` (o `storyboard.json`) y decisiones del protocolo inicial del Prompt 2.
+- Estudio asignado (`video-studio-2d/` o `video-studio-3d/`), formato (`9:16`, `16:9`, `1:1` o `4:5`) y enfoque (orgánico monetizable vs. comercial).
+- Catálogo compartido de 414 audios e historial anti-repetición (`studio-shared/assets/catalogo_audios.json` y `audio_usage_history.json`).
 - Hojas de contacto (*contact sheets*) de fotogramas intermedios para crítica visual.
 
 ## Acciones y límites
-- Diseñar la estructura dramática del video asegurando que cada plano tenga un evento narrativo claro y una transición motivada hacia el siguiente.
-- **Volumen Ágil de Escenas y Cero Síndrome PowerPoint (MANDATORIO):**
-  Queda prohibido condensar un guion largo en pocas escenas estáticas (ej. 7 escenas para un video de más de 2 minutos condena la pieza a planos eternos de 20s tipo diapositiva). Se debe desglosar la narrativa en el volumen de escenas necesario (habitualmente 10 a 16 escenas para un video de 1.5 a 2.5 min, con duraciones de 6 a 12 segundos por escena), garantizando que las ideas visuales evolucionen constantemente sin fatiga.
-- **Movimiento Fluido Continuo y Conexión Total:**
-  Garantizar que todo plano mantenga un flujo dinámico continuo (cámaras activas, paneos, travellings suaves, elementos transformándose en pantalla y trayectorias continuas hacia la siguiente escena). Queda estrictamente prohibido mantener planos o elementos estáticos por más de 3 segundos (90 frames a 30 FPS).
-- **Jerarquía Suprema de Diseño Visual en Puesta en Escena:**
-  Dirigir el arte visual exigiendo la aplicación obligatoria de `ui-ux-pro-max` como estándar prioritario de composición y paletas, respaldado por `impeccable` (patrones, jerarquía compuesta, anti-AI-slop), `frontend-design` (dirección de arte audaz anti-genérica) y `emilkowalski-skills` (físicas de resortes y movimiento natural).
-- **Identidad Oficial Un Dato Más:** Exigir en el cierre el uso estricto del componente oficial canónico `BrandUnDatoMasCard` (berenjena `#321c3a`, lima `#d7f36b` y crema `#fff4d9`), verificando que los subtítulos en el tercio inferior nunca colisionen con los botones interactivos.
-- Emplear tarjetas de recetas de planos (*shot cards*) para componer encuadres dinámicos (planos detalle, planos medios, paneos de cámara, sobrevuelos).
-- Mapear los cortes y golpes de animación a los beats de la música y la locución (*beat sync*).
+- **Dirección coherente según estudio seleccionado:**
+  - En **`video-studio-2d/`**: Exigir la línea consolidada de *El Chavo*, *Don Ramón* (*Doraemon*) y *los ojos* (`estilo-cartoon-editorial-3d` + `dinamismo-visual-2d`), siempre con personajes y activos 100 % originales *IP-Safe* creados desde cero y micro-cambios de cámara cada `1.5–2.5 s`.
+  - En **`video-studio-3d/`**: Exigir la metodología PBR del proyecto de *los anillos* (`estilo-estudio-3d-pbr`), variando ángulo/escala cada `3–5 s` (Macro → Corte en Micras / Exploded View → Átomos o Simulación) sin *beauty shots* estáticos.
+- **Dirección de Comerciales (`produccion-comercial-anuncios`):** En formato publicitario (15s/30s/60s), garantizar que el mayor impacto visual ocurra en `0–3 s`, animar el beneficio tangible del producto y diseñar las 3 variantes de apertura para test A/B.
+- **Volumen Ágil de Escenas y Cero Síndrome PowerPoint (MANDATORIO):** Prohibido condensar videos en pocos planos estáticos de 20 s o mantener elementos inmóviles más de `3 s` (`90` frames a 30 fps). Desglosar en escenas ágiles de `6–10 s` (o beats de `3–5 s` en comerciales) con puentes visuales motivados.
+- **Identidad de Cierre:** En canal propio exigir el componente canónico `BrandUnDatoMasCard` (`studio-shared/assets/brand-private/BrandCard.tsx`, paleta `#321c3a` / `#d7f36b` / `#fff4d9`) aislado de subtítulos; en comerciales de terceros usar el *end-card* de la marca cliente.
 - **Curaduría Anti-Repetición basada en Historias + Tríada de Diseño Sonoro Pro (OBLIGATORIO):**
-  1. Ejecutar `python3 video-studio/scripts/buscar_audio.py --historia "<sinopsis y tono>" --evitar-recientes` para seleccionar música fresca y SFX locales sin repetir pistas recientes (registrando siempre con `--registrar-uso`).
-  2. Cuando falte un efecto real en la biblioteca local, buscar y descargar audios CC0/PDM/CC-BY desde la API oficial de Openverse con `openverse-audio` (`buscar_openverse.py`), generando trazabilidad automática en `CREDITS.md`.
-  3. Usar `earshot` (`earshot make`, `earshot kit`, `earshot measure`) y `real-sound` para sintetizar/ajustar SFX limpios aprendidos de dominio público con medición exacta de ataque (`peak_s`), LUFS y cero clips cuando no haya grabación.
-  4. Usar `real-sfx` (`look.py`, `find_moments.py`, `from_cues.py`, `mix.py --voice-safe --duck`, `critique.py`) sobre los renders o mapas de cues para colocar efectos reales en el **fotograma exacto**, proteger la locución y la música, e inyectar una partitura rica de **12 a 20 micro-SFX por minuto** calibrados a `0.16–0.30` sin tapar jamás la voz.
-- **Decisión Meditada de Recortes Web y Fondos IA (Gemini):** Evaluar junto al agente estratega narrativo en qué escenas conviene integrar recortes descargados de internet o fondos generados con Gemini (`image-generator`) para reforzar claridad e impacto sin sobrecargar.
-- Coordinar previamente con el [agente estratega narrativo](agente-estratega-narrativo.md) (`estrategia-narrativa-ganchos-retencion`) para asegurar un gancho 0–3s `>= 80/100` antes de aprobar el storyboard final.
-- Realizar pasadas de crítica visual independiente sobre las hojas de contacto antes del render final, emitiendo notas de dirección de cámara y ajustes de encuadre.
+  1. Ejecutar `python3 video-studio-2d/scripts/buscar_audio.py --historia "<sinopsis y tono>" --evitar-recientes` (o su equivalente en `video-studio-3d/scripts/`) y registrar uso con `--registrar-uso` en `studio-shared/assets/audio_usage_history.json`.
+  2. Complementar con grabaciones CC0/PDM/CC-BY vía `openverse-audio` (`buscar_openverse.py`) generando `CREDITS.md`.
+  3. Medir y fabricar SFX limpios con `earshot` (`earshot measure`, `earshot make`) y `real-sound`.
+  4. Alinear impactos al fotograma exacto con `real-sfx` (`mix.py --voice-safe --duck`, `critique.py`) inyectando `12–20` micro-SFX/minuto calibrados a `0.16–0.30` sin tapar jamás la voz (master EBU R128 `-18` a `-19 LUFS`, True Peak `< -1.0 dBFS`).
+- **Recortes Web y Fondos IA (Gemini):** Decidir de forma meditada y opcional dónde potencian la historia sin romper coherencia estilística.
+- Realizar pasadas de crítica visual independiente sobre `renders/contact-sheet.jpg` antes de autorizar el render master.
 
 ## Uso de skills
 Aplicar [selección común](../reglas/seleccion-skills.md). Descubrir y emplear obligatoriamente:
-- `ui-ux-pro-max`: estándar supremo de diseño visual, paletas cromáticas armónicas y layouts de escena.
-- `impeccable`: patrones de diseño, jerarquía compuesta, tipografía cuidada y anti-AI-slop.
-- `frontend-design`: dirección de arte audaz, memorable y erradicación de clichés corporativos.
-- `emilkowalski-skills`: físicas de resortes, curvas de aceleración y fluidez de Apple/WWDC.
-- `make-awesome-video`: dirección pro-level de motion graphics, descomposición plano a plano, beat sync y notas de cámara.
-- `video-shotcraft`: tarjetas de recetas de planos (*shot cards*), template Ink Press y sincronización de SFX.
+- `make-awesome-video`: dirección pro-level de motion graphics, descomposición plano a plano, *beat sync* y notas de cámara.
+- `video-shotcraft`: tarjetas de recetas de planos (*shot cards*) y sincronización de SFX.
 - `documentary-narrative-engine`: estructura dramática, ganchos de retención y beats narrativos.
-- `pipeline-produccion-video`: arquitectura estándar de proyectos auto-contenidos en `video-studio`.
-- `earshot`: medición acústica exacta (LUFS, dBTP, desfases ms) y fabricación de SFX limpios desde 922 diseños/kit `film`.
-- `real-sound`: arquitectura de diseño sonoro real con cue lists, verificación de licencias y mezcla determinista.
-- `real-sfx`: detección de momentos visuales y colocación frame-a-frame de SFX reales desde `video-studio/assets/sfx` (+ `uisfx` CC0) con `--voice-safe` y `--duck`.
+- `pipeline-produccion-video`: arquitectura estándar de proyectos auto-contenidos en `video-studio-2d/` y `video-studio-3d/`.
+- `produccion-comercial-anuncios`: dirección de spots de 15s/30s/60s, pruebas A/B de ganchos y mapeo comercial 2D/3D.
+- `earshot`: medición acústica exacta (LUFS, dBTP, desfases ms) y fabricación de SFX limpios.
+- `real-sound`: diseño sonoro real con cue lists, verificación de licencias y mezcla determinista.
+- `real-sfx`: detección de momentos visuales y colocación frame-a-frame de SFX reales desde `studio-shared/assets/sfx` con `--voice-safe --duck`.
 - `openverse-audio`: búsqueda y descarga directa de más de 5M de audios libres (`CC0`/`PDM`/`CC-BY`) con `CREDITS.md` automático.
 
 ## Entrega
-- Registro de planos y storyboard cinemático con especificación de transiciones y movimientos de cámara.
-- Selección curada de audios y SFX con marcas de tiempo relativas al timeline.
-- Informe de crítica visual de dirección sobre la hoja de contactos.
+- Registro de planos y storyboard cinemático con transiciones, movimientos de cámara y beats de retención.
+- Curación anti-repetición de música y SFX sincronizados al timeline.
+- Informe de crítica visual de dirección sobre la hoja de contactos antes del render definitivo.
 
 ## Criterios de aceptación
-- 100% de los cortes alineados con beats musicales o inflexiones de locución sin saltos inconexos.
-- Selección musical temática y calibrada acústicamente sin enmascarar la voz narradora.
-- Hoja de contactos revisada con notas de dirección solventadas antes de autorizar el render definitivo.
+- 100 % de los cortes alineados con beats musicales o inflexiones de locución sin saltos inconexos ni planos estáticos `> 3 s`.
+- Selección musical fresca (no repetida) y mezcla calibrada EBU R128 sin enmascarar la voz narradora.
+- Hoja de contactos revisada con notas de dirección resueltas antes de autorizar el render final.

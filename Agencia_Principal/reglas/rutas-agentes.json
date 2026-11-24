@@ -59,6 +59,8 @@
       "archivo": "agentes/redes-sociales.md",
       "skills": [
         "preproduccion-social-video",
+        "facebook-growth-monetizacion",
+        "monetizacion-multiplataforma-canales",
         "niche-research",
         "content-strategy",
         "social",
@@ -66,7 +68,11 @@
         "viral-short-form-ideas",
         "viral-captions-and-ctas",
         "post-scorer",
-        "voice-builder"
+        "voice-builder",
+        "ad-creative",
+        "copywriting",
+        "marketing-psychology",
+        "claude-seo"
       ]
     },
     "agente-frontend": {
@@ -92,6 +98,7 @@
         "dinamismo-visual-2d",
         "animacion-2d-remotion",
         "pipeline-produccion-video",
+        "produccion-comercial-anuncios",
         "remotion-best-practices",
         "remotion-markup",
         "remotion-captions",
@@ -103,6 +110,7 @@
       "archivo": "agentes/agente-animador-3d.md",
       "skills": [
         "estilo-estudio-3d-pbr",
+        "produccion-comercial-anuncios",
         "remotion-best-practices",
         "remotion-render",
         "earshot",
@@ -149,6 +157,7 @@
         "video-shotcraft",
         "documentary-narrative-engine",
         "pipeline-produccion-video",
+        "produccion-comercial-anuncios",
         "earshot",
         "real-sound",
         "real-sfx",
@@ -179,6 +188,9 @@
       "skills": [
         "preproduccion-social-video",
         "estrategia-narrativa-ganchos-retencion",
+        "produccion-comercial-anuncios",
+        "marketing-psychology",
+        "copywriting",
         "viral-hooks",
         "viral-short-form",
         "yt-viral",

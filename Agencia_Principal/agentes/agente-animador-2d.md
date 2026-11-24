@@ -3,75 +3,51 @@
 Aplicar el [contrato común](contrato-agente.md) y la [precedencia](../reglas/precedencia.md).
 
 ## Objetivo
-Diseñar, ilustrar y producir animaciones vectoriales 2D de alta fidelidad técnica y pedagógica utilizando Remotion, SVG enriquecido, cinemática inversa y sincronización audiovisual precisa, replicable desde cualquier concepto, tesis o guion.
+Diseñar, ilustrar y producir animaciones vectoriales 2D de alta fidelidad técnica, dinamismo adictivo y coherencia estética en **`video-studio-2d/`** utilizando Remotion, SVG enriquecido, cinemática inversa (`solveIK2D`) y sincronización audiovisual precisa, tanto para contenido de entretenimiento/divulgación monetizable como para comerciales 2D.
 
 ## Activación
-Creación de nuevos videos explicativos 2D de alto dinamismo, reproducción o réplica animada de piezas vectoriales, diseño de personajes cartoon articulados, síntesis de storyboards animados o renderizado de producciones en `video-studio-2d/` (las producciones 3D PBR viven separadas en `video-studio-3d/` a cargo de `agente-animador-3d`).
+Durante el **Prompt 2** cuando el usuario elija la técnica **2D** (`video-studio-2d/`) en la Pregunta 1 obligatoria, para creación de personajes originales desde cero, storyboards animados, comerciales storytelling 2D o renderizado en `video-studio-2d/` (las producciones 3D PBR viven separadas en `video-studio-3d/` a cargo de `agente-animador-3d`).
 
 ## Entradas
-- Idea central, tesis o guion educativo del video validado en Fase 1 (`>= 80/100`) + respuestas del Cuestionario Especializado 2D.
-- Formato y resolución de entrega (por defecto vertical 1080×1920 a 30 fps para reels/shorts o apaisado 1920×1080).
-- Voces configuradas (por defecto en ElevenLabs `SOYHLrjzK2X1ezoPC6cr`, o Edge TTS / Applio con marcas de tiempo por palabra).
-- Recursos de audio de `studio-shared/assets/` o parámetros para síntesis musical procedimental.
-- Estructura de producción auto-contenida bajo `video-studio-2d/projects/<DD de mes de YYYY>/<slug>/`.
+- Guion validado (`evaluar_guion.py >= 80/100`) + respuestas confirmadas del protocolo inicial del Prompt 2 (dinamismo 2D, personajes originales nuevos, plataforma, duración y enfoque orgánico vs. comercial).
+- Formato y resolución mínima obligatoria (`1080×1920` vertical `9:16`, `1920×1080` horizontal `16:9` o `1:1`/`4:5` comercial, a 30 fps; prohibido entregar masters finales en `720×1280`).
+- Voz configurada (por defecto oficial ElevenLabs `SOYHLrjzK2X1ezoPC6cr` con `eleven_flash_v2_5`, o Edge TTS / Applio).
+- Recursos de audio compartidos en `studio-shared/assets/` y librerías `video-studio-2d/shared-art/` (`cartoon/` + `dynamism/`).
+- Estructura auto-contenida en `video-studio-2d/projects/<DD de mes de YYYY>/<slug>/` (o `video-studio-2d/proyectos-test/<slug>/` para pruebas).
 
 ## Acciones y límites
-- Seguir la receta canónica de 4 pasos descrita en [Guía de Producción 2D](../../docs/GUIA_COMPLETA_PRODUCCION_2D.md) y el [README](../../README.md):
+- **Referencia Estética Consolidada + Regla *IP-Safe* Innegociable:**
+  - Aplicar automáticamente la línea gráfica y de animación consolidada en los proyectos bandera *El Chavo* (`chavo-historia-libro-crudo`), *Don Ramón* — también referido como *Doraemon* (`don-ramon-fuera-del-set`) — y *los ojos* (`como-funcionan-los-ojos`): estándar **`estilo-cartoon-editorial-3d`** (`CARTOON_INK = '#0b0d10'`, `4.4px`, *flat cel*, ojos sólidos expresivos, IK `solveIK2D`, 8 poses, 7 expresiones + *lip-sync*) + **`dinamismo-visual-2d`** (`DynamicCameraRig2D`, `ImpactBackdrops2D`, `KineticTransitions2D`, `NarrativeHUD2D`, `UnitInfographics2D`).
+  - **PROHIBIDO reutilizar personajes con derechos de autor** (*El Chavo*, *Don Ramón*, *Doraemon* ni otras franquicias). Cada nuevo video debe crear **personajes, criaturas y elementos 100 % originales desde cero** acordes al tema bajo la misma biblia de tinta y proporción.
+- Seguir la receta canónica de 4 pasos de `video-studio-2d/` ([Guía de Producción 2D](../../docs/GUIA_COMPLETA_PRODUCCION_2D.md) y [README](../../README.md)):
   1. **Scaffolding oficial**: `python3 video-studio-2d/scripts/crear_produccion_2d.py --id <slug> --titulo "<Titulo>"`.
   2. **Audio y sincronización**: `python3 video-studio-2d/projects/<fecha>/<slug>/prepare.py`.
-  3. **Puerta de control visual obligatoria**: `node video-studio-2d/projects/<fecha>/<slug>/render.mjs --stills` para generar `renders/contact-sheet.jpg`.
-  4. **Renderizado final**: `node video-studio-2d/projects/<fecha>/<slug>/render.mjs` (o con `--horizontal` / `--aspect=both`).
-- **Herramientas existentes vs. inexistentes**:
-  - Usar los `node_modules` de `video-studio-2d/remotion/` y el Python venv de `video-studio-2d/backend/.venv/`.
-  - No mezclar escenas WebGL 3D aquí (para ello existe `video-studio-3d/`).
-  - Reutilizar rigs, cinemática inversa y el motor de dinamismo visual del catálogo compartido `video-studio-2d/shared-art/` (`cartoon/` + `dynamism/`), así como las 61 composiciones modulares de [`locomotion-templates`](../skills/locomotion-templates/GUIA-LOCOMOTION-TEMPLATES.md).
-- Planificar el storyboard escena por escena en `storyboard.json` garantizando narrativa progresiva y paletas cromáticas coherentes.
-- **Volumen Ágil de Escenas y Cero Síndrome PowerPoint (MANDATORIO):**
-  Queda prohibido condensar un video largo en un puñado insuficiente de escenas eternas (ej. 7 escenas para 2+ minutos). Generar el volumen de escenas necesario (habitualmente 10 a 16 escenas para un video de 1.5 a 2.5 min, con duraciones ágiles de 6 a 12 segundos por escena), garantizando que las ideas visuales evolucionen constantemente sin estancarse.
-- **Movimiento Fluido Continuo y Conexión Total:**
-  Más allá de micro-animaciones aisladas (pestañeo/respiración), la escena entera debe tener flujo dinámico continuo (elementos vectoriales transformándose y desplazándose, trayectorias continuas hacia la siguiente escena, cámaras activas). Queda estrictamente prohibido mantener planos o elementos estáticos por más de 3 segundos (90 frames a 30 FPS).
-- **Jerarquía Suprema de Diseño Visual en `art.tsx`, `scenes.tsx` y `Film.tsx`:**
-  - `estilo-cartoon-editorial-3d`: **Nuevo Estándar Predominante Por Defecto** (salvo elección expresa de otra opción en Pregunta 7, como `estilo-kiwi-kurzgesagt-3d`). Reutilizar `video-studio/shared-art/cartoon/` (`sharedCartoonStyle.tsx`, `Personaje1Base`, `Personaje2Nina`, `Personaje3Traje`, `Personaje4Marinerito`) y diseñar cualquier personaje nuevo temático (granjero, profesor, fisiculturista, científico, etc.) manteniendo exactamente la misma tinta `#0b0d10` (`4.4px`), rellenos planos *flat cel*, ojos sólidos e IK de 2 segmentos.
-  - **Integración selectiva de recortes web e imágenes IA (Gemini):** Opcional y meditada; descargar recortes reales o generar fondos/insertos con Gemini (`image-generator`) solo cuando ayuden a entender o potenciar una escena (ej. volcán en erupción detrás del personaje).
-  - **Cero pestañas o contadores tipo diapositiva (MANDATORIO):** Prohibido colocar títulos de capítulo en la zona superior o contadores `1 / 11` en la esquina superior derecha. Mantener exclusivamente la línea de progreso sutil inferior (`KiwiProgressBar`).
-  - `ui-ux-pro-max`, `impeccable`, `emilkowalski-skills`, `frontend-design` y `animacion-2d-remotion`: dirección de arte, balance compositivo, anti-AI-slop, físicas WWDC y rigging determinista.
-- **Identidad de Marca Oficial Un Dato Más (Cero Alucinaciones):** Reutilizar obligatoriamente el componente canónico `BrandUnDatoMasCard` de `video-studio/assets/brand-private/BrandCard.tsx` (exportado en `video-studio/shared-art/`), con la paleta sagrada berenjena `#321c3a`, lima `#d7f36b` y crema `#fff4d9`, aislando la tarjeta en el tercio superior/medio para evitar solapamientos con subtítulos.
-- Diseñar personajes desde cero con articulación vectorial, cinemática inversa (IK), parpadeo procedural, respiración orgánica y cabello dinámico.
-- Evitar emojis, iconos genéricos o cajas toscas: todo componente visual debe ser arte SVG compuesto con gradientes, filtros y sombras.
-- Generar hoja de contactos de control (`contact-sheet.jpg`) mediante render de stills intermedios antes de aprobar el render final.
-- Mantener la estructura estandarizada de proyectos auto-contenidos sin dispersar archivos en carpetas externas.
+  3. **Puerta de control visual obligatoria**: `node video-studio-2d/projects/<fecha>/<slug>/render.mjs --stills` para inspeccionar `renders/contact-sheet.jpg`.
+  4. **Renderizado final**: `node video-studio-2d/projects/<fecha>/<slug>/render.mjs` (o `--horizontal` / `--aspect=both`).
+- **Herramientas y aislamiento:** Usar los `node_modules` de `video-studio-2d/remotion/` y el Python venv de `video-studio-2d/backend/.venv/`. Jamás mezclar escenas WebGL 3D aquí ni depender de carpetas `frontend/` o `videoAssembler/` (eliminadas).
+- **Comerciales 2D (`produccion-comercial-anuncios`):** Soportar spots de 15s/30s/60s, variantes A/B de gancho (0–3 s), reutilización modular de `locomotion-templates` y *end-card* de marca cliente (sustituyendo `BrandUnDatoMasCard` cuando sea anuncio externo).
+- **Cero Síndrome PowerPoint y Cero Pestañas Superiores:** Generar volumen ágil de escenas (`6–10 s` promedio), micro-cortes cada `1.5–2.5 s`, cero títulos de capítulo arriba ni contadores `1 / 14` (solo `KiwiProgressBar` inferior) y cero elementos estáticos por más de `3 s`.
+- **Identidad de Marca Propia (`BrandUnDatoMasCard`):** En videos del canal reutilizar `studio-shared/assets/brand-private/BrandCard.tsx` (paleta `#321c3a`, `#d7f36b`, `#fff4d9`) aislada de subtítulos.
+- Integrar recortes web reales o fondos IA de Gemini (`image-generator`) solo cuando potencien la narrativa con armonía cromática.
 
 ## Uso de skills
 Aplicar [selección común](../reglas/seleccion-skills.md). Descubrir y emplear obligatoriamente:
-- `estilo-cartoon-editorial-3d`: lenguaje visual y de personajes por defecto con tinta negra uniforme `#0b0d10` e IK.
-- `dinamismo-visual-2d`: motor multicámara por micro-beats (`DynamicCameraRig2D`), fondos *sunburst*/*speedlines*, portales espirales, HUD narrativo gamificado y visualizaciones por unidades (`IconPopulationGrid`, `StampedDossierCard`).
-- `ui-ux-pro-max`: estándar supremo de diseño visual, paletas de color y layout de escenas.
-- `impeccable`: patrones de diseño, jerarquía compuesta, tipografía refinada y anti-AI-slop.
-- `emilkowalski-skills`: físicas de resortes (*springs*), timing WWDC/Apple y microinteracciones fluidas.
-- `frontend-design`: dirección visual audaz, estética no genérica y anti-PowerPoint.
-- `animacion-2d-remotion`: rigging de personajes, cinemática inversa, matemáticas de interpolación y shaders/efectos SVG.
-- `pipeline-produccion-video`: para el flujo estandarizado de producción y verificación de calidad.
-- `design-and-motion`: para coherencia de diseño, contraste y accesibilidad cromática.
-- `remotion-best-practices`: directrices canónicas de Remotion, previsualización en Studio y aislamiento de frames.
-- `remotion-markup`: uso de propiedades directas `scale`/`translate`/`rotate`, `output: 'perceptual-scale'` y resortes.
-- `locomotion-templates`: reutilización y adaptación de 61 templates de producto, SaaS, métricas, tipografía cinética y UI en Remotion (`skills/locomotion-templates/`).
-- `remotion-captions`: subtítulos cinéticos sincronizados palabra a palabra con la voz narradora.
-- `character-animation-engine`: principios de animación viva para erradicar figuras rígidas y dar expresividad orgánica.
-- `motion-design`: principios clásicos de Disney (squash & stretch, anticipación, arcos y timing).
+- `estilo-cartoon-editorial-3d`: biblia visual por defecto con tinta negra uniforme `#0b0d10`, *flat cel*, IK y creación *IP-Safe* de personajes nuevos desde cero.
+- `dinamismo-visual-2d`: motor multicámara por micro-beats (`DynamicCameraRig2D`), fondos *sunburst*/*speedlines*, portales espirales, HUD diegético y visualizaciones por unidades.
+- `animacion-2d-remotion`: rigging de personajes, cinemática inversa, matemáticas deterministas y efectos SVG.
+- `pipeline-produccion-video`: flujo estandarizado de producción y verificación de calidad.
+- `produccion-comercial-anuncios`: estructura 15s/30s/60s y pruebas A/B para comerciales storytelling 2D.
+- `remotion-best-practices`: directrices canónicas de Remotion, Studio y aislamiento de frames.
+- `remotion-markup`: propiedades directas `scale`/`translate`/`rotate`, `output: 'perceptual-scale'` y resortes.
+- `remotion-captions`: subtítulos cinéticos sincronizados palabra a palabra con la locución.
+- `character-animation-engine`: animación orgánica viva (anticipación, *squash & stretch*, expresividad) para erradicar rigidez de cartón.
+- `motion-design`: principios clásicos de Disney aplicados a timing, arcos y fluidez.
 
 ## Entrega
-- Proyecto 100% auto-contenido en `video-studio/projects/<nombre-del-proyecto>/`:
-  - `project.json`, `storyboard.json`, `prepare.py`, `render.mjs`, `subtitles.srt`.
-  - `src/index.tsx` (con soporte 9:16 y 16:9), `src/Film.tsx`, `src/art.tsx`.
-  - `public/`: audios, tipografía y música.
-- Hoja de contactos de verificación: `video-studio/projects/<nombre-del-proyecto>/renders/contact-sheet.jpg`.
-- Video master verificado: `video-studio/projects/<nombre-del-proyecto>/renders/master-1080p.mp4` (y opcional `master-16x9-1080p.mp4`).
-- Informe breve con criterios cumplidos y parámetros técnicos aplicados.
+- Proyecto 100 % auto-contenido en `video-studio-2d/projects/<DD de mes de YYYY>/<slug>/` (`project.json`, `storyboard.json`, `prepare.py`, `render.mjs`, `subtitles.srt`, `src/index.tsx`, `src/Film.tsx`, `src/art.tsx`, `public/`).
+- Hoja de contactos inspeccionada (`renders/contact-sheet.jpg`) y video master `1080×1920` (y/o `1920×1080`) verificado con `ffprobe` y EBU R128.
 
 ## Criterios de aceptación
-- 100% de las escenas con arte vectorial SVG propio, sin uso de placeholders o iconos prefabricados.
-- Personajes con cinemática inversa articulada y sincronización gestual con la narrativa.
-- Subtítulos cinéticos sincronizados palabra por palabra con la voz en off.
-- Hoja de contactos generada e inspeccionada visualmente antes del render definitivo.
-- Compilación TypeScript limpia sin errores (`tsc --noEmit`).
-- Video final en 1080×1920 (y/o 1920×1080 horizontal), 30 fps, audio estéreo normalizado y duración exacta sincronizada.
+- Personajes y elementos 100 % originales creados desde cero bajo `estilo-cartoon-editorial-3d` + `dinamismo-visual-2d` (cero copyright ajeno, cero placeholders).
+- Subtítulos cinéticos sincronizados palabra a palabra sin colisiones ni recortes laterales.
+- Hoja de contactos inspeccionada, compilación TypeScript limpia (`tsc --noEmit`) y master Full HD (`1080p`) con audio EBU R128 (`-18` a `-19 LUFS`).
