@@ -569,6 +569,84 @@ class ElevenLabsGateway:
                 "voices": voices,
             }
 
+    def list_models(self) -> Dict[str, Any]:
+        """
+        Lista los modelos TTS disponibles de ElevenLabs consultando `/v1/models` si hay cuentas activas,
+        o devolviendo el catálogo oficial curado con descripciones claras en español.
+        """
+        curated = [
+            {
+                "model_id": "eleven_flash_v2_5",
+                "name": "Eleven Flash v2.5",
+                "is_default": self.default_model == "eleven_flash_v2_5",
+                "description": "Por defecto / Recomendado: ultra rápido, excelente acento en español y consume ~50% menos créditos.",
+            },
+            {
+                "model_id": "eleven_multilingual_v2",
+                "name": "Eleven Multilingual v2",
+                "is_default": self.default_model == "eleven_multilingual_v2",
+                "description": "Máxima expresividad dramática, emoción profunda y riqueza tonal para historias intensas.",
+            },
+            {
+                "model_id": "eleven_turbo_v2_5",
+                "name": "Eleven Turbo v2.5",
+                "is_default": self.default_model == "eleven_turbo_v2_5",
+                "description": "Equilibrio entre calidad emocional alta y baja latencia en 32 idiomas.",
+            },
+            {
+                "model_id": "eleven_v3",
+                "name": "Eleven v3",
+                "is_default": self.default_model == "eleven_v3",
+                "description": "Modelo de última generación altamente expresivo (mayor consumo de caracteres).",
+            },
+        ]
+        curated_map = {m["model_id"]: m for m in curated}
+
+        with self._lock:
+            for idx in self._ordered_indices():
+                acc = self._accounts[idx]
+                if acc.cooldown_until > time.time():
+                    continue
+                try:
+                    status_code, body = self._request_fn(
+                        f"{API_BASE_URL}/models",
+                        acc.api_key,
+                        method="GET",
+                        timeout=self.timeout,
+                    )
+                    if status_code == 200 and isinstance(body, list):
+                        models_out = []
+                        seen = set()
+                        for m in curated:
+                            models_out.append(m)
+                            seen.add(m["model_id"])
+                        for raw in body:
+                            mid = str(raw.get("model_id", "")).strip()
+                            if not mid or mid in seen or not raw.get("can_do_text_to_speech", True):
+                                continue
+                            seen.add(mid)
+                            models_out.append({
+                                "model_id": mid,
+                                "name": raw.get("name") or mid,
+                                "is_default": mid == self.default_model,
+                                "description": (raw.get("description") or "Modelo TTS disponible en cuenta.")[:120],
+                            })
+                        return {
+                            "account_used": acc.label,
+                            "default_model": self.default_model,
+                            "default_voice_id": self.default_voice_id,
+                            "models": models_out,
+                        }
+                except Exception:
+                    continue
+
+        return {
+            "account_used": "catalogo_local",
+            "default_model": self.default_model,
+            "default_voice_id": self.default_voice_id,
+            "models": list(curated_map.values()),
+        }
+
     def synthesize_with_failover(
         self,
         text: str,

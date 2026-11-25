@@ -83,13 +83,33 @@ def cmd_voces(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_modelos(args: argparse.Namespace) -> int:
+    gw = ElevenLabsGateway()
+    res = gw.list_models()
+    if args.json:
+        print(json.dumps(res, ensure_ascii=False, indent=2))
+        return 0
+
+    print(f"\n=== MODELOS DE VOZ ELEVENLABS DISPONIBLES (por defecto: {res['default_model']}) ===")
+    for i, m in enumerate(res["models"], 1):
+        tag = " [POR DEFECTO]" if m.get("is_default") else ""
+        print(f"  {i}. {m['model_id']:<24} | {m['name']}{tag}")
+        print(f"     └─ {m['description']}")
+    print(f"\n  Voz oficial por defecto: {res['default_voice_id']}\n")
+    return 0
+
+
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Gestor CLI del Gateway de ElevenLabs y selector de voces.")
+    parser = argparse.ArgumentParser(description="Gestor CLI del Gateway de ElevenLabs y selector de voces/modelos.")
     sub = parser.add_subparsers(dest="comando", required=True)
 
     p_estado = sub.add_parser("estado", help="Consulta salud y créditos restantes de todas las cuentas del gateway.")
     p_estado.add_argument("--json", action="store_true", help="Salida JSON estructurada.")
     p_estado.set_defaults(func=cmd_estado)
+
+    p_modelos = sub.add_parser("modelos", help="Lista los modelos de síntesis de voz disponibles en ElevenLabs.")
+    p_modelos.add_argument("--json", action="store_true", help="Salida JSON estructurada.")
+    p_modelos.set_defaults(func=cmd_modelos)
 
     p_voces = sub.add_parser("voces", help="Lista las voces reales disponibles en ElevenLabs con edad, género y estilo.")
     p_voces.add_argument("--edad", default=None, help="Filtrar por edad: young/joven, middle_aged/adulto, old/mayor.")

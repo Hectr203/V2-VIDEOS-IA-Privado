@@ -1,6 +1,6 @@
 ---
 name: preproduccion-social-video
-description: Use when orchestrating the unified 2-prompt ecosystem of Agencia Principal—either Prompt 1 (Multiplatform Content Strategist, Channel Auditor & Project Manager across YouTube, Instagram, Facebook, TikTok) or Prompt 2 (2D/3D Creative Director & Audiovisual Producer with mandatory initial discovery questions).
+description: Use when orchestrating the 3 Prompt Maestros of Agencia Principal — Modo 1 Ideas (multiplatform strategist and channel auditor), Modo 2 Producción Guiada (2D/3D video with user approval gates) and Modo 3 Piloto Automático (AI researches, self-approves and delivers the full video) — including the simple guided-question bank and mandatory thumbnails.
 ---
 
 Entrada generada. Antes de actuar, lee la [fuente canónica](../../../skills/preproduccion-social-video/SKILL.md).

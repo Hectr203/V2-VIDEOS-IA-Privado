@@ -40,13 +40,28 @@ def validar_id(identificador: str) -> str:
     return identificador
 
 
+def titular_corto(titulo: str, max_palabras: int = 4) -> str:
+    conectores = {"el", "la", "los", "las", "de", "del", "un", "una", "y", "a", "en", "por", "que", "para", "con"}
+    palabras = titulo.split()[:max_palabras]
+    while len(palabras) > 1 and palabras[-1].lower().strip("¿?¡!.,") in conectores:
+        palabras.pop()
+    return " ".join(palabras).upper()
+
+
 def generar_storyboard_plantilla_3d(titulo: str, tema: str) -> dict:
+    palabras_cortas = titular_corto(titulo) or "SECRETO MICROSCÓPICO"
     return {
         "title": titulo,
         "voice_provider": "elevenlabs",
         "voice_id": "SOYHLrjzK2X1ezoPC6cr",
+        "elevenlabs_model": "eleven_flash_v2_5",
         "voice": "es-MX-JorgeNeural",
         "rate": "+12%",
+        "thumbnail": {
+            "badge": "INGENIERÍA 3D",
+            "headline": palabras_cortas,
+            "highlight": "POR DENTRO"
+        },
         "scenes": [
             {
                 "id": "01_hook_contraste",
@@ -253,7 +268,7 @@ async def main():
             "audio": f"{{sc['id']}}.mp3",
         }})
         current_frame += frames
-    tl = {{"title": storyboard["title"], "fps": FPS, "durationInFrames": current_frame, "scenes": timeline_scenes}}
+    tl = {{"title": storyboard["title"], "thumbnail": storyboard.get("thumbnail", {{}}), "fps": FPS, "durationInFrames": current_frame, "scenes": timeline_scenes}}
     txt = json.dumps(tl, ensure_ascii=False, indent=2) + "\\n"
     (HERE / "timeline.json").write_text(txt, encoding="utf-8")
     (SOURCE / "timeline.json").write_text(txt, encoding="utf-8")
@@ -293,6 +308,7 @@ const stillsDir = path.join(renders, 'stills');
 await fs.mkdir(stillsDir, {{recursive: true}});
 
 const stills = process.argv.includes('--stills');
+const thumbnailOnly = process.argv.includes('--thumbnail');
 const draft = process.argv.includes('--draft');
 const horizontal = process.argv.includes('--horizontal') || process.argv.includes('--aspect=horizontal');
 const bothAspects = process.argv.includes('--both') || process.argv.includes('--aspect=both');
@@ -310,7 +326,31 @@ const serveUrl = await bundle({{
 
 const chromiumOptions = {{gl: 'angle'}};
 
-if (stills) {{
+async function renderProjectThumbnails() {{
+  const thumbTargets = bothAspects
+    ? [
+        {{id: `${{baseId}}-thumbnail`, file: 'miniatura-vertical.png', label: 'Miniatura 3D 9:16'}},
+        {{id: `${{baseId}}-16x9-thumbnail`, file: 'miniatura-horizontal.png', label: 'Miniatura 3D 16:9'}},
+      ]
+    : horizontal
+    ? [{{id: `${{baseId}}-16x9-thumbnail`, file: 'miniatura-horizontal.png', label: 'Miniatura 3D 16:9'}}]
+    : [{{id: `${{baseId}}-thumbnail`, file: 'miniatura-vertical.png', label: 'Miniatura 3D 9:16'}}];
+
+  for (const t of thumbTargets) {{
+    try {{
+      const comp = await selectComposition({{serveUrl, id: t.id, chromiumOptions}});
+      const outPath = path.join(renders, t.file);
+      await renderStill({{serveUrl, composition: comp, output: outPath, frame: 0, imageFormat: 'png', scale: 1, chromiumOptions}});
+      console.log(`[MINIATURA 3D OK] ${{t.label}} -> ${{outPath}}`);
+    }} catch (err) {{
+      console.warn(`Aviso generando ${{t.file}}: ${{err.message}}`);
+    }}
+  }}
+}}
+
+if (thumbnailOnly) {{
+  await renderProjectThumbnails();
+}} else if (stills) {{
   const composition = await selectComposition({{serveUrl, id: baseId, chromiumOptions}});
   for (const scene of timeline.scenes) {{
     const frame = scene.start + Math.floor(scene.frames * 0.6);
@@ -325,6 +365,7 @@ if (stills) {{
   }} catch (err) {{
     console.warn(`Aviso contact-sheet: ${{err.message}}`);
   }}
+  await renderProjectThumbnails();
 }} else {{
   const targets = bothAspects
     ? [
@@ -348,6 +389,7 @@ if (stills) {{
     await fs.rename(partial, final);
     console.log(`[ÉXITO 3D] Render guardado en: ${{final}}`);
   }}
+  await renderProjectThumbnails();
 }}
 '''
     (proj_dir / "render.mjs").write_text(render_script, encoding="utf-8")
@@ -355,12 +397,14 @@ if (stills) {{
     component_name = "".join(p.capitalize() for p in prod_id.split("-")) + "Film3D"
     index_tsx = f'''import React from 'react';
 import {{Composition, registerRoot}} from 'remotion';
-import {{{component_name}, timeline}} from './Film';
+import {{{component_name}, {component_name}Thumbnail, timeline}} from './Film';
 
 export const ProjectRoot3D: React.FC = () => (
   <>
     <Composition id="{prod_id}" component={{{component_name}}} durationInFrames={{timeline.durationInFrames}} fps={{30}} width={{1080}} height={{1920}} defaultProps={{{{aspectRatio: '9:16' as const}}}} />
     <Composition id="{prod_id}-16x9" component={{{component_name}}} durationInFrames={{timeline.durationInFrames}} fps={{30}} width={{1920}} height={{1080}} defaultProps={{{{aspectRatio: '16:9' as const}}}} />
+    <Composition id="{prod_id}-thumbnail" component={{{component_name}Thumbnail}} durationInFrames={{1}} fps={{30}} width={{1080}} height={{1920}} defaultProps={{{{aspectRatio: '9:16' as const}}}} />
+    <Composition id="{prod_id}-16x9-thumbnail" component={{{component_name}Thumbnail}} durationInFrames={{1}} fps={{30}} width={{1920}} height={{1080}} defaultProps={{{{aspectRatio: '16:9' as const}}}} />
   </>
 );
 
@@ -379,6 +423,7 @@ import {{
   MinimalLuxuryCaptions3D,
   SatinMetricPill3D,
   StudioStage3D,
+  ThumbnailCover3D,
 }} from '../../../../shared-art-3d';
 
 export const timeline = timelineData;
@@ -428,6 +473,28 @@ export const {component_name}: React.FC<{{aspectRatio?: '9:16' | '16:9'}}> = () 
         </Sequence>
       ))}}
       <Audio src={{getAsset('score.wav')}} volume={{0.22}} />
+    </AbsoluteFill>
+  );
+}};
+
+export const {component_name}Thumbnail: React.FC<{{aspectRatio?: '9:16' | '16:9'}}> = ({{aspectRatio = '9:16'}}) => {{
+  const {{width, height}} = useVideoConfig();
+  const isHorizontal = aspectRatio === '16:9';
+  const thumbMeta = (timeline as {{thumbnail?: {{badge?: string; headline?: string; highlight?: string}}}}).thumbnail || {{}};
+  const defaultHead = timeline.title.split(' ').slice(0, 4).join(' ');
+
+  return (
+    <AbsoluteFill style={{{{background: '#050507'}}}}>
+      <ThumbnailCover3D
+        aspectRatio={{aspectRatio}}
+        badge={{thumbMeta.badge || 'INGENIERÍA 3D'}}
+        headline={{thumbMeta.headline || defaultHead}}
+        highlight={{thumbMeta.highlight || 'POR DENTRO'}}
+      >
+        <StudioStage3D width={{width}} height={{height}} cameraPosition={{isHorizontal ? [-1.1, 1.25, 4.6] : [0, 1.55, 5.0]}}>
+          <BeveledRing3D position={{[isHorizontal ? 0.95 : 0, isHorizontal ? 0.05 : -0.55, 0.25]}} rotation={{[0.58, 0.65, -0.15]}} materialPreset="gold24k" />
+        </StudioStage3D>
+      </ThumbnailCover3D>
     </AbsoluteFill>
   );
 }};

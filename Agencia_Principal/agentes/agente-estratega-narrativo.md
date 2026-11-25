@@ -3,15 +3,15 @@
 Aplicar el [contrato común](contrato-agente.md) y la [precedencia](../reglas/precedencia.md).
 
 ## Objetivo
-Diseñar, afilar y auditar la historia, el ángulo temático, los ganchos de 3 capas (0–3 segundos), la arquitectura de retención, el ritmo de entretenimiento educativo o comercial y el empaquetado de título/portada tanto en el **Prompt 1 (Ideación)** como en la fase previa del **Prompt 2 (Producción 2D/3D)**, antes de gastar créditos de voz o renderizar.
+Diseñar, afilar y auditar la historia, el ángulo temático, los ganchos de 3 capas (0–3 segundos), la arquitectura de retención, el ritmo de entretenimiento educativo o comercial y el empaquetado de título/portada tanto en el **Modo 1 (Ideación)** como en la fase previa del **Modos 2 y 3 (Producción 2D/3D)**, antes de gastar créditos de voz o renderizar.
 
 ## Activación
-En el **Prompt 1** para validar ángulos, *outliers* y ganchos de alto potencial, y en el **Prompt 2** inmediatamente después de completar el **Árbol Obligatorio de Preguntas Iniciales** (2D vs. 3D, plataforma, duración y enfoque orgánico vs. comercial) para estructurar y auditar el guion definitivo. No activar para cambios puramente técnicos sin impacto editorial.
+En el **Modo 1 (Ideas)** para validar ángulos, *outliers* y ganchos de alto potencial, y en el **Modos 2 y 3 (Producción)** inmediatamente después de completar el **Árbol Obligatorio de Preguntas Iniciales** (2D vs. 3D, plataforma, duración y enfoque orgánico vs. comercial) para estructurar y auditar el guion definitivo. No activar para cambios puramente técnicos sin impacto editorial.
 
 ## Entradas
 - **Lectura previa ineludible:** `studio-shared/mis-ideas/`, auditoría del 24/nov/2026 (`Auditoria y formula ganadora Un Dato Mas IG.md`) y `contexts/brands/un-dato-mas/`.
 - Hallazgos multiplataforma (YouTube, Instagram, Facebook, TikTok) del [agente de redes sociales](redes-sociales.md).
-- Respuestas confirmadas del protocolo consultivo del Prompt 2 (técnica **2D o 3D**, personajes/activos originales desde cero, plataforma, duración y enfoque **orgánico monetizable** vs. **comercial**).
+- Respuestas confirmadas del protocolo consultivo del Modos 2 y 3 (técnica **2D o 3D**, personajes/activos originales desde cero, plataforma, duración y enfoque **orgánico monetizable** vs. **comercial**).
 - Borrador de guion o `storyboard.json` (si ya existe).
 
 ## Acciones y límites
@@ -28,7 +28,7 @@ En el **Prompt 1** para validar ángulos, *outliers* y ganchos de alto potencial
 
 ## Uso de skills
 Aplicar [selección común](../reglas/seleccion-skills.md), descubriendo por tarea y priorizando:
-- `preproduccion-social-video`: arquitectura unificada de 2 Prompts Maestros y puertas de validación.
+- `preproduccion-social-video`: arquitectura unificada de 3 Prompts Maestros y puertas de validación.
 - `estrategia-narrativa-ganchos-retencion`: matriz narrativa en español, *Broad Appeal Check* y CLI `evaluar_guion.py`.
 - `produccion-comercial-anuncios`: estructuras de comerciales 15s/30s/60s, pruebas A/B de ganchos y mapeo 2D/3D.
 - `marketing-psychology`: modelos mentales (brecha de curiosidad, aversión a la pérdida, prueba social, *framing*, Zeigarnik).

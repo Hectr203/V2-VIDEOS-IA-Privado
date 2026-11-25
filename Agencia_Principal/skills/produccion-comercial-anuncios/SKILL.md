@@ -13,14 +13,14 @@ Convertir la infraestructura de la productora audiovisual (`video-studio-2d` y `
 
 ## Cuándo usar / cuándo no usar
 - **Usar cuando:**
-  - En el **Prompt 2**, el usuario elige el enfoque **Formato Comercial / Anuncio de Producto / Marca** (en lugar de entretenimiento educativo orgánico).
-  - En el **Prompt 1**, se diseña una campaña comercial o propuesta de monetización vía clientes/patrocinios.
+  - En el **Modos 2 y 3 (Producción)**, el usuario elige el enfoque **Formato Comercial / Anuncio de Producto / Marca** (en lugar de entretenimiento educativo orgánico).
+  - En el **Modo 1 (Ideas)**, se diseña una campaña comercial o propuesta de monetización vía clientes/patrocinios.
   - Se requiere animar un producto físico en 3D PBR (cortes de rayos X, despieces *exploded view*, pruebas de resistencia, acabados de lujo) o dramatizar un problema-solución en 2D cartoon original.
 - **No usar cuando:**
   - El video es puramente de divulgación/curiosidades orgánicas del canal sin objetivo publicitario.
 
 ## Entradas y requisitos
-- Confirmación previa obligatoria del **formato 2D vs. 3D** (Pregunta 1 del Prompt 2).
+- Confirmación previa obligatoria del **formato 2D vs. 3D** (Pregunta 1 del Modos 2 y 3).
 - Brief comercial mínimo: producto/servicio, dolor principal del comprador, mecanismo diferenciador real (prueba tangible), oferta/CTA autorizado, plataformas de pauta y activos de marca (`contexts/brands/<marca>/`).
 - Skills complementarias: `ad-creative`, `copywriting`, `marketing-psychology`, `estilo-cartoon-editorial-3d` + `dinamismo-visual-2d` (ruta 2D) o `estilo-estudio-3d-pbr` (ruta 3D).
 

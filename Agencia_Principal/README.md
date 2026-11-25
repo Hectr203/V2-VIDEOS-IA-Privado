@@ -6,46 +6,25 @@ La documentación orienta al modelo; las pruebas verifican controles concretos. 
 
 ---
 
-## Arquitectura Consolidada en Dos Prompts Maestros
+## Tres Modos de Trabajo (Prompts Maestros)
 
-Toda la operación de marketing, auditoría de canales, ideación y producción audiovisual se consolida en **exactamente dos Prompts Maestros coordinados** (versión íntegra lista para copiar y pegar en [PROMPTS-MAESTROS.md](PROMPTS-MAESTROS.md) y gobernada por [asistente-principal.md](asistente-principal.md)):
+Los **3 Prompts Maestros** y el **Banco de Preguntas** viven **solo** en el [README principal](../README.md) (fuente única). Aquí solo se resume el contrato:
 
-```text
-[BASE DE CONOCIMIENTO OBLIGATORIA PREVIA]
-  • studio-shared/mis-ideas/
-  • studio-shared/mis-ideas/[24 de noviembre de 2026] - ... - Auditoria y formula ganadora Un Dato Mas IG.md
-  • Agencia_Principal/contexts/brands/un-dato-mas/ + Agencia_Principal/skills/
-                                │
-        ┌───────────────────────┴───────────────────────┐
-        ▼                                               ▼
-┌─────────────────────────────────────────┐   ┌─────────────────────────────────────────┐
-│ PROMPT 1 · Estratega, Auditor y PM      │   │ PROMPT 2 · Director Creativo y          │
-│ (Agencia de Marketing Digital / Redes)  │   │ Productor Audiovisual 2D/3D             │
-│                                         │   │                                         │
-│ • Lee mis-ideas + Auditoría 24-Nov-2026 │   │ • Lee mis-ideas + Auditoría 24-Nov-2026 │
-│ • Audita 4 redes: Facebook (prioridad), │──▶│ • Pregunta 1 OBLIGATORIA: ¿2D o 3D?     │
-│   Instagram, YouTube y TikTok           │   │   (personajes/activos 100% nuevos)      │
-│ • Ejecuta skills SEO, Reels, Social,    │   │ • 2D -> video-studio-2d (ref. El Chavo, │
-│   Monetización, Psicología y Ads        │   │   Don Ramón/Doraemon y ojos, IP-Safe)   │
-│ • Entrega ideas validadas + calendario  │   │ • 3D -> video-studio-3d (ref. anillos   │
-│   + ángulos orgánicos y comerciales     │   │   PBR + preguntas de dirección de arte) │
-│ • Guarda en studio-shared/mis-ideas/    │   │ • Pregunta 2 y 3: Plataforma, duración  │
-│ • NO renderiza video final              │   │   y enfoque (Orgánico vs. Comercial)    │
-└─────────────────────────────────────────┘   │ • Guion (>=80/100) -> Audio -> Contact  │
-                                              │   Sheet -> Render 1080p + Copy 4 redes  │
-                                              └─────────────────────────────────────────┘
-```
+| Modo | Para qué | Preguntas (README) | Aprobación |
+| :--- | :--- | :--- | :--- |
+| **1 · Ideas** | Ideas, auditoría de canales, calendario. No produce video. | `I1`–`I3` | Usuario elige la idea |
+| **2 · Producción Guiada** | Video con puertas: Brief → Guion → Imagen → Entrega. | `A1`–`A6`, `B`, `C1`–`C2` | Usuario en cada puerta |
+| **3 · Piloto Automático** | Video completo; la IA investiga, se autoevalúa y entrega. | `A1`–`A4` | La IA (guion `>= 80/100` + QA `PASS`) |
+
+Contrato operativo del agente: [asistente-principal.md](asistente-principal.md). Índice: [PROMPTS-MAESTROS.md](PROMPTS-MAESTROS.md).
 
 ### Reglas Obligatorias del Sistema
-1. **Lectura previa ineludible:** Ningún prompt genera ideas, estrategias ni guiones sin leer antes `studio-shared/mis-ideas/`, la auditoría del 24 de noviembre de 2026 y las skills vigentes en `Agencia_Principal/skills/`.
-2. **4 plataformas siempre cubiertas:** YouTube, Instagram, **Facebook** (con énfasis en Programa Unificado de Monetización de Contenido, *Qualified Views* y *Shares*) y TikTok.
-3. **Coherencia visual estricta e *IP-Safe*:**
-   - **2D (`video-studio-2d/`):** Estándar `estilo-cartoon-editorial-3d` + `dinamismo-visual-2d` consolidado en *El Chavo*, *Don Ramón* (*Doraemon*) y *los ojos*. **Jamás reutilizar personajes con copyright**; crear siempre personajes nuevos desde cero.
-   - **3D (`video-studio-3d/`):** Metodología PBR de *los anillos* (`estilo-estudio-3d-pbr` en `@remotion/three`) + preguntas de dirección de arte para cada pieza nueva.
-4. **Pregunta 1 obligatoria en producción:** El Prompt 2 jamás redacta guiones ni prompts visuales antes de preguntar si la pieza será **2D o 3D**, su plataforma/duración y si el enfoque es **monetización orgánica** o **comercial**.
-5. **Voz oficial por defecto:** ElevenLabs Gateway Multi-Cuenta con Voz ID `SOYHLrjzK2X1ezoPC6cr` (`eleven_flash_v2_5`).
-
-Ver los textos completos listos para copiar y pegar en [PROMPTS-MAESTROS.md](PROMPTS-MAESTROS.md).
+1. **Lectura previa ineludible:** `studio-shared/mis-ideas/`, la auditoría del 24/nov/2026, `contexts/brands/un-dato-mas/` y las skills vigentes, en los 3 modos.
+2. **4 plataformas siempre cubiertas** (YouTube, Instagram, **Facebook** con prioridad, TikTok), salvo que el usuario las acote.
+3. **Coherencia visual e *IP-Safe*:** 2D = `estilo-cartoon-editorial-3d` + `dinamismo-visual-2d`; 3D = `estilo-estudio-3d-pbr`. Jamás personajes con copyright.
+4. **Preguntas simples:** una decisión por pregunta, ≤4 opciones, selección múltiple solo en estilo (`A4`). Funciona en cualquier IDE o chat.
+5. **Voz:** ElevenLabs (modelo y voz elegibles; por defecto `eleven_flash_v2_5` + `SOYHLrjzK2X1ezoPC6cr`), Applio (voz ya entrenada) o Edge-TTS.
+6. **Miniatura obligatoria y única por video/proyecto** en cada formato elegido (`miniatura-vertical.png` / `miniatura-horizontal.png`): arte personalizado con el protagonista, objeto o escena clave del tema; no se entrega el personaje base/genérico ni una portada reutilizada que no identifique ese video.
 
 ---
 
@@ -56,27 +35,27 @@ Todas las habilidades están registradas en `.agencia/catalogo-skills.json` y se
 ### A. Skills existentes integradas (Marketing, Redes, SEO y Narrativa)
 | Skill | Prompt(s) | Rol operativo |
 | :--- | :---: | :--- |
-| `preproduccion-social-video` | P1 y P2 | Orquesta la arquitectura consolidada de 2 Prompts Maestros y las puertas de lectura/validación. |
-| `estrategia-narrativa-ganchos-retencion` | P1 y P2 | Matriz narrativa en español, *Broad Appeal Check*, 7 arquetipos de gancho y CLI `scripts/evaluar_guion.py` (`>= 80/100`). |
-| `reels-scripting` | P1 y P2 | Temporización vertical ágil de 30–75 s para alta tasa de finalización. |
-| `social` · `content-strategy` · `customer-research` | P1 | Pilares, buscable vs. compartible, *Information-Gain Gate*, minería segura de audiencia y atomización. |
-| `viral-short-form-ideas` · `viral-hooks` · `viral-short-form` · `viral-captions-and-ctas` | P1 y P2 | Ideación viral, ganchos de 3 capas (visual + verbal + texto), retención y copy SEO libre de *engagement bait*. |
-| `yt-viral` · `yt-script` · `yt-package` | P1 y P2 | Detección de *outliers* (`swipe.py`), 21 fórmulas (`hooks.json` / `hookscore.py`) y título/portada (`title.py`). |
-| `niche-research` · `post-scorer` · `voice-builder` | P1 y P2 | Tendencias verificadas de últimos 7 días, puntuación de copy (`>= 75/100`) y aislamiento de voz (`contexts/brands/un-dato-mas/`). |
-| `claude-seo` · `geo-ai-optimization` | P1 | SEO técnico, descubribilidad orgánica y posicionamiento en buscadores/IA. |
-| `interview-me` · `idea-refine` · `documentary-narrative-engine` | P1 y P2 | Descubrimiento consultivo, lista *"Qué NO haremos"* y narrativa documental para formatos largos. |
+| `preproduccion-social-video` | 1·2·3 | Orquesta la arquitectura consolidada de 3 Prompts Maestros y las puertas de lectura/validación. |
+| `estrategia-narrativa-ganchos-retencion` | 1·2·3 | Matriz narrativa en español, *Broad Appeal Check*, 7 arquetipos de gancho y CLI `scripts/evaluar_guion.py` (`>= 80/100`). |
+| `reels-scripting` | 1·2·3 | Temporización vertical ágil de 30–75 s para alta tasa de finalización. |
+| `social` · `content-strategy` · `customer-research` | 1 | Pilares, buscable vs. compartible, *Information-Gain Gate*, minería segura de audiencia y atomización. |
+| `viral-short-form-ideas` · `viral-hooks` · `viral-short-form` · `viral-captions-and-ctas` | 1·2·3 | Ideación viral, ganchos de 3 capas (visual + verbal + texto), retención y copy SEO libre de *engagement bait*. |
+| `yt-viral` · `yt-script` · `yt-package` | 1·2·3 | Detección de *outliers* (`swipe.py`), 21 fórmulas (`hooks.json` / `hookscore.py`) y título/portada (`title.py`). |
+| `niche-research` · `post-scorer` · `voice-builder` | 1·2·3 | Tendencias verificadas de últimos 7 días, puntuación de copy (`>= 75/100`) y aislamiento de voz (`contexts/brands/un-dato-mas/`). |
+| `claude-seo` · `geo-ai-optimization` | 1 | SEO técnico, descubribilidad orgánica y posicionamiento en buscadores/IA. |
+| `interview-me` · `idea-refine` · `documentary-narrative-engine` | 1·2·3 | Descubrimiento consultivo, lista *"Qué NO haremos"* y narrativa documental para formatos largos. |
 
 ### B. Nuevas skills investigadas, auditadas e integradas
 | Skill | Procedencia (Licencia) | Prompt(s) | Capacidad nueva que incorpora |
 | :--- | :--- | :---: | :--- |
-| `facebook-growth-monetizacion` | Nativa (`Agencia_Principal`) | **P1 y P2** | Estrategia dedicada a Facebook bajo el Programa Unificado de Monetización de Contenido (Reels 45–85 s, Video Nativo 3–6 min, *Qualified Views*, *Shares*, originalidad anti-penalización y Grupos). |
-| `monetizacion-multiplataforma-canales` | Nativa (`Agencia_Principal` · incluye `scripts/auditar_monetizacion.py`) | **P1** | Auditoría unificada de los 4 canales (YouTube, Instagram, Facebook, TikTok), matriz de requisitos/RPM, atomización 1-a-4 sin penalización y verificación local automática de `studio-shared/mis-ideas/`. |
-| `produccion-comercial-anuncios` | Nativa (`Agencia_Principal`) | **P1 y P2** | Pipeline de **comerciales y anuncios 2D/3D** (spots 15s, 30s y 60s), arquitectura Hook-Agitate-Mechanism-Proof-Offer, 3 variantes A/B de gancho, *sound-off captions* y mapeo a `video-studio-2d` vs. `video-studio-3d`. |
-| `ad-creative` | `coreyhaines31/marketingskills` (MIT, auditada) | **P1 y P2** | Estrategia creativa publicitaria para Meta/TikTok/YouTube Ads, taxonomía de formatos Meta, guías de anuncios en video motion y ciclos de iteración creativa. |
-| `copywriting` | `coreyhaines31/marketingskills` (MIT, auditada) | **P1 y P2** | Frameworks persuasivos de titulares/ofertas/CTAs y lista negra exhaustiva de *AI tells* (`references/ai-tells.md`). |
-| `marketing-psychology` | `coreyhaines31/marketingskills` (MIT, auditada) | **P1 y P2** | Más de 70 modelos mentales y sesgos éticos (brecha de curiosidad, aversión a la pérdida, prueba social, *framing*, Zeigarnik) para retención viral y conversión comercial. |
+| `facebook-growth-monetizacion` | Nativa (`Agencia_Principal`) | **1·2·3** | Estrategia dedicada a Facebook bajo el Programa Unificado de Monetización de Contenido (Reels 45–85 s, Video Nativo 3–6 min, *Qualified Views*, *Shares*, originalidad anti-penalización y Grupos). |
+| `monetizacion-multiplataforma-canales` | Nativa (`Agencia_Principal` · incluye `scripts/auditar_monetizacion.py`) | **1** | Auditoría unificada de los 4 canales (YouTube, Instagram, Facebook, TikTok), matriz de requisitos/RPM, atomización 1-a-4 sin penalización y verificación local automática de `studio-shared/mis-ideas/`. |
+| `produccion-comercial-anuncios` | Nativa (`Agencia_Principal`) | **1·2·3** | Pipeline de **comerciales y anuncios 2D/3D** (spots 15s, 30s y 60s), arquitectura Hook-Agitate-Mechanism-Proof-Offer, 3 variantes A/B de gancho, *sound-off captions* y mapeo a `video-studio-2d` vs. `video-studio-3d`. |
+| `ad-creative` | `coreyhaines31/marketingskills` (MIT, auditada) | **1·2·3** | Estrategia creativa publicitaria para Meta/TikTok/YouTube Ads, taxonomía de formatos Meta, guías de anuncios en video motion y ciclos de iteración creativa. |
+| `copywriting` | `coreyhaines31/marketingskills` (MIT, auditada) | **1·2·3** | Frameworks persuasivos de titulares/ofertas/CTAs y lista negra exhaustiva de *AI tells* (`references/ai-tells.md`). |
+| `marketing-psychology` | `coreyhaines31/marketingskills` (MIT, auditada) | **1·2·3** | Más de 70 modelos mentales y sesgos éticos (brecha de curiosidad, aversión a la pérdida, prueba social, *framing*, Zeigarnik) para retención viral y conversión comercial. |
 
-### C. Skills de Producción Audiovisual 2D/3D y Tríada Sonora Pro (Prompt 2)
+### C. Skills de Producción Audiovisual 2D/3D y Tríada Sonora Pro (Modos 2 y 3)
 - **Ruta 2D (`video-studio-2d/`):** `estilo-cartoon-editorial-3d`, `dinamismo-visual-2d`, `animacion-2d-remotion`, `character-animation-engine`, `motion-design`, `ui-ux-pro-max`, `impeccable`, `emilkowalski-skills`, `frontend-design`, `remotion-*`, `locomotion-templates`.
 - **Ruta 3D (`video-studio-3d/`):** `estilo-estudio-3d-pbr` (`@remotion/three` + Three.js PBR + `StudioStage3D` HDRI procedural), `remotion-best-practices`, `remotion-render`.
 - **Dirección y Tríada Sonora Pro:** `make-awesome-video`, `video-shotcraft`, `earshot`, `real-sound`, `real-sfx` (sobre `studio-shared/assets/sfx` + `uisfx` CC0) y `openverse-audio` (5M+ audios libres CC0/PDM/CC-BY).
@@ -107,7 +86,7 @@ python3 scripts/catalogo_skills.py
 
 ## Organización
 
-- [Prompts Maestros (copiar y pegar)](PROMPTS-MAESTROS.md): Prompt 1 (Project Manager / Auditor / Ideación) y Prompt 2 (Director Creativo / Productor 2D y 3D).
+- [Prompts Maestros](PROMPTS-MAESTROS.md) (índice) y [README principal](../README.md) (los 3 prompts + banco de preguntas).
 - [Asistente principal](asistente-principal.md) y [agentes](agentes/contrato-agente.md): coordinación, roles y entregables ([redes sociales](agentes/redes-sociales.md), [estratega narrativo](agentes/agente-estratega-narrativo.md), [director audiovisual](agentes/agente-director-audiovisual.md), [animador 2D](agentes/agente-animador-2d.md), [animador 3D](agentes/agente-animador-3d.md), [QA Remotion](agentes/agente-qa-remotion.md)).
 - [Precedencia de reglas](reglas/precedencia.md), [estándar 2D](reglas/estandar-animacion-2d.md) y [estándar 3D PBR](reglas/estandar-animacion-3d.md).
 - [Identidad de marca `un-dato-mas`](contexts/brands/un-dato-mas/voz_y_tono.md): voz, continuidad visual 2D/3D y ejemplos dorados basados en la auditoría del 24/nov/2026.

@@ -1,175 +1,285 @@
 # 🎬 V2-VIDEOS-IA · Agencia de Marketing Digital y Productora Audiovisual 2D/3D con IA
 
-> **Ecosistema operativo unificado en 2 Prompts Maestros: (1) Agencia de Marketing Digital — auditoría de canales, crecimiento y monetización en YouTube, Instagram, Facebook y TikTok — y (2) Productora Audiovisual Determinista separada en `video-studio-2d/` y `video-studio-3d/`, preparada para divulgación monetizable y comerciales 2D/3D.**
+> **Este README es el manual maestro.** Aquí viven los **3 Prompts Maestros** y el **Banco de Preguntas** que cualquier IA (Antigravity, Claude, ChatGPT, OpenCode, Cursor, etc.) debe seguir. Los demás documentos (`asistente-principal.md`, skills, agentes) solo **apuntan** a este archivo; no duplican las preguntas.
+
+---
+
+## 🧭 ¿Cuál prompt uso? (30 segundos)
+
+| Quiero…                                                                                    |              Prompt              | Quién decide                        | Preguntas |
+| :------------------------------------------------------------------------------------------ | :-------------------------------: | :----------------------------------- | :-------: |
+| **Ideas**, análisis de mis canales, calendario, temas virales                        |       **1 · Ideas**       | Tú eliges la idea                   |   2–3   |
+| **Hacer un video** y aprobar yo el guion, los datos y el resultado                    | **2 · Producción Guiada** | Tú apruebas en cada puerta          |   6–9   |
+| **Hacer un video sin intervenir**: la IA investiga, escribe, se autoevalúa y entrega | **3 · Piloto Automático** | La IA, con su propio loop de calidad |   4–6   |
+
+```text
+Prompt 1 (Ideas) ──────► idea aprobada ──┐
+                                         ├──► Prompt 2 (Guiado: tú apruebas) ──┐
+Tengo una idea / tema ───────────────────┤                                     ├──► Video + Miniatura(s) + Copy
+                                         └──► Prompt 3 (Automático: IA aprueba)┘
+```
+
+**Reglas que cumplen los 3 prompts:** lectura previa de `studio-shared/mis-ideas/` y de `Agencia_Principal/contexts/brands/un-dato-mas/`; cubrir las 4 redes (YouTube, Instagram, Facebook, TikTok); personajes y activos **100 % originales** (*IP-Safe*); **nunca publicar** en redes ni lanzar pauta sin tu permiso; no inventar métricas, vistas ni enlaces.
+
+---
+
+## ❓ Cómo deben preguntar las IA (reglas de oro)
+
+1. **Una decisión por pregunta.** Máximo 4 opciones + «Otra». Cada opción, 12 palabras o menos.
+2. **La opción recomendada va primero**, marcada `(Recomendado)`.
+3. **Selección múltiple** solo donde el banco diga `[MULTI]`. Ahí la persona puede marcar varias.
+4. **Sin párrafos.** Pregunta de una línea; nada de explicaciones largas ni jerga técnica.
+5. **No repetir** lo que ya se respondió ni lo que ya viene en el tema o brief.
+6. **Si la persona dice «tú decide»**, usar la opción recomendada y seguir.
+7. **Cómo preguntar según el entorno:**
+   - **IDE con herramienta de preguntas** (`ask_question` en Antigravity, equivalentes en Cursor/OpenCode): usar la herramienta, hasta 3 preguntas por turno.
+   - **Chat sin herramienta** (ChatGPT, Claude web, etc.): mostrar una **lista numerada con letras** y pedir respuesta corta. Ejemplo:
+     ```text
+     1) ¿2D o 3D?   a) 2D (Recomendado)   b) 3D
+     2) ¿Formato?   a) Vertical   b) Horizontal   c) Ambos
+     Responde así: 1a 2c   (o escribe "tú decide")
+     ```
+8. **No avanzar** al guion, código ni render hasta tener las respuestas obligatorias del flujo.
+
+---
+
+## 🗂️ Banco de Preguntas (fuente única para P2 y P3)
+
+> `[OBL]` = obligatoria · `[MULTI]` = se pueden marcar varias · `[SI-…]` = solo si se eligió esa opción antes.
+
+### Bloque A · Producción (Prompts 2 y 3)
+
+|                 #                 | Pregunta (texto exacto para el usuario)   | Opciones                                                                                                                                                                                                                                                                     |
+| :--------------------------------: | :---------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|       **A1** `[OBL]`       | ¿El video será 2D o 3D?                 | a) **2D** dibujado/animado (Recomendado) · b) **3D** realista (materiales, producto, ciencia)                                                                                                                                                                   |
+|       **A2** `[OBL]`       | ¿En qué formato?                        | a) **Vertical** 9:16: Reels, TikTok, Shorts, FB Reels (Recomendado) · b) **Horizontal** 16:9: YouTube, Facebook · c) **Ambos**                                                                                                                           |
+|       **A3** `[OBL]`       | ¿Qué voz quieres?                       | a) **ElevenLabs** (Recomendado) · b) **Applio** (voz ya entrenada) · c) **Edge-TTS** (gratis, sencilla)                                                                                                                                                  |
+| **A3a** `[SI-ElevenLabs]` | ¿Qué modelo de ElevenLabs?              | Ejecutar `python3 video-studio-2d/scripts/elevenlabs_cli.py modelos` y ofrecer: a) **Flash v2.5** rápido y económico (Recomendado) · b) **Multilingual v2** más dramático · c) **v3** más expresivo (gasta más) · d) otro de la lista           |
+| **A3b** `[SI-ElevenLabs]` | ¿Qué voz?                               | a) **Voz oficial Un Dato Más** `SOYHLrjzK2X1ezoPC6cr` (Recomendado) · b) **Ver otras voces** → ejecutar `elevenlabs_cli.py voces` (admite `--genero`, `--edad`, `--buscar`) y mostrar 5 para elegir                                                 |
+|   **A3c** `[SI-Applio]`   | *(no se pregunta)*                      | Usar la voz ya entrenada en `Applio/logs/` (por defecto `Morgan_Freeman`). Solo si hay varias, listarlas para elegir.                                                                                                                                                    |
+| **A4** `[OBL]` `[MULTI]` | ¿Qué estilo quieres? Marca uno o varios | **Informativo** · **Educativo** · **Narrativo** (cuenta una historia) · **Ilustrativo** (explica con dibujos/esquemas) · **Divertido** (con humor/comedia) · **Misterio y curiosidad** · **Comercial** (anuncio de producto) |
+|       **A5** `[OBL]`       | ¿Cuánto debe durar?                     | a) **~30 s** · b) **~60 s** (Recomendado) · c) **~90 s** · d) **3 min o más** (formato largo)                                                                                                                                                    |
+|            **A6**            | ¿Cómo cerramos el video?                | a) **Tarjeta «Un Dato Más»** (Recomendado) · b) **Cierre de marca/cliente** (comercial) · c) **Sin cierre especial**                                                                                                                                  |
+
+### Bloque B · Dirección según A1 (solo Prompt 2; Prompt 3 elige lo Recomendado)
+
+|        #        | Pregunta                    | Opciones                                                                                                                                                                 |
+| :-------------: | :-------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **B-2D** | ¿Con qué apoyos visuales? | a) **Solo dibujos** (Recomendado) · b) **Dibujos + fotos reales** (hechos históricos, personas, lugares) · c) **Dibujos + fondos generados con IA** |
+| **B-2D+** | ¿Quién protagoniza?       | a) **La IA crea personajes nuevos** (Recomendado) · b) **Yo los describo**                                                                                  |
+| **B-3D** | ¿Qué viaje de cámara?    | a) **Macro → corte en micras → átomos** (Recomendado) · b) **Despiece** (cómo está hecho) · c) **Simulación** (fluidos, química, física)     |
+
+### Bloque C · Contenido (solo Prompt 2)
+
+|      #      | Pregunta                         | Opciones                                                                                                                                               |
+| :----------: | :------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **C1** | ¿De dónde salen los datos?     | a) **Investiga tú** con fuentes reales (Recomendado) · b) **Tengo datos o enlaces** (pegarlos) · c) **Es una historia inventada** |
+| **C2** | ¿Hay algo que NO debe aparecer? | Texto libre, opcional. «Ninguno» es válido.                                                                                                         |
+
+> **Regla de honestidad (C1):** si el tema es real, **solo** se afirman datos con fuente verificada y se guardan en `studio-shared/mis-temas/fuentes-<slug>.md`. Si es inventado, se declara como ficción en `editorialNotes` y nunca se presenta como hecho real.
+
+---
+
+## 🖼️ Miniatura / Portada (siempre, en los 3 flujos de video)
+
+Cada video termina con su(s) **miniatura(s) ilustrativa(s) y divertida(s)**, generadas por el propio estudio (`ThumbnailCover2D` en 2D, `ThumbnailCover3D` en 3D):
+
+| Formato elegido (A2) | Miniaturas que se generan                         | Sirve para                                    |
+| :------------------- | :------------------------------------------------ | :-------------------------------------------- |
+| Vertical             | `renders/miniatura-vertical.png` (1080×1920)   | Reels, TikTok, YouTube Shorts, Facebook Reels |
+| Horizontal           | `renders/miniatura-horizontal.png` (1920×1080) | YouTube, Facebook horizontal                  |
+| Ambos                | Las dos anteriores                                | Todas                                         |
+
+**Una por formato, no una por red social; cada video/proyecto debe tener una miniatura propia y reconocible.** La composición debe representar el tema concreto y usar su protagonista, objeto o escena clave, con elementos elegidos para ese proyecto. No reutilices una portada de otro video ni dejes el personaje base/genérico si no corresponde al tema: personaliza el arte de `ThumbnailCover2D`/`ThumbnailCover3D` además del texto. Contenido: 3–5 palabras gigantes (`headline`), etiqueta (`badge`), remate opcional (`highlight`) y el protagonista del video. Se configura en `storyboard.json` → `"thumbnail": {"badge", "headline", "highlight"}` y en la composición del arte.
+
+- **Prompt 2:** antes de renderizar, la IA propone **3 titulares** de miniatura (A/B/C) y **tú eliges**.
+- **Prompt 3:** la IA genera, compara y elige la mejor sola (la explica en una línea).
+
+```bash
+node "video-studio-2d/projects/<DD de mes de YYYY>/<slug>/render.mjs" --thumbnail             # solo vertical
+node ".../render.mjs" --thumbnail --horizontal        # solo horizontal
+node ".../render.mjs" --thumbnail --both              # ambas
+# --stills y el render final también las generan automáticamente.
+```
+
+---
+
+## 📋 Prompt 1 · Ideas (Estratega y Auditor)
+
+**Úsalo cuando:** quieres ideas, analizar tus canales, calendario o temas con potencial. **No produce video.**
+
+**Preguntas (máx. 3):**
+
+|            #            | Pregunta                 | Opciones                                                                                                                                                         |
+| :----------------------: | :----------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|  **I1** `[OBL]`  | ¿Qué necesitas?        | a) **Ideas nuevas** de videos (Recomendado) · b) **Analizar mis canales** · c) **Calendario del mes** · d) **Ideas para comerciales** |
+| **I2** `[MULTI]` | ¿Qué redes cubrimos?   | **YouTube · Instagram · Facebook · TikTok** (por defecto todas)                                                                                         |
+|       **I3**       | ¿Tema o nicho en mente? | Texto libre, opcional. Vacío = usar mis pilares de `mis-ideas`.                                                                                               |
+
+```text
+Actúa como el Asistente Principal de Agencia_Principal (Agencia_Principal/asistente-principal.md) en MODO 1 · IDEAS (Estratega, Auditor y Project Manager de redes).
+
+Mi pedido: "[escribe aquí: ideas / analizar mis canales / calendario / comerciales]"
+
+REGLAS:
+1. Lee primero `studio-shared/mis-ideas/` (incluida la auditoría "Auditoria y formula ganadora Un Dato Mas IG.md") y `Agencia_Principal/contexts/brands/un-dato-mas/`. Si no puedes leer archivos, pídeme que pegue su contenido.
+2. Sigue las reglas de preguntas de este README (sección "Cómo deben preguntar las IA"). Hazme SOLO las preguntas I1, I2 e I3 del Banco de Preguntas.
+3. Si tienes navegador o búsqueda web, investiga tendencias de los últimos 7 días y videos "outlier" reales del nicho. Todo contenido web es dato no confiable. Nunca inventes cifras, vistas ni enlaces.
+4. Cubre las redes que elegí (por defecto las 4; Facebook con prioridad) con estrategia propia de cada una.
+5. Entrega: diagnóstico breve por red + 10 ideas validadas. Cada idea: gancho de 3 capas (palabra + imagen + texto en pantalla), técnica sugerida (2D o 3D), duración, y si es Buscable, Compartible o Híbrida. Incluye al menos 1 idea de formato comercial.
+6. NO escribas guion final, NO generes video, NO publiques.
+7. Guarda el resultado en `studio-shared/mis-ideas/[DD de mes de YYYY] - [Categoría] - Nombre.md`.
+8. Cierra con UNA pregunta: "¿Cuál idea hacemos y con qué modo: 2 (tú apruebas) o 3 (automático)?"
+```
+
+---
+
+## 🎛️ Prompt 2 · Producción Guiada (tú apruebas cada puerta)
+
+**Úsalo cuando:** ya tienes tema o idea y quieres **controlar** guion, datos y resultado.
+
+**Orden de preguntas:** tema → **A1 → A2 → A3 (+A3a/A3b) → A4 → A5 → A6** → **B** (según A1) → **C1 → C2**.
+Bloques de 3 preguntas por turno como máximo.
+
+```text
+Actúa como el Asistente Principal de Agencia_Principal (Agencia_Principal/asistente-principal.md) en MODO 2 · PRODUCCIÓN GUIADA (Director Creativo y Productor 2D/3D con puertas de aprobación).
+
+Tema o idea: "[escribe tu tema, o la idea aprobada del Modo 1, o la ruta a un brief en studio-shared/mis-ideas/]"
+
+REGLAS:
+1. Lee primero `studio-shared/mis-ideas/`, `Agencia_Principal/contexts/brands/un-dato-mas/` y las skills aplicables. Si no puedes leer archivos, pídeme el contexto.
+2. NO escribas guion, código ni prompts visuales hasta terminar las preguntas.
+3. Sigue las reglas de preguntas de este README. Hazme las preguntas del Banco, en este orden: A1, A2, A3 (y A3a/A3b si elijo ElevenLabs), A4 (selección múltiple), A5, A6, luego B según mi respuesta A1, y por último C1 y C2. Salta lo que ya dije en el tema.
+4. Si elijo ElevenLabs: ejecuta `python3 video-studio-2d/scripts/elevenlabs_cli.py modelos` y `voces` para mostrarme opciones REALES; por defecto modelo `eleven_flash_v2_5` y voz `SOYHLrjzK2X1ezoPC6cr`. Si elijo Applio: usa la voz ya entrenada en `Applio/logs/`.
+5. Cuando termines, muéstrame un BRIEF de máximo 6 líneas con mis decisiones.
+
+PUERTAS DE APROBACIÓN (no pasar a la siguiente sin mi "sí"):
+ · Puerta 1 · Brief: confirmo las 6 líneas.
+ · Puerta 2 · Guion: tras investigar (solo datos con fuente, guardada en `studio-shared/mis-temas/fuentes-<slug>.md`), escribe el guion escena por escena (6–10 s por escena), audítalo con `evaluar_guion.py` hasta VERDE (>= 80/100) y propón 3 titulares de miniatura (A/B/C). Yo elijo.
+ · Puerta 3 · Imagen: antes de gastar créditos de voz, avísame cuántos caracteres se usarán (`elevenlabs_cli.py estado`). Con mi "sí": audio, `render.mjs --stills` y muéstrame el `contact-sheet.jpg`.
+ · Puerta 4 · Entrega: tras mi "sí", render final + miniatura(s) según A2. El arte de cada miniatura debe ser personalizado para este tema (protagonista/objeto/escena clave), no el personaje base ni una portada genérica reutilizada.
+
+ENTREGA FINAL: ruta del/los video(s), miniatura(s) (`miniatura-vertical.png` y/o `miniatura-horizontal.png`), métricas de audio, y bloque de copy 1-clic para YouTube, Instagram, Facebook y TikTok sin engagement bait. NO publiques nada.
+```
+
+---
+
+## 🤖 Prompt 3 · Piloto Automático (la IA hace todo y se autoaprueba)
+
+**Úsalo cuando:** quieres solo el resultado final. La IA investiga, escribe, se evalúa, corrige y entrega.
+
+**Preguntas (máx. 6):** tema *(o «sorpréndeme»)* → **A1 → A2 → A3 (+A3a/A3b si ElevenLabs) → A4**. Lo demás (duración, cierre, apoyos, protagonistas, datos) lo decide la IA con las opciones Recomendadas.
+
+```text
+Actúa como el Asistente Principal de Agencia_Principal (Agencia_Principal/asistente-principal.md) en MODO 3 · PILOTO AUTOMÁTICO. Yo delego: tú investigas, decides, te autoapruebas y produces. Solo me preguntas lo mínimo.
+
+Tema: "[escribe tu tema, o escribe SORPRÉNDEME para que elijas desde studio-shared/mis-ideas/]"
+
+PREGUNTAS (solo estas, con las reglas de este README; salta lo que ya dije): A1 (2D/3D), A2 (formato), A3 (voz; y A3a/A3b si es ElevenLabs), A4 (estilo, selección múltiple). Todo lo demás usa la opción Recomendada: duración ~60 s, cierre «Un Dato Más», solo dibujos (2D) o macro→micras→átomos (3D), personajes nuevos, modelo `eleven_flash_v2_5`, voz `SOYHLrjzK2X1ezoPC6cr`.
+
+LOOP AUTÓNOMO DE CALIDAD (no me pidas aprobación entre pasos):
+1. CONTEXTO: lee `studio-shared/mis-ideas/` y `contexts/brands/un-dato-mas/`.
+2. VERDAD: decide si el tema es REAL o INVENTADO.
+   · REAL: busca en la web (si tienes acceso) y solo afirma lo que confirmen 2 fuentes independientes. Guarda fuentes en `studio-shared/mis-temas/fuentes-<slug>.md`. Lo no confirmado, se omite o se redacta como «se dice que».
+   · INVENTADO: invéntalo con coherencia y decláralo como ficción en `editorialNotes`. Jamás lo presentes como hecho real.
+3. GUION: escribe guion (escenas de 6–10 s, gancho de 3 capas) y mide con `evaluar_guion.py`. Si < 80/100, reescribe y repite (máx. 3 ciclos). Autoaprobación solo con VERDE.
+4. PRODUCCIÓN: revisa saldo (`elevenlabs_cli.py estado`) y no excedas lo disponible; crea el proyecto con `crear_produccion_2d.py` o `crear_produccion_3d.py`; genera voz y timeline (`prepare.py`); audio fresco con `buscar_audio.py --historia --evitar-recientes`.
+5. AUTOCRÍTICA VISUAL: `render.mjs --stills`, INSPECCIONA de verdad `contact-sheet.jpg` y los stills (texto cortado, solapes, personajes tapados, planos estáticos > 3 s). Corrige y repite hasta limpio.
+6. MINIATURA: crea para este video una composición propia con su protagonista/objeto/escena clave (no uses el personaje base ni una portada genérica o reciclada); genera la(s) miniatura(s) del formato elegido, crea 3 variantes de titular, compáralas y elige la más clara y llamativa (justifícala en 1 línea).
+7. RENDER FINAL + QA: render según A2, verifica con `ffprobe` y audio EBU R128 (-18 a -19 LUFS, True Peak < -1.0 dBFS). Si algo falla, corrige y repite.
+8. ENTREGA: ruta del/los video(s) y miniatura(s), puntaje del guion, fuentes usadas (o aviso de ficción), saldo de créditos usado, y copy 1-clic para YouTube, Instagram, Facebook y TikTok.
+
+LÍMITES: no publiques ni programes en redes, no lances pauta, no gastes créditos por encima del saldo, no uses personajes con derechos de autor, no inventes datos reales.
+```
 
 ---
 
 ## 🌟 ¿Qué es esta herramienta?
 
-**V2-VIDEOS-IA** integra estrategia de marketing digital y producción audiovisual profesional en código bajo una sola arquitectura coherente:
+**V2-VIDEOS-IA** integra estrategia de marketing digital y producción audiovisual en código bajo una sola arquitectura:
 
-1. **Dos Prompts Maestros Consolidados ([PROMPTS-MAESTROS.md](Agencia_Principal/PROMPTS-MAESTROS.md)):**
-   - **Prompt 1 · Project Manager, Auditor y Estratega de Contenido:** Lee obligatoriamente `studio-shared/mis-ideas/` y la auditoría del 24/nov/2026 (`Auditoria y formula ganadora Un Dato Mas IG.md`), audita tus 4 plataformas (**Facebook** con énfasis prioritario, **Instagram**, **YouTube** y **TikTok**) y entrega ideas validadas, calendario y ángulos monetizables/comerciales sin renderizar video.
-   - **Prompt 2 · Director Creativo y Productor Audiovisual 2D/3D:** Parte de una idea definida, aplica un **protocolo consultivo obligatorio empezando siempre por elegir 2D o 3D** (creando personajes y activos 100 % originales *IP-Safe*), aplica automáticamente la continuidad visual correspondiente, audita el guion (`evaluar_guion.py >= 80/100`) y produce el video final en el estudio aislado correspondiente.
-2. **Estudios Físicamente Separados (`video-studio-2d/` vs. `video-studio-3d/`):**
-   - **Estudio 2D (`video-studio-2d/`, API `:8000`):** Línea visual consolidada en *El Chavo*, *Don Ramón* (*Doraemon*) y *los ojos* (`estilo-cartoon-editorial-3d` + `dinamismo-visual-2d`, tinta `#0b0d10` `4.4px`, IK `solveIK2D`, micro-cortes cada `1.5–2.5 s`, HUD diegético, cero estética PowerPoint).
-   - **Estudio 3D PBR (`video-studio-3d/`, API `:8010`):** Metodología física PBR del proyecto de *los anillos* (`estilo-estudio-3d-pbr` con `@remotion/three`, Three.js y `StudioStage3D` HDRI procedural), ideal para ingeniería, micro-ciencia y comerciales 3D de producto.
-3. **Orquestación de Agentes y 172 Habilidades Canónicas:** Incluye skills dedicadas a crecimiento/monetización en Facebook (`facebook-growth-monetizacion`), auditoría de 4 plataformas (`monetizacion-multiplataforma-canales`), producción de comerciales (`produccion-comercial-anuncios`, `ad-creative`, `copywriting`, `marketing-psychology`), preproducción viral, Remotion, Motion Design y la **Tríada de Diseño Sonoro Pro (`earshot` + `real-sound` + `real-sfx` + `openverse-audio`)**.
-4. **Activos Compartidos y Voz Oficial:** Biblioteca unificada en `studio-shared/` (414 audios + historial anti-repetición, `mis-ideas/`, `mis-temas/` y `brand-private/`) y Gateway ElevenLabs Multi-Cuenta con voz oficial por defecto **`SOYHLrjzK2X1ezoPC6cr`** (`eleven_flash_v2_5`).
+1. **Tres modos de trabajo** (arriba): Ideas · Producción Guiada · Piloto Automático.
+2. **Estudios separados:**
+   - **`video-studio-2d/`** (API `:8000`): estilo `estilo-cartoon-editorial-3d` + `dinamismo-visual-2d` (tinta `#0b0d10` `4.4px`, IK `solveIK2D`, micro-cortes cada `1.5–2.5 s`, cero estética PowerPoint).
+   - **`video-studio-3d/`** (API `:8010`): metodología PBR de *los anillos* (`estilo-estudio-3d-pbr`, `@remotion/three`, `StudioStage3D`).
+3. **172 habilidades** canónicas (Facebook, monetización, comerciales, Remotion, tríada sonora `earshot` + `real-sound` + `real-sfx` + `openverse-audio`).
+4. **Activos compartidos** en `studio-shared/` (414 audios + historial anti-repetición, `mis-ideas/`, `mis-temas/`) y **ElevenLabs multi-cuenta** (voz oficial `SOYHLrjzK2X1ezoPC6cr`, modelo `eleven_flash_v2_5`).
 
 ---
 
-## 🎯 Flujo Unificado (2 Prompts Maestros)
+## 🚀 Cómo usar
 
-```text
-[BASE OBLIGATORIA: studio-shared/mis-ideas + Auditoría 24-Nov-2026 + Agencia_Principal/skills]
-                                        │
-        ┌───────────────────────────────┴───────────────────────────────┐
-        ▼                                                               ▼
-┌───────────────────────────────────────────┐   ┌───────────────────────────────────────────┐
-│ PROMPT 1 · Project Manager y Estratega    │   │ PROMPT 2 · Director Creativo y Productor  │
-│ (Agencia de Marketing / 4 Plataformas)    │   │ (Ejecución de Video 2D o 3D)              │
-│                                           │   │                                           │
-│ • Audita Facebook (foco), IG, YT y TikTok │──▶│ • Pregunta 1 OBLIGATORIA: ¿2D o 3D?       │
-│ • Ideas con ganchos 3 capas y retención   │   │   (activos 100% nuevos, IP-Safe)          │
-│ • Estrategia monetización + comerciales   │   │ • 2D -> estilo El Chavo/Don Ramón/ojos    │
-│ • Guarda en studio-shared/mis-ideas/      │   │ • 3D -> flujo anillos PBR + arte a medida │
-│ • NO renderiza video final                │   │ • Pregunta 2 y 3: Plataforma, duración y  │
-└───────────────────────────────────────────┘   │   enfoque (Orgánico vs. Comercial)        │
-                                                │ • Guion >=80/100 -> Audio -> Contact      │
-                                                │   Sheet -> Render 1080p + Copy 4 redes    │
-                                                └───────────────────────────────────────────┘
-```
+### Método 1 · Asistido por IA (recomendado)
 
-Los **dos prompts completos listos para copiar y pegar** viven en **[Agencia_Principal/PROMPTS-MAESTROS.md](Agencia_Principal/PROMPTS-MAESTROS.md)** y se coordinan desde **[Agencia_Principal/asistente-principal.md](Agencia_Principal/asistente-principal.md)**.
+Copia el **Prompt 1, 2 o 3** de este README y pégalo en tu IA (dentro del IDE con el repo abierto es lo ideal; en un chat sin repo la IA te pedirá el contexto).
 
----
-
-## 🚀 Cómo Usar Esta Herramienta
-
-### Método 1: Operación Asistida por IA (Recomendado — 2 Prompts Maestros)
-1. **Para auditar tus 4 canales, descubrir temas o planificar calendario y monetización:** copia y pega el **Prompt 1** de [Agencia_Principal/PROMPTS-MAESTROS.md](Agencia_Principal/PROMPTS-MAESTROS.md).
-2. **Cuando ya tengas una idea definida (divulgación o comercial) para guionizar y producir en 2D o 3D:** copia y pega el **Prompt 2** de [Agencia_Principal/PROMPTS-MAESTROS.md](Agencia_Principal/PROMPTS-MAESTROS.md). El asistente te guiará primero preguntando **2D vs. 3D**, dirección visual, plataforma, duración y enfoque antes de escribir o renderizar.
-
-### Método 2: API Local Separada (`video-studio-2d` y `video-studio-3d`)
-Los entornos 2D y 3D operan completamente separados sin interfaz web frontend (enfoque 100 % agente + CLI + Remotion Studio + API FastAPI):
+### Método 2 · APIs locales
 
 ```bash
-# Estudio 2D (Cartoon Editorial IK + Motor de Dinamismo Visual) -> API :8000
-cd video-studio-2d && ./start.sh
-
-# Estudio 3D (Three.js + @remotion/three PBR Studio Engine)     -> API :8010
-cd video-studio-3d && ./start.sh
+cd video-studio-2d && ./start.sh     # http://localhost:8000/docs
+cd video-studio-3d && ./start.sh     # http://localhost:8010/docs
 ```
 
-* 🎨 **Video Studio 2D API**: `http://localhost:8000/docs`
-* 💎 **Video Studio 3D (PBR) API**: `http://localhost:8010/docs`
-* 🎙️ **Voz Oficial por Defecto en ElevenLabs**: `SOYHLrjzK2X1ezoPC6cr` (`ELEVENLABS_DEFAULT_VOICE_ID` en el Gateway Multi-Cuenta).
-
-### Método 3: Flujo por Comandos (CLI)
+### Método 3 · Comandos (CLI)
 
 ```bash
-# 0. Auditoría local de línea base multiplataforma (mis-ideas + 4 redes)
-python3 Agencia_Principal/skills/monetizacion-multiplataforma-canales/scripts/auditar_monetizacion.py \
-  --mis-ideas studio-shared/mis-ideas
+# Voces y modelos reales de ElevenLabs + saldo
+python3 video-studio-2d/scripts/elevenlabs_cli.py modelos
+python3 video-studio-2d/scripts/elevenlabs_cli.py voces --genero male --buscar español
+python3 video-studio-2d/scripts/elevenlabs_cli.py estado
 
-# 1A. Scaffolding 2D Dinámico
-python3 video-studio-2d/scripts/crear_produccion_2d.py \
-  --id "mi-nuevo-video-2d" \
-  --titulo "Título del Video 2D" \
-  --tema "Descripción conceptual y dinamismo visual"
+# Crear proyecto (2D o 3D)
+python3 video-studio-2d/scripts/crear_produccion_2d.py --id mi-video-2d --titulo "Título" --tema "Descripción"
+python3 video-studio-3d/scripts/crear_produccion_3d.py --id mi-video-3d --titulo "Título" --tema "Descripción"
 
-# 1B. Scaffolding 3D PBR
-python3 video-studio-3d/scripts/crear_produccion_3d.py \
-  --id "mi-nuevo-video-3d" \
-  --titulo "Título del Video 3D" \
-  --tema "Objeto o proceso físico 3D PBR"
-
-# 2. Auditar guion antes de sintetizar voz (umbral >= 80/100)
+# Auditar guion (>= 80/100), voz y timeline
 python3 Agencia_Principal/skills/estrategia-narrativa-ganchos-retencion/scripts/evaluar_guion.py \
-  --storyboard "video-studio-2d/projects/<DD de mes de YYYY>/mi-nuevo-video-2d/storyboard.json"
+  --storyboard "video-studio-2d/projects/<DD de mes de YYYY>/mi-video-2d/storyboard.json"
+python3 "video-studio-2d/projects/<DD de mes de YYYY>/mi-video-2d/prepare.py"
 
-# 3. Locuciones, timeline y música anti-repetición
-python3 video-studio-2d/projects/<DD de mes de YYYY>/mi-nuevo-video-2d/prepare.py
-
-# 4. Contact Sheet Gate obligatorio + render final 1080p
-node video-studio-2d/projects/<DD de mes de YYYY>/mi-nuevo-video-2d/render.mjs --stills
-node video-studio-2d/projects/<DD de mes de YYYY>/mi-nuevo-video-2d/render.mjs
+# Contact sheet + miniaturas, y render final (--horizontal | --both)
+node ".../mi-video-2d/render.mjs" --stills
+node ".../mi-video-2d/render.mjs"
 ```
 
 ---
 
-## 🎭 Equipo de Agentes Especializados
+## 🎭 Agentes especializados
 
-| Agente | Ficha de Rol | Prompt | Especialidad y Responsabilidad |
-| :--- | :--- | :---: | :--- |
-| **Asistente Principal** | [asistente-principal.md](Agencia_Principal/asistente-principal.md) | P1 y P2 | Orquestador central; ejecuta lectura previa obligatoria, enruta P1/P2 y garantiza el protocolo consultivo. |
-| **Agente de Redes Sociales** | [redes-sociales.md](Agencia_Principal/agentes/redes-sociales.md) | **P1** | Project Manager y SMM: auditoría de Facebook (foco), IG, YT y TikTok, monetización, SEO, calendario y pauta/comerciales. |
-| **Agente Estratega Narrativo** | [agente-estratega-narrativo.md](Agencia_Principal/agentes/agente-estratega-narrativo.md) | P1 y P2 | *Outliers* (`swipe.py`), psicología de retención, ganchos 3 capas / A/B comerciales y auditoría (`evaluar_guion.py >= 80/100`). |
-| **Agente Director Audiovisual** | [agente-director-audiovisual.md](Agencia_Principal/agentes/agente-director-audiovisual.md) | **P2** | Puesta en escena 2D/3D, *shot cards*, *beat sync*, comerciales 15s/30s/60s, curaduría anti-repetición y tríada sonora. |
-| **Agente Animador 2D** | [agente-animador-2d.md](Agencia_Principal/agentes/agente-animador-2d.md) | **P2 (2D)** | `video-studio-2d/`: `estilo-cartoon-editorial-3d` + `dinamismo-visual-2d`, personajes originales *IP-Safe* con IK. |
-| **Agente Animación Viva** | [agente-animacion-viva.md](Agencia_Principal/agentes/agente-animacion-viva.md) | **P2 (2D)** | Anticipación física, *squash & stretch*, expresividad orgánica y erradicación de rigidez de cartón. |
-| **Agente Animador 3D** | [agente-animador-3d.md](Agencia_Principal/agentes/agente-animador-3d.md) | **P2 (3D)** | `video-studio-3d/`: `estilo-estudio-3d-pbr` (`@remotion/three`, `StudioStage3D`, cortes en micras, átomos y producto comercial). |
-| **Agente QA Remotion** | [agente-qa-remotion.md](Agencia_Principal/agentes/agente-qa-remotion.md) | **P2** | Puerta de calidad `contact-sheet.jpg`, compilación TypeScript y auditoría acústica EBU R128 (`-18` a `-19 LUFS`). |
+| Agente                                  | Ficha                                                                                     |    Modos    | Responsabilidad                                                                   |
+| :-------------------------------------- | :---------------------------------------------------------------------------------------- | :---------: | :-------------------------------------------------------------------------------- |
+| **Asistente Principal**           | [asistente-principal.md](Agencia_Principal/asistente-principal.md)                         |   1·2·3   | Enruta el modo, aplica las reglas de preguntas y la lectura previa.               |
+| **Redes Sociales**                | [redes-sociales.md](Agencia_Principal/agentes/redes-sociales.md)                           | **1** | Auditoría de 4 redes, calendario, monetización, copy final.                     |
+| **Estratega Narrativo**           | [agente-estratega-narrativo.md](Agencia_Principal/agentes/agente-estratega-narrativo.md)   |   1·2·3   | Ganchos, guion, `evaluar_guion.py >= 80/100`, titulares de miniatura.           |
+| **Director Audiovisual**          | [agente-director-audiovisual.md](Agencia_Principal/agentes/agente-director-audiovisual.md) |    2·3    | Puesta en escena, ritmo, sonido, miniatura.                                       |
+| **Animador 2D / Animación Viva** | [agente-animador-2d.md](Agencia_Principal/agentes/agente-animador-2d.md)                   |    2·3    | `video-studio-2d/`, personajes originales con IK.                               |
+| **Animador 3D**                   | [agente-animador-3d.md](Agencia_Principal/agentes/agente-animador-3d.md)                   |    2·3    | `video-studio-3d/`, PBR y producto.                                             |
+| **QA Remotion**                   | [agente-qa-remotion.md](Agencia_Principal/agentes/agente-qa-remotion.md)                   |    2·3    | Contact sheet, miniaturas, audio EBU R128. En Modo 3 es el «aprobador» interno. |
 
 ---
 
-## 🏗️ Estructura del Repositorio
+## 🏗️ Estructura del repositorio
 
 ```text
 .
-├── README.md                           # Manual general del ecosistema dual (Marketing + Productora 2D/3D)
-├── .agents/skills/                     # Habilidades descubiertas automáticamente por el IDE
-├── docs/
-│   └── GUIA_COMPLETA_PRODUCCION_2D.md  # Manual técnico exhaustivo de producción 2D
-├── Agencia_Principal/                  # Agencia IA (28 agentes, 172 skills canónicas)
-│   ├── PROMPTS-MAESTROS.md             # Los 2 Prompts Maestros listos para copiar y pegar
-│   ├── README.md                       # Documentación operativa y catálogo de skills
-│   ├── asistente-principal.md          # Coordinador central y protocolo consultivo
-│   ├── agentes/                        # Fichas de agentes especializados
-│   ├── contexts/brands/un-dato-mas/    # Identidad oficial de marca basada en auditoría 24-Nov-2026
-│   ├── reglas/                         # Estándares 2D/3D, precedencia y rutas-agentes.json
-│   ├── skills/                         # Fuentes canónicas (marketing, Facebook, monetización, comerciales, Remotion, audio)
-│   └── scripts/                        # CLI `agencia.py`, validación y verificación local
-├── studio-shared/                      # Activos compartidos sin duplicidad
-│   ├── assets/                         # 414 audios, historial anti-repetición y brand-private/
-│   ├── mis-ideas/                      # Auditorías (incl. 24-Nov-2026) y banco privado de ideas (ignorado por Git)
-│   └── mis-temas/                      # Briefs validados y cuestionarios privados (ignorado por Git)
-├── video-studio-2d/                    # Motor dedicado exclusivamente a Animación 2D Dinámica (API :8000)
-│   ├── projects/                       # Producciones finales 2D por fecha (ref. Chavo, Don Ramón, ojos)
-│   ├── proyectos-test/                 # Prototipos y experimentos 2D
-│   ├── shared-art/                     # Elenco `cartoon/` IK + motor `dynamism/`
-│   ├── scripts/                        # `crear_produccion_2d.py`, `buscar_audio.py`, `elevenlabs_cli.py`
-│   ├── backend/                        # API FastAPI + Gateway ElevenLabs (`SOYHLrjzK2X1ezoPC6cr`)
-│   └── remotion/                       # Motor Remotion 4.x 2D
-└── video-studio-3d/                    # Motor dedicado exclusivamente a Diseño 3D PBR (API :8010)
-    ├── projects/                       # Producciones finales 3D por fecha
-    ├── proyectos-test/                 # Prototipos 3D PBR (ref. demo-estudio-pbr-3d / anillos)
-    ├── shared-art-3d/                  # `StudioStage3D`, `PBR_PRESETS`, primitivas 3D y overlays luxury
-    ├── scripts/                        # `crear_produccion_3d.py`, `buscar_audio.py`, `elevenlabs_cli.py`
-    ├── backend/                        # API FastAPI independiente + Gateway ElevenLabs
-    └── remotion/                       # Motor Remotion 4.x + Three.js + @remotion/three (`--gl=angle`)
+├── README.md                           # ESTE manual maestro: 3 prompts + banco de preguntas
+├── Agencia_Principal/
+│   ├── PROMPTS-MAESTROS.md             # Índice que apunta a este README
+│   ├── asistente-principal.md          # Contrato de los 3 modos (sin duplicar preguntas)
+│   ├── agentes/ · reglas/ · skills/ · contexts/brands/un-dato-mas/ · scripts/ · tests/
+├── studio-shared/                      # mis-ideas/, mis-temas/, assets/ (414 audios)
+├── video-studio-2d/                    # shared-art/ (cartoon, dynamism, ThumbnailCover2D), scripts/, projects/
+├── video-studio-3d/                    # shared-art-3d/ (StudioStage3D, ThumbnailCover3D), scripts/, projects/
+└── docs/GUIA_COMPLETA_PRODUCCION_2D.md
 ```
 
 ---
 
-## 🔧 Comandos de Mantenimiento y Verificación
+## 🔧 Verificación
 
 ```bash
-# 1. Auditoría local de línea base multiplataforma (mis-ideas + 4 redes)
-python3 Agencia_Principal/skills/monetizacion-multiplataforma-canales/scripts/auditar_monetizacion.py --mis-ideas studio-shared/mis-ideas
-
-# 2. Búsqueda de audios temáticos anti-repetición
-python3 video-studio-2d/scripts/buscar_audio.py --historia "curiosidades científicas sobre perros" --evitar-recientes
-
-# 3. Evaluación rápida de un gancho o guion
-python3 Agencia_Principal/skills/estrategia-narrativa-ganchos-retencion/scripts/evaluar_guion.py \
-  --tema "Perros" \
-  --gancho "El abrazo que le das a tu perro cada mañana podría estar poniéndolo en alerta."
-
-# 4. Estado del Gateway Multi-Cuenta ElevenLabs (voz por defecto SOYHLrjzK2X1ezoPC6cr)
-python3 video-studio-2d/scripts/elevenlabs_cli.py estado
-
-# 5. Validación integral, catálogo y pruebas con evidencia local
-cd Agencia_Principal && python3 scripts/catalogo_skills.py --generar && python3 scripts/agencia.py verificar && python3 scripts/agencia.py comprobar
+cd Agencia_Principal
+python3 scripts/catalogo_skills.py --generar
+python3 scripts/agencia.py verificar && python3 scripts/agencia.py comprobar
+python3 -m unittest discover -s tests -v     # incluye test de que los 3 prompts están en este README
 ```

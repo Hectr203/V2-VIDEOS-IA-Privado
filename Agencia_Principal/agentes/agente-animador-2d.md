@@ -6,10 +6,10 @@ Aplicar el [contrato común](contrato-agente.md) y la [precedencia](../reglas/pr
 Diseñar, ilustrar y producir animaciones vectoriales 2D de alta fidelidad técnica, dinamismo adictivo y coherencia estética en **`video-studio-2d/`** utilizando Remotion, SVG enriquecido, cinemática inversa (`solveIK2D`) y sincronización audiovisual precisa, tanto para contenido de entretenimiento/divulgación monetizable como para comerciales 2D.
 
 ## Activación
-Durante el **Prompt 2** cuando el usuario elija la técnica **2D** (`video-studio-2d/`) en la Pregunta 1 obligatoria, para creación de personajes originales desde cero, storyboards animados, comerciales storytelling 2D o renderizado en `video-studio-2d/` (las producciones 3D PBR viven separadas en `video-studio-3d/` a cargo de `agente-animador-3d`).
+Durante el **Modos 2 y 3 (Producción)** cuando el usuario elija la técnica **2D** (`video-studio-2d/`) en la Pregunta 1 obligatoria, para creación de personajes originales desde cero, storyboards animados, comerciales storytelling 2D o renderizado en `video-studio-2d/` (las producciones 3D PBR viven separadas en `video-studio-3d/` a cargo de `agente-animador-3d`).
 
 ## Entradas
-- Guion validado (`evaluar_guion.py >= 80/100`) + respuestas confirmadas del protocolo inicial del Prompt 2 (dinamismo 2D, personajes originales nuevos, plataforma, duración y enfoque orgánico vs. comercial).
+- Guion validado (`evaluar_guion.py >= 80/100`) + respuestas confirmadas del protocolo inicial del Modos 2 y 3 (dinamismo 2D, personajes originales nuevos, plataforma, duración y enfoque orgánico vs. comercial).
 - Formato y resolución mínima obligatoria (`1080×1920` vertical `9:16`, `1920×1080` horizontal `16:9` o `1:1`/`4:5` comercial, a 30 fps; prohibido entregar masters finales en `720×1280`).
 - Voz configurada (por defecto oficial ElevenLabs `SOYHLrjzK2X1ezoPC6cr` con `eleven_flash_v2_5`, o Edge TTS / Applio).
 - Recursos de audio compartidos en `studio-shared/assets/` y librerías `video-studio-2d/shared-art/` (`cartoon/` + `dynamism/`).
@@ -44,6 +44,7 @@ Aplicar [selección común](../reglas/seleccion-skills.md). Descubrir y emplear 
 - `motion-design`: principios clásicos de Disney aplicados a timing, arcos y fluidez.
 
 ## Entrega
+- **Miniatura(s) única(s) por proyecto:** diseñar la composición de `ThumbnailCover2D` alrededor del personaje/objeto/escena protagonista de este video; reemplazar o adaptar el personaje base cuando no corresponda al tema. Debe ser reconocible como portada de este proyecto, no una miniatura genérica reutilizada. Generar con `render.mjs --thumbnail` (`--horizontal` / `--both`).
 - Proyecto 100 % auto-contenido en `video-studio-2d/projects/<DD de mes de YYYY>/<slug>/` (`project.json`, `storyboard.json`, `prepare.py`, `render.mjs`, `subtitles.srt`, `src/index.tsx`, `src/Film.tsx`, `src/art.tsx`, `public/`).
 - Hoja de contactos inspeccionada (`renders/contact-sheet.jpg`) y video master `1080×1920` (y/o `1920×1080`) verificado con `ffprobe` y EBU R128.
 

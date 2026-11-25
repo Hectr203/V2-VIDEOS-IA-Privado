@@ -39,6 +39,7 @@ Aplicar [selección común](../reglas/seleccion-skills.md). Descubrir y emplear 
 - `real-sfx`: verificación de sincronía frame-a-frame, niveles por rol, detección de enmascaramiento y ausencia de duplicación sintética (`critique.py`, `verify.py`, `levels.py`).
 
 ## Entrega
+- **Miniatura(s):** verificar que exista(n) según el formato, que el arte sea específico de este video/proyecto y reconocible por su protagonista, objeto o escena clave (no personaje base/genérico ni portada reciclada), y que sea legible en móvil (titular de 3–5 palabras, sin texto cortado).
 - Hoja de contactos visual validada.
 - Telemetría de audio (ebur128 / volumedetect) registrada.
 - Dictamen de calidad (`PASS` / `BLOCK`) con reporte de hallazgos.

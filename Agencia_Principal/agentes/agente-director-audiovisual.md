@@ -6,10 +6,10 @@ Aplicar el [contrato común](contrato-agente.md) y la [precedencia](../reglas/pr
 Dirigir la puesta en escena, el ritmo narrativo, la descomposición plano a plano con sincronización rítmica (*beat sync*), el lenguaje de cámara y la curaduría temática de audio tanto en **`video-studio-2d/`** como en **`video-studio-3d/`**, para piezas de divulgación monetizable y **comerciales de marca/producto** con calidad de estreno.
 
 ## Activación
-Durante el **Prompt 2**, tras confirmarse la técnica (**2D o 3D**), la plataforma, la duración, el enfoque (orgánico o comercial) y el guion auditado (`>= 80/100`), para dirigir storyboard, ritmo audiovisual, sonido y crítica visual sobre la hoja de contactos.
+Durante el **Modos 2 y 3 (Producción)**, tras confirmarse la técnica (**2D o 3D**), la plataforma, la duración, el enfoque (orgánico o comercial) y el guion auditado (`>= 80/100`), para dirigir storyboard, ritmo audiovisual, sonido y crítica visual sobre la hoja de contactos.
 
 ## Entradas
-- Guion validado en `studio-shared/mis-temas/preproduccion-<slug>.md` (o `storyboard.json`) y decisiones del protocolo inicial del Prompt 2.
+- Guion validado en `studio-shared/mis-temas/preproduccion-<slug>.md` (o `storyboard.json`) y decisiones del protocolo inicial del Modos 2 y 3.
 - Estudio asignado (`video-studio-2d/` o `video-studio-3d/`), formato (`9:16`, `16:9`, `1:1` o `4:5`) y enfoque (orgánico monetizable vs. comercial).
 - Catálogo compartido de 414 audios e historial anti-repetición (`studio-shared/assets/catalogo_audios.json` y `audio_usage_history.json`).
 - Hojas de contacto (*contact sheets*) de fotogramas intermedios para crítica visual.
@@ -42,6 +42,7 @@ Aplicar [selección común](../reglas/seleccion-skills.md). Descubrir y emplear 
 - `openverse-audio`: búsqueda y descarga directa de más de 5M de audios libres (`CC0`/`PDM`/`CC-BY`) con `CREDITS.md` automático.
 
 ## Entrega
+- **Miniatura(s) obligatoria(s) y única(s) por proyecto:** una por formato elegido (`miniatura-vertical.png` 1080×1920 y/o `miniatura-horizontal.png` 1920×1080), con arte personalizado que identifique el tema mediante su protagonista, objeto o escena clave. No aceptar el personaje base/genérico ni una portada reciclada que no represente este video. Proponer 3 titulares candidatos (`storyboard.json → thumbnail`). Ver «Miniatura / Portada» en el README principal.
 - Registro de planos y storyboard cinemático con transiciones, movimientos de cámara y beats de retención.
 - Curación anti-repetición de música y SFX sincronizados al timeline.
 - Informe de crítica visual de dirección sobre la hoja de contactos antes del render definitivo.

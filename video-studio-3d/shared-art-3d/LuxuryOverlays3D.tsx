@@ -235,3 +235,93 @@ export const LayerLegendStack3D: React.FC<{
     </div>
   );
 };
+
+/**
+ * Portada / Miniatura oficial 3D PBR (9:16 universal para Reels/TikTok/Shorts y 16:9 para YouTube/FB).
+ */
+export const ThumbnailCover3D: React.FC<{
+  aspectRatio?: '9:16' | '16:9';
+  badge?: string;
+  headline: string;
+  highlight?: string;
+  children?: React.ReactNode;
+}> = ({aspectRatio = '9:16', badge = 'INGENIERÍA 3D', headline, highlight, children}) => {
+  const isHorizontal = aspectRatio === '16:9';
+
+  return (
+    <div style={{position: 'absolute', inset: 0, overflow: 'hidden', fontFamily: 'StudioSans, system-ui, sans-serif'}}>
+      <div style={{position: 'absolute', inset: 0}}>{children}</div>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: isHorizontal
+            ? 'linear-gradient(90deg, rgba(5,5,7,0.88) 0%, rgba(5,5,7,0.45) 48%, rgba(5,5,7,0.05) 80%)'
+            : 'linear-gradient(180deg, rgba(5,5,7,0.88) 0%, rgba(5,5,7,0.18) 46%, rgba(5,5,7,0.75) 100%)',
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          ...(isHorizontal
+            ? {left: 88, top: '50%', width: 840, transform: 'translateY(-50%)', alignItems: 'flex-start', textAlign: 'left' as const}
+            : {left: 64, right: 64, top: 170, alignItems: 'center', textAlign: 'center' as const}),
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 22,
+          pointerEvents: 'none',
+        }}
+      >
+        {badge && (
+          <div
+            style={{
+              background: 'linear-gradient(135deg, #fde68a 0%, #eab308 55%, #ca8a04 100%)',
+              color: '#1c1917',
+              padding: '10px 28px',
+              borderRadius: 999,
+              fontSize: 28,
+              fontWeight: 900,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              boxShadow: '0 10px 30px rgba(234, 179, 8, 0.4)',
+            }}
+          >
+            {badge}
+          </div>
+        )}
+        <div
+          style={{
+            color: '#ffffff',
+            fontSize: isHorizontal ? 92 : 84,
+            fontWeight: 900,
+            lineHeight: 1.04,
+            letterSpacing: '-0.03em',
+            textTransform: 'uppercase',
+            textShadow: '0 12px 36px rgba(0,0,0,0.9)',
+          }}
+        >
+          {headline}
+        </div>
+        {highlight && (
+          <div
+            style={{
+              background: 'rgba(220, 38, 38, 0.94)',
+              border: '2px solid rgba(254, 202, 202, 0.6)',
+              color: '#ffffff',
+              padding: '12px 28px',
+              borderRadius: 18,
+              fontSize: isHorizontal ? 50 : 48,
+              fontWeight: 900,
+              letterSpacing: '0.02em',
+              textTransform: 'uppercase',
+              boxShadow: '0 12px 30px rgba(220, 38, 38, 0.45)',
+            }}
+          >
+            {highlight}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};

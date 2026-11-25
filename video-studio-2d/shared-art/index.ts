@@ -6,5 +6,6 @@ export * from './effects/Particles';
 export * from './components/KineticLabels';
 export * from './components/BrandCard';
 export * from './components/KiwiPrimitives';
+export * from './components/ThumbnailCover2D';
 export * from './cartoon';
 export * from './dynamism';

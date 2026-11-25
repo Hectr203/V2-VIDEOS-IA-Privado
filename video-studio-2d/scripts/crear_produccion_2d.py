@@ -61,11 +61,28 @@ def validar_id(identificador: str) -> str:
     return identificador
 
 
+def titular_corto(titulo: str, max_palabras: int = 4) -> str:
+    conectores = {"el", "la", "los", "las", "de", "del", "un", "una", "y", "a", "en", "por", "que", "para", "con"}
+    palabras = titulo.split()[:max_palabras]
+    while len(palabras) > 1 and palabras[-1].lower().strip("¿?¡!.,") in conectores:
+        palabras.pop()
+    return " ".join(palabras).upper()
+
+
 def generar_storyboard_plantilla(titulo: str, tema: str) -> dict:
+    palabras_cortas = titular_corto(titulo) or "EL SECRETO OCULTO"
     return {
         "title": titulo,
+        "voice_provider": "elevenlabs",
+        "voice_id": "SOYHLrjzK2X1ezoPC6cr",
+        "elevenlabs_model": "eleven_flash_v2_5",
         "voice": "es-MX-JorgeNeural",
-        "rate": "+15%",
+        "rate": "+0%",
+        "thumbnail": {
+            "badge": "DATO SORPRENDENTE",
+            "headline": palabras_cortas,
+            "highlight": "LO QUE NADIE VE"
+        },
         "scenes": [
             {
                 "id": "hook",
@@ -387,6 +404,7 @@ async def main():
 
     timeline_data = {{
         "title": storyboard["title"],
+        "thumbnail": storyboard.get("thumbnail", {{}}),
         "fps": FPS,
         "durationInFrames": current_frame,
         "scenes": timeline_scenes
@@ -447,6 +465,7 @@ const stillsDir = path.join(renders, 'stills');
 await fs.mkdir(stillsDir, {{recursive: true}});
 
 const stills = process.argv.includes('--stills');
+const thumbnailOnly = process.argv.includes('--thumbnail');
 const draft = process.argv.includes('--draft');
 const horizontal = process.argv.includes('--horizontal') || process.argv.includes('--aspect=horizontal');
 const bothAspects = process.argv.includes('--both') || process.argv.includes('--aspect=both');
@@ -467,7 +486,31 @@ const serveUrl = await bundle({{
 
 const chromiumOptions = {{gl: 'angle'}};
 
-if (stills) {{
+async function renderProjectThumbnails() {{
+  const thumbTargets = bothAspects
+    ? [
+        {{ id: `${{baseId}}-thumbnail`, file: 'miniatura-vertical.png', label: 'Miniatura 9:16 (Reels/TikTok/Shorts)' }},
+        {{ id: `${{baseId}}-16x9-thumbnail`, file: 'miniatura-horizontal.png', label: 'Miniatura 16:9 (YouTube/Facebook)' }},
+      ]
+    : horizontal
+    ? [{{ id: `${{baseId}}-16x9-thumbnail`, file: 'miniatura-horizontal.png', label: 'Miniatura 16:9 (YouTube/Facebook)' }}]
+    : [{{ id: `${{baseId}}-thumbnail`, file: 'miniatura-vertical.png', label: 'Miniatura 9:16 (Reels/TikTok/Shorts)' }}];
+
+  for (const t of thumbTargets) {{
+    try {{
+      const comp = await selectComposition({{serveUrl, id: t.id, chromiumOptions}});
+      const outPath = path.join(renders, t.file);
+      await renderStill({{serveUrl, composition: comp, output: outPath, frame: 0, imageFormat: 'png', scale: 1, chromiumOptions}});
+      console.log(`[MINIATURA OK] ${{t.label}} -> ${{outPath}}`);
+    }} catch (err) {{
+      console.warn(`Aviso generando ${{t.file}}: ${{err.message}}`);
+    }}
+  }}
+}}
+
+if (thumbnailOnly) {{
+  await renderProjectThumbnails();
+}} else if (stills) {{
   const composition = await selectComposition({{serveUrl, id: baseId, chromiumOptions}});
   console.log(`Generando stills de verificación para ${{timeline.scenes.length}} escenas...`);
   for (const scene of timeline.scenes) {{
@@ -486,6 +529,7 @@ if (stills) {{
   }} catch (err) {{
     console.warn(`No se pudo generar contact-sheet.jpg: ${{err.message}}`);
   }}
+  await renderProjectThumbnails();
 }} else {{
   const targets = [];
   if (bothAspects) {{
@@ -519,6 +563,7 @@ if (stills) {{
     console.log(`[ÉXITO] Video guardado en: ${{final}}`);
     console.log(`Duración: ${{probe.format.duration}}s | Tamaño: ${{(Number(probe.format.size) / 1024 / 1024).toFixed(1)}} MB | Resolución: ${{probe.streams[0].width}}x${{probe.streams[0].height}}`);
   }}
+  await renderProjectThumbnails();
 }}
 '''
     (proj_dir / "render.mjs").write_text(render_script, encoding="utf-8")
@@ -527,7 +572,7 @@ if (stills) {{
     component_name = "".join(p.capitalize() for p in prod_id.split("-")) + "Film"
     index_tsx = f'''import React from 'react';
 import {{ registerRoot, Composition }} from 'remotion';
-import {{ {component_name}, timeline }} from './Film';
+import {{ {component_name}, {component_name}Thumbnail, timeline }} from './Film';
 
 export const ProjectRoot: React.FC = () => {{
   return (
@@ -545,6 +590,24 @@ export const ProjectRoot: React.FC = () => {{
         id="{prod_id}-16x9"
         component={{{component_name}}}
         durationInFrames={{timeline.durationInFrames}}
+        fps={{30}}
+        width={{1920}}
+        height={{1080}}
+        defaultProps={{{{ aspectRatio: '16:9' as const }}}}
+      />
+      <Composition
+        id="{prod_id}-thumbnail"
+        component={{{component_name}Thumbnail}}
+        durationInFrames={{1}}
+        fps={{30}}
+        width={{1080}}
+        height={{1920}}
+        defaultProps={{{{ aspectRatio: '9:16' as const }}}}
+      />
+      <Composition
+        id="{prod_id}-16x9-thumbnail"
+        component={{{component_name}Thumbnail}}
+        durationInFrames={{1}}
         fps={{30}}
         width={{1920}}
         height={{1080}}
@@ -657,6 +720,7 @@ import {{
   KiwiProgressBar,
   Personaje1Base,
   SharedCosmicBackdrop,
+  ThumbnailCover2D,
   YellowCallout3D,
   kiwiClamp,
   kiwiMix,
@@ -760,6 +824,47 @@ export const {component_name}: React.FC<{{aspectRatio?: '9:16' | '16:9'}}> = ({{
       </div>
       <Audio src={{getAsset('score.wav')}} volume={{musicVolume}} />
     </AbsoluteFill>
+  );
+}};
+
+export const {component_name}Thumbnail: React.FC<{{aspectRatio?: '9:16' | '16:9'}}> = ({{aspectRatio = '9:16'}}) => {{
+  const isHorizontal = aspectRatio === '16:9';
+  const [handle] = useState(() => delayRender('Cargando tipografía portada'));
+
+  useEffect(() => {{
+    const font = new FontFace('StudioSans', `url(${{getAsset('UbuntuSans.ttf')}})`, {{weight: '100 900'}});
+    font.load().then(loaded => {{ document.fonts.add(loaded); continueRender(handle); }}).catch(cancelRender);
+  }}, [handle]);
+
+  const thumbMeta = (timeline as {{thumbnail?: {{badge?: string; headline?: string; highlight?: string}}}}).thumbnail || {{}};
+  const defaultHead = timeline.title.split(' ').slice(0, 4).join(' ');
+
+  return (
+    <ThumbnailCover2D
+      aspectRatio={{aspectRatio}}
+      badge={{thumbMeta.badge || 'DATO SORPRENDENTE'}}
+      headline={{thumbMeta.headline || defaultHead}}
+      highlight={{thumbMeta.highlight || '¡MIRA POR QUÉ!'}}
+    >
+      <svg
+        width={{isHorizontal ? 1920 : 1080}}
+        height={{isHorizontal ? 1080 : 1920}}
+        viewBox={{isHorizontal ? '0 0 1920 1080' : '0 0 1080 1920'}}
+        style={{{{position: 'absolute', inset: 0}}}}
+      >
+        <Personaje1Base
+          x={{isHorizontal ? 1420 : 540}}
+          y={{isHorizontal ? 960 : 1680}}
+          scale={{isHorizontal ? 2.15 : 2.35}}
+          frame={{18}}
+          animated={{false}}
+          pose="celebrando"
+          mood="sorpresa"
+          outfit="base"
+          mouthOpen={{0.65}}
+        />
+      </svg>
+    </ThumbnailCover2D>
   );
 }};
 '''

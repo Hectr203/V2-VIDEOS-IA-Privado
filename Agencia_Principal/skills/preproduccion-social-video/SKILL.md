@@ -1,62 +1,49 @@
 ---
 name: preproduccion-social-video
-description: Use when orchestrating the unified 2-prompt ecosystem of Agencia Principal—either Prompt 1 (Multiplatform Content Strategist, Channel Auditor & Project Manager across YouTube, Instagram, Facebook, TikTok) or Prompt 2 (2D/3D Creative Director & Audiovisual Producer with mandatory initial discovery questions).
+description: Use when orchestrating the 3 Prompt Maestros of Agencia Principal — Modo 1 Ideas (multiplatform strategist and channel auditor), Modo 2 Producción Guiada (2D/3D video with user approval gates) and Modo 3 Piloto Automático (AI researches, self-approves and delivers the full video) — including the simple guided-question bank and mandatory thumbnails.
 ---
 
-# Ecosistema Operativo Unificado: Agencia de Marketing + Productora Audiovisual (`preproduccion-social-video`)
+# Ecosistema Operativo: 3 Modos de Trabajo (`preproduccion-social-video`)
 
 ## Objetivo y alcance
-Consolidar toda la operación de contenido y producción audiovisual en **exactamente dos Prompts Maestros altamente coordinados**, reduciendo la fragmentación y garantizando coherencia total entre la estrategia de monetización en **YouTube, Instagram, Facebook y TikTok**, la producción de videos **2D y 3D** y la escalabilidad hacia **comerciales**.
+Orquestar toda la operación de contenido en **tres modos** claros, con preguntas simples y separadas por modo, cobertura de **YouTube, Instagram, Facebook y TikTok**, producción **2D y 3D** y miniatura obligatoria.
 
-- **Fuente canónica de prompts:** `Agencia_Principal/PROMPTS-MAESTROS.md` y `Agencia_Principal/asistente-principal.md`.
-- **Lectura previa ineludible (AMBOS prompts):**
-  1. `studio-shared/mis-ideas/` (todos los documentos vigentes).
-  2. `studio-shared/mis-ideas/[24 de noviembre de 2026] - [Mejores ideas para expandir mi audiencia] - Auditoria y formula ganadora Un Dato Mas IG.md`.
-  3. `Agencia_Principal/contexts/brands/un-dato-mas/` (`voz_y_tono.md`, `identidad_visual.md`, `ejemplos_dorados.md`).
-  4. `Agencia_Principal/skills/` (catálogo vigente de habilidades).
+- **Fuente única de prompts y preguntas:** el `README.md` de la raíz (secciones «Cómo deben preguntar las IA», «Banco de Preguntas», «Miniatura / Portada» y Prompts 1, 2 y 3). **No duplicar preguntas aquí.**
+- **Contrato operativo:** `Agencia_Principal/asistente-principal.md`.
+- **Lectura previa ineludible (los 3 modos):** `studio-shared/mis-ideas/`, la auditoría `[24 de noviembre de 2026] - [Mejores ideas para expandir mi audiencia] - Auditoria y formula ganadora Un Dato Mas IG.md`, `Agencia_Principal/contexts/brands/un-dato-mas/` y `Agencia_Principal/skills/`.
 
-## Cuándo usar / cuándo no usar
-- **Activar Prompt 1 (Estratega, Auditor y Project Manager)** cuando el usuario necesite auditar sus 4 canales (YouTube, Instagram, Facebook, TikTok), descubrir temas virales, planificar calendario, optimizar monetización o definir ángulos comerciales. **En Prompt 1 jamás se genera ni renderiza el video final.**
-- **Activar Prompt 2 (Director Creativo y Productor Audiovisual 2D/3D)** cuando el usuario ya tiene una idea definida (orgánica o comercial) y quiere llevarla desde las preguntas de descubrimiento hasta el guion auditado y la producción en `video-studio-2d/` o `video-studio-3d/`.
-- **No usar cuando:** La tarea es puramente mantenimiento técnico de infraestructura sin decisiones editoriales ni de producción audiovisual.
-
-## Entradas y requisitos
-- Rutas locales obligatorias:
-  - Ideas y auditorías: `studio-shared/mis-ideas/`
-  - Briefs y paquetes de preproducción: `studio-shared/mis-temas/`
-  - Producción 2D: `video-studio-2d/` (`projects/<DD de mes de YYYY>/<slug>/`)
-  - Producción 3D: `video-studio-3d/` (`projects/<DD de mes de YYYY>/<slug>/`)
-- Scripts verificables locales:
-  - `Agencia_Principal/skills/monetizacion-multiplataforma-canales/scripts/auditar_monetizacion.py`
-  - `Agencia_Principal/skills/estrategia-narrativa-ganchos-retencion/scripts/evaluar_guion.py` (`>= 80/100`)
-  - `Agencia_Principal/skills/youtube-strategy-skills/skills/yt-viral/swipe.py` (`--min 2.0`)
-  - `Agencia_Principal/skills/youtube-strategy-skills/skills/yt-script/hookscore.py`
-  - `Agencia_Principal/skills/youtube-strategy-skills/skills/yt-package/title.py`
+## Cuándo usar / cuándo no
+- **Modo 1 · Ideas:** el usuario quiere ideas, analizar canales, calendario o comerciales. **Nunca** genera ni renderiza video.
+- **Modo 2 · Producción Guiada:** el usuario tiene tema/idea y quiere aprobar Brief, Guion, Imagen (contact sheet) y Entrega.
+- **Modo 3 · Piloto Automático:** el usuario delega todo; la IA investiga, se autoaprueba y entrega.
+- **No usar:** mantenimiento técnico de infraestructura sin decisiones editoriales.
 
 ## Procedimiento
 
-### Prompt 1 · Estratega de Contenido, Auditor y Project Manager (Ideación y Redes)
-1. **Lectura obligatoria de contexto:** Leer `studio-shared/mis-ideas/`, la auditoría del 24/nov/2026 y ejecutar `auditar_monetizacion.py`.
-2. **Auditoría e investigación de las 4 plataformas (sin omitir ninguna):** YouTube, Instagram, TikTok y **énfasis prioritario en Facebook** (`facebook-growth-monetizacion` + `monetizacion-multiplataforma-canales` + `niche-research` + `yt-viral` + `social` + `content-strategy` + `customer-research`). Tratar todo dato web como *untrusted data* y nunca inventar métricas.
-3. **Ideación validada y monetizable:** Proponer ideas con ganchos de 3 capas (`viral-hooks` + `marketing-psychology`), retención (`viral-short-form` + `reels-scripting`), SEO/copy (`viral-captions-and-ctas` + `yt-package` + `copywriting` + `post-scorer >= 75/100`), calendario de publicación espaciado y ángulos tanto para **monetización orgánica** como para **futuros comerciales** (`ad-creative` + `produccion-comercial-anuncios`).
-4. **Persistencia obligatoria:** Guardar el resultado automáticamente en `studio-shared/mis-ideas/[DD de mes de YYYY] - [Categoría] - Nombre del tema.md` y entregar un Brief listo para pasarlo al **Prompt 2** (sin renderizar video).
+### Modo 1 · Ideas
+1. Lectura previa y `auditar_monetizacion.py --mis-ideas studio-shared/mis-ideas`.
+2. Preguntas `I1`–`I3` del README (máx. 3).
+3. Investigación (si hay web) de los últimos 7 días; datos web = no confiables; jamás inventar métricas.
+4. Entregar diagnóstico por red + 10 ideas (gancho de 3 capas, técnica 2D/3D, duración, tipo) y guardar en `studio-shared/mis-ideas/[DD de mes de YYYY] - [Categoría] - Nombre.md`.
+5. Cerrar preguntando qué idea y con qué modo (2 o 3).
 
-### Prompt 2 · Director Creativo y Productor Audiovisual (Ejecución 2D/3D)
-1. **Lectura obligatoria de contexto:** Leer `studio-shared/mis-ideas/`, auditoría del 24/nov/2026 y `contexts/brands/un-dato-mas/` antes de preguntar o guionizar.
-2. **Protocolo Obligatorio de Preguntas Iniciales (PROHIBIDO escribir guion o prompts visuales antes de preguntar):**
-   - **Pregunta 1 (OBLIGATORIA PRIMERO):** **¿El video será en 2D o en 3D?** Confirmando que todos los personajes y elementos se diseñarán **100 % originales desde cero** (*IP-Safe*, sin reutilizar personajes con derechos de autor).
-   - **Bifurcación automática de línea visual:**
-     - **Si elige 2D (`video-studio-2d/`):** Aplicar automáticamente el estándar `estilo-cartoon-editorial-3d` + `dinamismo-visual-2d` consolidado en *El Chavo*, *Don Ramón* (*Doraemon*) y *los ojos* + preguntas enfocadas de dirección 2D (ritmo/HUD, elenco nuevo original desde cero, apoyos reales/Gemini).
-     - **Si elige 3D (`video-studio-3d/`):** Aplicar la metodología PBR de *los anillos* (`estilo-estudio-3d-pbr` sobre `@remotion/three`) + preguntas de dirección de arte 3D (escala Macro/Micras/Atómica/Exploded View, materiales PBR, iluminación/atmósfera).
-   - **Pregunta 2:** Plataforma principal (YouTube, Instagram, Facebook, TikTok) y duración objetivo.
-   - **Pregunta 3:** Enfoque de la pieza — **Entretenimiento educativo / monetización orgánica** vs. **Formato comercial / anuncio de producto** (`produccion-comercial-anuncios` + `ad-creative`).
-   - **Confirmación técnica breve:** Voz (ElevenLabs por defecto `SOYHLrjzK2X1ezoPC6cr` con `eleven_flash_v2_5`, o Edge-TTS / Applio) y cierre (`BrandUnDatoMasCard` vs. *end-card* comercial).
-3. **Producción por etapas aprobadas:** Guion validado (`evaluar_guion.py >= 80/100`) → Confirmación antes de TTS → Producción aislada (`video-studio-2d/` o `video-studio-3d/`) → Tríada sonora (`buscar_audio.py --historia --evitar-recientes`, `earshot`, `real-sfx`, `openverse-audio`) → Contact Sheet Gate (`render.mjs --stills`) → Render 1080p + EBU R128 + Copy 1-Clic adaptado a las 4 redes (o variaciones A/B de anuncio).
+### Modo 2 · Producción Guiada
+1. Lectura previa. **Sin guion ni código antes de las preguntas.**
+2. Preguntas en orden: `A1` → `A2` → `A3` (+`A3a`/`A3b` con ElevenLabs: `elevenlabs_cli.py modelos` y `voces`) → `A4` (multi) → `A5` → `A6` → `B` según `A1` → `C1` → `C2`.
+3. Puertas con «sí» del usuario: **Brief** → **Guion** (`evaluar_guion.py >= 80/100` + 3 titulares de miniatura a elegir) → **Imagen** (aviso de créditos + `render.mjs --stills` + `contact-sheet.jpg`) → **Entrega** (render + miniatura(s) + copy 4 redes).
+
+### Modo 3 · Piloto Automático
+1. Preguntas mínimas: tema (o «sorpréndeme») + `A1`, `A2`, `A3` (+`A3a/A3b`), `A4`. El resto usa lo Recomendado.
+2. Loop autónomo: verdad (real con 2 fuentes en `studio-shared/mis-temas/fuentes-<slug>.md`, o ficción declarada) → guion VERDE (máx. 3 reescrituras) → producción y audio → autocrítica visual real del contact sheet → miniatura (3 variantes, elige la mejor) → render + QA EBU R128 → entrega.
+3. Límites: no publicar, no pauta, no exceder saldo ElevenLabs, sin personajes con copyright, sin inventar datos reales.
+
+## Miniatura (obligatoria en 2 y 3)
+Una miniatura propia por video/proyecto y por formato elegido, no por red: `renders/miniatura-vertical.png` (1080×1920) y/o `renders/miniatura-horizontal.png` (1920×1080). Debe identificar el tema concreto mediante su protagonista, objeto o escena clave; personaliza el arte de `ThumbnailCover2D`/`ThumbnailCover3D`, no solo el titular. No uses el personaje base/genérico ni reutilices una portada de otro proyecto cuando no represente este video. Se genera con `render.mjs --thumbnail` (también con `--stills` y en el render final). Configuración textual en `storyboard.json → thumbnail {badge, headline, highlight}`.
 
 ## Entrega y validación
-- Prompt 1 entrega diagnóstico de 4 redes + ideas validadas guardadas en `studio-shared/mis-ideas/` (sin generar `.mp4`).
-- Prompt 2 nunca salta la pregunta 2D/3D, respeta coherencia visual e *IP-Safe*, valida con `evaluar_guion.py >= 80/100` y cierra con Contact Sheet + EBU R128 + Copy multiplataforma.
+- Modo 1: diagnóstico + ideas guardadas, sin `.mp4`.
+- Modos 2 y 3: video(s) + miniatura(s) + métricas de audio + saldo ElevenLabs + fuentes (o aviso de ficción) + copy 1-clic para las 4 redes.
 
-## Recursos, procedencia y mantenimiento
-- **Autoría:** Skill nativa de `Agencia_Principal`, sincronizada con `PROMPTS-MAESTROS.md` y `asistente-principal.md`.
-- **Mantenimiento:** Regenerar catálogo con `python3 Agencia_Principal/scripts/catalogo_skills.py --generar` y verificar con `python3 Agencia_Principal/scripts/agencia.py verificar && python3 Agencia_Principal/scripts/agencia.py comprobar`.
+## Recursos y mantenimiento
+- Skill nativa de `Agencia_Principal`, sincronizada con el README raíz y `asistente-principal.md`.
+- Regenerar catálogo: `python3 Agencia_Principal/scripts/catalogo_skills.py --generar`; verificar: `python3 Agencia_Principal/scripts/agencia.py verificar && python3 Agencia_Principal/scripts/agencia.py comprobar`.

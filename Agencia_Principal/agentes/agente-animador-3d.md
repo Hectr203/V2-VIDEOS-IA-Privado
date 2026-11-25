@@ -6,10 +6,10 @@ Aplicar el [contrato común](contrato-agente.md) y la [precedencia](../reglas/pr
 Diseñar, modelar proceduralmente e iluminar producciones audiovisuales 3D con materiales físicamente realistas (PBR) en **`video-studio-3d/`**, combinando Three.js, React Three Fiber y `@remotion/three` con sincronización exacta palabra por palabra, tanto para divulgación científica/técnica monetizable como para **comerciales 3D de producto**.
 
 ## Activación
-Durante el **Prompt 2** cuando el usuario elija la técnica **3D** (`video-studio-3d/`) en la Pregunta 1 obligatoria, tomando como referencia metodológica el flujo de trabajo establecido en el proyecto de *los anillos* (`video-studio-3d/proyectos-test/demo-estudio-pbr-3d`) para productos, ingeniería, cortes microscópicos en micras, simulaciones físico-químicas o anuncios comerciales 3D. Nunca activar para animaciones cartoon 2D (`agente-animador-2d` en `video-studio-2d/`).
+Durante el **Modos 2 y 3 (Producción)** cuando el usuario elija la técnica **3D** (`video-studio-3d/`) en la Pregunta 1 obligatoria, tomando como referencia metodológica el flujo de trabajo establecido en el proyecto de *los anillos* (`video-studio-3d/proyectos-test/demo-estudio-pbr-3d`) para productos, ingeniería, cortes microscópicos en micras, simulaciones físico-químicas o anuncios comerciales 3D. Nunca activar para animaciones cartoon 2D (`agente-animador-2d` en `video-studio-2d/`).
 
 ## Entradas
-- Guion validado (`evaluar_guion.py >= 80/100`) + dirección de arte 3D confirmada en el protocolo consultivo del Prompt 2 (escala Macro/Micras/Atómica/Exploded View, materiales PBR protagonistas, atmósfera de iluminación, plataforma, duración y enfoque orgánico vs. comercial).
+- Guion validado (`evaluar_guion.py >= 80/100`) + dirección de arte 3D confirmada en el protocolo consultivo del Modos 2 y 3 (escala Macro/Micras/Atómica/Exploded View, materiales PBR protagonistas, atmósfera de iluminación, plataforma, duración y enfoque orgánico vs. comercial).
 - Voz configurada (por defecto oficial ElevenLabs `SOYHLrjzK2X1ezoPC6cr` con `eleven_flash_v2_5`, o alternativa elegida).
 - Activos compartidos de `studio-shared/assets/` y librería `video-studio-3d/shared-art-3d/`.
 
@@ -35,6 +35,7 @@ Aplicar [selección común](../reglas/seleccion-skills.md), descubriendo y emple
 - `real-sfx`: colocación frame-a-frame de SFX reales con `--voice-safe --duck`.
 
 ## Entrega
+- **Miniatura(s) única(s) por proyecto:** diseñar la composición de `ThumbnailCover3D` alrededor de la pieza/escena protagonista de este video, con elementos propios del tema. Debe ser reconocible como portada de este proyecto, no una miniatura genérica reutilizada. Generar con `render.mjs --thumbnail` (`--horizontal` / `--both`).
 - Proyecto 3D autónomo en `video-studio-3d/projects/<DD de mes de YYYY>/<slug>/` con `renders/contact-sheet.jpg` inspeccionada, `renders/master-1080p.mp4` validado por `ffprobe` y métricas acústicas EBU R128 (`-18` a `-19 LUFS`, True Peak `< -1.0 dBFS`).
 
 ## Criterios de aceptación
