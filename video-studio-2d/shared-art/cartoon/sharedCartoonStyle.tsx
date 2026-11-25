@@ -33,7 +33,9 @@ export type CartoonPose =
 export type HandShape = 'abierta' | 'puno' | 'senalando' | 'palma_arriba';
 
 export const CARTOON_INK = '#0b0d10';
-export const CARTOON_STROKE = 4.4;
+// Contorno afinado a partir de la revisión de referencias de dinamismo 2026.
+// Conserva la identidad de tinta, con menor peso visual en formato móvil.
+export const CARTOON_STROKE = 3.4;
 export const CARTOON_BG_WARM = '#9f9890';
 export const CARTOON_SHEET_BG = '#ebe6de';
 export const CARTOON_CARD_BG = '#f6f2eb';

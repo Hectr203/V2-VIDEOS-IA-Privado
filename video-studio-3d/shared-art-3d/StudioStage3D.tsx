@@ -56,23 +56,28 @@ const ProceduralStudioEnvironment: React.FC<{
   camPos: [number, number, number];
   lookAt: [number, number, number];
   fov: number;
-}> = ({camPos, lookAt, fov}) => {
+  lightScale: number;
+  exposure: number;
+  environmentIntensity: number;
+}> = ({camPos, lookAt, fov, lightScale, exposure, environmentIntensity}) => {
   const {gl, scene, camera} = useThree();
 
   // Construcción síncrona en useMemo para que el frame 0 en render headless ya tenga reflejos PBR
   const envRT = useMemo(() => {
     gl.toneMapping = THREE.ACESFilmicToneMapping;
-    gl.toneMappingExposure = 1.24;
+    gl.toneMappingExposure = 1.24 * exposure;
     return buildStudioSoftboxEnv(gl);
-  }, [gl]);
+  }, [gl, exposure]);
 
   scene.environment = envRT.texture;
+  scene.environmentIntensity = environmentIntensity;
 
   useEffect(() => {
     return () => {
       if (scene.environment === envRT.texture) {
         scene.environment = null;
       }
+      scene.environmentIntensity = 1;
       envRT.dispose();
     };
   }, [scene, envRT]);
@@ -86,11 +91,11 @@ const ProceduralStudioEnvironment: React.FC<{
 
   return (
     <>
-      <hemisphereLight args={['#fffaf0', '#3b3228', 0.95]} />
-      <directionalLight position={[4.5, 6.0, 6.5]} intensity={2.6} color="#fff7e6" />
-      <directionalLight position={[-5.5, 3.5, 4.5]} intensity={1.7} color="#e0f2fe" />
-      <directionalLight position={[0, -3.5, 5.5]} intensity={1.1} color="#fef3c7" />
-      <pointLight position={[0, 2.5, 4.0]} intensity={1.4} color="#ffffff" />
+      <hemisphereLight args={['#fffaf0', '#3b3228', 0.95 * lightScale]} />
+      <directionalLight position={[4.5, 6.0, 6.5]} intensity={2.6 * lightScale} color="#fff7e6" />
+      <directionalLight position={[-5.5, 3.5, 4.5]} intensity={1.7 * lightScale} color="#e0f2fe" />
+      <directionalLight position={[0, -3.5, 5.5]} intensity={1.1 * lightScale} color="#fef3c7" />
+      <pointLight position={[0, 2.5, 4.0]} intensity={1.4 * lightScale} color="#ffffff" />
     </>
   );
 };
@@ -103,6 +108,9 @@ export interface StudioStage3DProps {
   fov?: number;
   bgGlowColor?: string;
   bgGlowOpacity?: number;
+  lightScale?: number;
+  exposure?: number;
+  environmentIntensity?: number;
   children: React.ReactNode;
 }
 
@@ -118,6 +126,9 @@ export const StudioStage3D: React.FC<StudioStage3DProps> = ({
   fov = 38,
   bgGlowColor = '#d97706',
   bgGlowOpacity = 0.2,
+  lightScale = 1,
+  exposure = 1,
+  environmentIntensity = 1,
   children,
 }) => {
   return (
@@ -139,7 +150,14 @@ export const StudioStage3D: React.FC<StudioStage3DProps> = ({
         camera={{position: cameraPosition, fov, near: 0.1, far: 100}}
         gl={{antialias: true, alpha: true}}
       >
-        <ProceduralStudioEnvironment camPos={cameraPosition} lookAt={cameraLookAt} fov={fov} />
+        <ProceduralStudioEnvironment
+          camPos={cameraPosition}
+          lookAt={cameraLookAt}
+          fov={fov}
+          lightScale={lightScale}
+          exposure={exposure}
+          environmentIntensity={environmentIntensity}
+        />
         {children}
       </ThreeCanvas>
     </div>

@@ -3,7 +3,7 @@
 Todos los personajes vectoriales 2D de **Un Dato Más** viven aquí para ser reutilizados y personalizados en cualquier producción sin perder jamás la identidad visual consolidada en los proyectos del 22 y 23 de noviembre (*El Chavo*, *Don Ramón* y *Cómo funcionan los ojos*).
 
 ## Reglas de Estilo Visual Compartido
-- **Tinta negra uniforme:** `#0b0d10` (`4.4px`) con remates y uniones redondeadas (`inkProps()`).
+- **Tinta negra uniforme:** `#0b0d10` (`3.4px`) con remates y uniones redondeadas (`inkProps()`).
 - **Cabeza ovalada expresiva (ancho > alto):** `rx="58..64"`, `ry="49..54"` con orejas simétricas integradas y ojos sólidos circulares bien espaciados.
 - **Animación viva IK:** Brazos y piernas articulados de 2 segmentos (`CartoonArmIK`, `CartoonLegIK`), 8 poses, 7 expresiones faciales, parpadeo determinista y *lip-sync*.
 

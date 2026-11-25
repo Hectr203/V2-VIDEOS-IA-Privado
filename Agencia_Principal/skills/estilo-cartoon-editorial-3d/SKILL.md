@@ -18,7 +18,7 @@ Este es el **nuevo lenguaje visual, gráfico y de personajes predominante por de
 Importar y construir siempre desde `video-studio/shared-art` (módulo `cartoon/`):
 
 - **Tinta y acabado:**
-  - Contorno negro tinta uniforme `CARTOON_INK = '#0b0d10'`, `CARTOON_STROKE = 4.4`, `strokeLinecap="round"`, `strokeLinejoin="round"`.
+  - Contorno negro tinta uniforme `CARTOON_INK = '#0b0d10'`, `CARTOON_STROKE = 3.4` (afinamiento de aprox. 23 % para la dirección dinámica actual), `strokeLinecap="round"`, `strokeLinejoin="round"`.
   - Rellenos planos opacos (*flat cel*) con paletas armónicas editoriales y contraste limpio (evitar mezclar personajes glossy 3D o trazos infantiles primitivos dentro de la misma escena).
 - **Anatomía completa y articulación IK real (Cero poses estáticas rígidas):**
   - Cabeza ovalada expresiva (ancho mayor que alto), orejas redondeadas integradas, ojos circulares sólidos con parpadeo (`cartoonBlink`) y mirada direccionable (`lookX`, `lookY`).
@@ -38,7 +38,7 @@ Importar y construir siempre desde `video-studio/shared-art` (módulo `cartoon/`
   - `Personaje4Marinerito` (niño con traje marinero y gorra removible, escala `0.85×`).
 - **Cómo derivar un personaje nuevo según el tema:**
   - Ejemplo *Granjero*: reutilizar `sharedCartoonStyle.tsx`, proporción `1.0×`, sombrero de paja con tinta `#0b0d10`, overol con tirantes y hebillas planas, botas de lodo y horca/pala modular.
-  - Ejemplo *Fisiculturista*: misma cabeza ovalada y ojos sólidos, torso trapezoidal ancho y `thickness` mayor en `CartoonArmIK` (`32–36px`) con camiseta deportiva sin mangas (`sleeveRatio: 0.28`), manteniendo exactamente el mismo trazo `4.4px`.
+  - Ejemplo *Fisiculturista*: misma cabeza ovalada y ojos sólidos, torso trapezoidal ancho y `thickness` mayor en `CartoonArmIK` (`32–36px`) con camiseta deportiva sin mangas (`sleeveRatio: 0.28`), manteniendo exactamente el mismo trazo común `3.4px`.
   - Ejemplo *Profesor / Científico*: proporción `1.08×`, bata blanca con solapas y bolsillo con bolígrafos, lentes rectangulares finos y cabello peinado en el mismo estilo.
 
 ## 3. Escenario 3D Multipiano, Ritmo y Componentes UI

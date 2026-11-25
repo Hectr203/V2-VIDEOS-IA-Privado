@@ -11,4 +11,4 @@ Importar desde `video-studio-2d/shared-art` (`dynamism/`):
 - **Transiciones y rótulos:** `SpiralRingPortal`, `DiagonalSplitCompare`, `TiltedPunchBanner`.
 - **HUD narrativo e infografía de unidades:** `StoryStateHUD`, `LiquidDangerMeter`, `GameHealthBarHUD`, `TearOffCalendar`, `IconPopulationGrid`, `StampedDossierCard`.
 
-Guía completa en `Agencia_Principal/skills/dinamismo-visual-2d/SKILL.md`.
+Guía completa en `Agencia_Principal/skills/dinamismo-visual-2d/SKILL.md`. Aplicar además la guía de dinamismo basada en referencias en `Agencia_Principal/contexts/projects/video-creator-studio/direccion-dinamismo-referencias.md`.

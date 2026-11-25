@@ -5,7 +5,7 @@ description: Motor de dinamismo visual de alta retención para video-studio-2d s
 
 # Motor de Dinamismo Visual 2D (`video-studio-2d/shared-art/dynamism/`)
 
-Potencia el lenguaje de personajes `estilo-cartoon-editorial-3d` (tinta negra uniforme `#0b0d10`, `4.4px`, cinemática inversa `solveIK2D`) con ritmo visual cinematográfico continuo sin perder coherencia gráfica.
+Potencia el lenguaje de personajes `estilo-cartoon-editorial-3d` (tinta negra uniforme `#0b0d10`, `3.4px`, cinemática inversa `solveIK2D`) con ritmo visual cinematográfico continuo sin perder coherencia gráfica. Para color, fondos, staging y microbeats, aplicar `Agencia_Principal/contexts/projects/video-creator-studio/direccion-dinamismo-referencias.md`.
 
 ## 1. Reglas de Ritmo y Encuadre Multicámara (`DynamicCameraRig2D`)
 - **Prohibido mantener el mismo encuadre fijo toda la escena:** Cada escena de 6–10 segundos debe definir de **3 a 5 `CameraBeat`s** (`wide`, `medium`, `closeup`, `extreme-closeup`, `dutch-left`, `dutch-right`, `whip-left`, `punch`) cambiando el foco visual cada **1.5 a 2.5 segundos** al compás de las frases clave.
